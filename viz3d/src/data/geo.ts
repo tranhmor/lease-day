@@ -35,11 +35,11 @@ export class LocalProjector {
   }
 }
 
-/** Map rent index delta (-4..+4) to diverging palette: #5FB4FF -> #9AA7BD -> #FFB02E -> #FF5A3C */
-const C_NEG = new THREE.Color('#5FB4FF');
-const C_ZERO = new THREE.Color('#9AA7BD');
-const C_MID_POS = new THREE.Color('#FFB02E');
-const C_MAX_POS = new THREE.Color('#FF5A3C');
+/** Map rent index delta (-4..+4) to diverging palette: #6F9FC7 -> #8A8F98 -> #D2876A -> #E4572E */
+const C_NEG = new THREE.Color('#6F9FC7');
+const C_ZERO = new THREE.Color('#8A8F98');
+const C_MID_POS = new THREE.Color('#D2876A');
+const C_MAX_POS = new THREE.Color('#E4572E');
 
 export function rentDeltaToColor(deltaPts: number, target = new THREE.Color()): THREE.Color {
   const d = Math.max(-4, Math.min(4, deltaPts));

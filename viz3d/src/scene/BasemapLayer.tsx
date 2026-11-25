@@ -107,20 +107,20 @@ export function BasemapLayer({ basemap, projection, dimmed = false }: BasemapLay
     <group name="L1_basemap">
       {geometries.waterPolyGeo && (
         <mesh geometry={geometries.waterPolyGeo}>
-          <meshBasicMaterial color="#0C1726" transparent opacity={0.92 * dimFactor} depthWrite={false} />
+          <meshBasicMaterial color="#0A0B0E" transparent opacity={0.95 * dimFactor} depthWrite={false} />
         </mesh>
       )}
       <lineSegments geometry={geometries.waterLineGeo}>
-        <lineBasicMaterial color="#18385C" transparent opacity={0.55 * dimFactor} depthWrite={false} />
+        <lineBasicMaterial color="#22262C" transparent opacity={0.7 * dimFactor} depthWrite={false} />
       </lineSegments>
       <lineSegments geometry={geometries.districtGeo}>
-        <lineBasicMaterial color="#3C5476" transparent opacity={0.28 * dimFactor} depthWrite={false} />
+        <lineBasicMaterial color="#3A3F47" transparent opacity={0.35 * dimFactor} depthWrite={false} />
       </lineSegments>
       <lineSegments geometry={geometries.arterialGeo}>
-        <lineBasicMaterial color="#344B6E" transparent opacity={0.5 * dimFactor} depthWrite={false} />
+        <lineBasicMaterial color="#30343B" transparent opacity={0.75 * dimFactor} depthWrite={false} />
       </lineSegments>
       <lineSegments geometry={geometries.ringGeo}>
-        <lineBasicMaterial color="#587DB0" transparent opacity={0.78 * dimFactor} depthWrite={false} />
+        <lineBasicMaterial color="#4A4F57" transparent opacity={0.85 * dimFactor} depthWrite={false} />
       </lineSegments>
     </group>
   );

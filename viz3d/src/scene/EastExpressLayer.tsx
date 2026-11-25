@@ -30,31 +30,18 @@ const LINE_FRAG = /* glsl */ `
   void main() {
     if (vUv.x > uProgress) discard;
 
-    // Fine holographic dashed ticks when announced (M13-M24)
-    float dash = step(0.36, fract(vUv.x * 34.0 - uTime * 0.55));
-    float holoAlpha = dash * 0.88;
-
-    // Solid luminous filament + sleek racing white-gold comets when opened (M25-M36)
-    float p1 = exp(-pow(fract(vUv.x * 2.2 - uTime * 0.48) - 0.5, 2.0) * 140.0);
-    float p2 = exp(-pow(fract(vUv.x * 2.2 + uTime * 0.36) - 0.5, 2.0) * 160.0);
-    float openGlow = 1.15 + (p1 + p2 * 0.7) * 1.65;
-
-    float alpha = mix(holoAlpha, 0.96, uOpen) * uOpacity;
+    float dash = step(0.45, fract(vUv.x * 40.0));
+    float alpha = mix(dash * 0.9, 1.0, uOpen) * uOpacity;
     if (alpha < 0.03) discard;
-
-    float head = smoothstep(0.05, 0.0, abs(vUv.x - uProgress)) * (1.0 - step(0.995, uProgress));
-    vec3 amber = vec3(1.0, 0.69, 0.18);
-    vec3 cream = vec3(1.0, 0.95, 0.80);
-    vec3 col = mix(amber * 1.35, amber * openGlow + cream * (p1 * 0.85), uOpen);
-    col += cream * head * 2.0;
+    vec3 col = vec3(0.894, 0.341, 0.180);
 
     gl_FragColor = vec4(col, alpha);
   }
 `;
 
 /**
- * L4: Sleek precision amber corridor for hypothetical East Express Line (CBD -> Z01 -> Z05 -> Z11).
- * No chunky vertical pillars — refined glowing filament + concentric station rings on the map plane.
+ * L4: hypothetical East Express Line (CBD -> Z01 -> Z05 -> Z11).
+ * Dashed while only announced, solid once open.
  */
 export function EastExpressLayer({ newline, projection, visible, announced, opened }: EastExpressLayerProps) {
   const matRef = useRef<THREE.ShaderMaterial>(null);
@@ -62,7 +49,7 @@ export function EastExpressLayer({ newline, projection, visible, announced, open
   const openRef = useRef(0);
   const opacityRef = useRef(0);
 
-  const { tubeGeo, haloGeo, stations } = useMemo(() => {
+  const { tubeGeo, stations } = useMemo(() => {
     const proj = new LocalProjector(projection);
     let curvePts: THREE.Vector3[] = [];
     const stList: Array<{ id: string; x: number; z: number; treated: boolean }> = [];
@@ -80,9 +67,8 @@ export function EastExpressLayer({ newline, projection, visible, announced, open
     const curve = new THREE.CatmullRomCurve3(
       curvePts.length >= 2 ? curvePts : [new THREE.Vector3(0, 0.11, 0), new THREE.Vector3(18, 0.11, 1.5)]
     );
-    const tGeo = new THREE.TubeGeometry(curve, 128, 0.048, 8, false);
-    const hGeo = new THREE.TubeGeometry(curve, 96, 0.14, 8, false);
-    return { tubeGeo: tGeo, haloGeo: hGeo, stations: stList };
+    const tGeo = new THREE.TubeGeometry(curve, 128, 0.04, 8, false);
+    return { tubeGeo: tGeo, stations: stList };
   }, [newline, projection]);
 
   const uniforms = useMemo(
@@ -127,27 +113,16 @@ export function EastExpressLayer({ newline, projection, visible, announced, open
           depthWrite={false}
         />
       </mesh>
-      {active && (
-        <mesh geometry={haloGeo}>
-          <meshBasicMaterial
-            color="#FFB02E"
-            transparent
-            opacity={opened ? 0.2 : 0.09}
-            blending={THREE.AdditiveBlending}
-            depthWrite={false}
-          />
-        </mesh>
-      )}
       {active &&
         stations.map((st) => (
           <group key={st.id} position={[st.x, 0.12, st.z]}>
             <mesh rotation={[-Math.PI / 2, 0, 0]}>
-              <circleGeometry args={[0.14, 20]} />
-              <meshBasicMaterial color={new THREE.Color('#FFF1C7').multiplyScalar(1.6)} toneMapped={false} />
+              <circleGeometry args={[0.16, 24]} />
+              <meshBasicMaterial color="#0E1014" />
             </mesh>
-            <mesh rotation={[-Math.PI / 2, 0, 0]}>
-              <ringGeometry args={[0.22, 0.28, 28]} />
-              <meshBasicMaterial color={new THREE.Color('#FFB02E').multiplyScalar(1.4)} toneMapped={false} transparent opacity={0.9} />
+            <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, 0.002, 0]}>
+              <ringGeometry args={[0.12, 0.17, 28]} />
+              <meshBasicMaterial color="#E4572E" />
             </mesh>
           </group>
         ))}

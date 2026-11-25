@@ -72,13 +72,13 @@ export function Fallback2DMap({
       >
         {/* Concentric CBD distance rings */}
         {[5, 10, 15, 20, 25].map((r) => (
-          <circle key={r} cx={0} cy={0} r={r} fill="none" stroke="#5FB4FF" strokeOpacity={0.08} strokeWidth={0.12} />
+          <circle key={r} cx={0} cy={0} r={r} fill="none" stroke="#8FA6BD" strokeOpacity={0.08} strokeWidth={0.12} />
         ))}
 
         {/* Metro lines */}
         {layers.metro &&
           metroPaths.map((d, i) => (
-            <path key={i} d={d} fill="none" stroke="#5FB4FF" strokeOpacity={0.35} strokeWidth={0.18} />
+            <path key={i} d={d} fill="none" stroke="#8FA6BD" strokeOpacity={0.35} strokeWidth={0.18} />
           ))}
 
         {/* East Express Line */}
@@ -86,7 +86,7 @@ export function Fallback2DMap({
           <path
             d={newlinePath}
             fill="none"
-            stroke="#FFB02E"
+            stroke="#E4572E"
             strokeWidth={opened ? 0.36 : 0.28}
             strokeDasharray={opened ? undefined : '0.6 0.5'}
           />
@@ -101,9 +101,9 @@ export function Fallback2DMap({
               cx={z.x}
               cy={z.z}
               r={3.2}
-              fill="#FFB02E"
+              fill="#E4572E"
               fillOpacity={announced || opened ? 0.14 : 0.04}
-              stroke="#FFB02E"
+              stroke="#E4572E"
               strokeOpacity={0.35}
               strokeWidth={0.1}
             />
@@ -123,7 +123,7 @@ export function Fallback2DMap({
                 cy={r.layout_xy[1]}
                 r={isSel ? 0.38 : r.zone === 'Z05' || r.zone === 'Z11' ? 0.24 : 0.18}
                 fill={fill}
-                stroke={isSel ? '#FFB02E' : '#0B111C'}
+                stroke={isSel ? '#E4572E' : '#0E1014'}
                 strokeWidth={isSel ? 0.12 : 0.04}
                 style={{ cursor: 'pointer' }}
                 onClick={() => onSelectRoom(r.id)}
@@ -143,7 +143,7 @@ export function Fallback2DMap({
                   x={z.x}
                   y={z.z - z.radius - 0.5}
                   textAnchor="middle"
-                  fill={z.treated ? '#FFB02E' : '#CFD9EA'}
+                  fill={z.treated ? '#E4572E' : '#CFD9EA'}
                   fontSize={z.treated ? 1.15 : 0.85}
                   fontWeight={z.treated ? 700 : 500}
                 >
@@ -154,7 +154,7 @@ export function Fallback2DMap({
                     x={z.x}
                     y={z.z - z.radius + 0.65}
                     textAnchor="middle"
-                    fill="#FFD588"
+                    fill="#F0E6D8"
                     fontSize={0.78}
                     fontFamily="monospace"
                   >

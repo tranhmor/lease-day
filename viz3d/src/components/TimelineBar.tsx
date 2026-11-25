@@ -18,9 +18,9 @@ interface TimelineBarProps {
 }
 
 const SC_COLORS: Record<Scenario, string> = {
-  N: '#8A94A8',
-  S: '#4EA8FF',
-  P: '#FF6B57',
+  N: '#6E7480',
+  S: '#7C9CB8',
+  P: '#E4572E',
 };
 
 export function TimelineBar({
@@ -91,13 +91,13 @@ export function TimelineBar({
   const curVal = curSeries[month - 1]?.[0] ?? 100;
 
   const ticks: Array<[number, string, string]> = [
-    [1, t.timeline.ticks.m1, '#7D8AA3'],
-    [7, t.timeline.ticks.m7, '#7D8AA3'],
-    [announceMonth, t.timeline.ticks.m13, '#FF8A6B'],
-    [19, t.timeline.ticks.m19, '#7D8AA3'],
-    [openMonth, t.timeline.ticks.m25, '#FFB02E'],
-    [31, t.timeline.ticks.m31, '#7D8AA3'],
-    [36, t.timeline.ticks.m36, '#7D8AA3'],
+    [1, t.timeline.ticks.m1, '#8A8F98'],
+    [7, t.timeline.ticks.m7, '#8A8F98'],
+    [announceMonth, t.timeline.ticks.m13, '#E8E4DC'],
+    [19, t.timeline.ticks.m19, '#8A8F98'],
+    [openMonth, t.timeline.ticks.m25, '#E8E4DC'],
+    [31, t.timeline.ticks.m31, '#8A8F98'],
+    [36, t.timeline.ticks.m36, '#8A8F98'],
   ];
 
   return (
@@ -105,7 +105,7 @@ export function TimelineBar({
       className="hud-panel"
       style={{
         width: '100%',
-        padding: '8px 14px 6px',
+        padding: '10px 16px 6px',
         flexShrink: 0,
       }}
     >
@@ -114,25 +114,33 @@ export function TimelineBar({
           display: 'flex',
           alignItems: 'center',
           gap: 8,
-          fontSize: 11,
+          fontSize: 12,
           color: 'var(--sub)',
-          marginBottom: 4,
+          marginBottom: 2,
           whiteSpace: 'nowrap',
           overflow: 'hidden',
         }}
       >
-        <button type="button" className="btn-hud active" onClick={onTogglePlay}>
+        <button type="button" className="btn-hud" style={{ color: 'var(--text)' }} onClick={onTogglePlay}>
           {playing ? <Pause size={11} /> : <Play size={11} />}
           {playing ? t.timeline.pause : t.timeline.play}
         </button>
-        <button type="button" className="btn-hud mono" onClick={onCycleSpeed}>
+        <button type="button" className="btn-hud num" onClick={onCycleSpeed}>
           {speed}×
         </button>
-        <span className="mono" style={{ letterSpacing: '0.1em', fontSize: 10, overflow: 'hidden', textOverflow: 'ellipsis' }}>
-          {t.timeline.caption}
+        <span className="serif" style={{ fontSize: 13.5, color: 'var(--text)', marginLeft: 6, overflow: 'hidden', textOverflow: 'ellipsis' }}>
+          {lang === 'zh' ? '受益区租金指数，三个世界' : 'Treated-zone rent index, three worlds'}
         </span>
-        <span style={{ fontSize: 10, opacity: 0.72, overflow: 'hidden', textOverflow: 'ellipsis', marginLeft: 'auto' }}>
-          {t.timeline.ciNote}
+        <span style={{ display: 'inline-flex', gap: 12, marginLeft: 'auto', fontSize: 11.5 }}>
+          {(['P', 'S', 'N'] as Scenario[]).map((sc) => (
+            <span key={sc} style={{ display: 'inline-flex', alignItems: 'center', gap: 5 }}>
+              <svg width={16} height={6}>
+                <line x1={0} x2={16} y1={3} y2={3} stroke={SC_COLORS[sc]} strokeWidth={sc === scenario ? 2 : 1.3} strokeDasharray={sc === 'S' ? '4 2' : undefined} />
+              </svg>
+              {sc} {t.scenarios[sc].short}
+            </span>
+          ))}
+          <span style={{ color: 'var(--faint)' }}>{t.timeline.ciNote}</span>
         </span>
       </div>
 
@@ -158,16 +166,16 @@ export function TimelineBar({
           y={4}
           width={xOf(openMonth) - xOf(announceMonth)}
           height={58}
-          fill="#FF6B57"
-          fillOpacity={0.075}
+          fill="#E8E4DC"
+          fillOpacity={0.035}
         />
         <rect
           x={xOf(openMonth)}
           y={4}
           width={xOf(36) - xOf(openMonth)}
           height={58}
-          fill="#FFB02E"
-          fillOpacity={0.055}
+          fill="#E8E4DC"
+          fillOpacity={0.018}
         />
 
         {/* Cross-seed 95% CI ribbons + curves */}
@@ -176,14 +184,14 @@ export function TimelineBar({
           return (
             <g key={sc}>
               {ciBands[sc] && (
-                <path d={ciBands[sc]} fill={SC_COLORS[sc]} fillOpacity={active ? 0.16 : 0.06} />
+                <path d={ciBands[sc]} fill={SC_COLORS[sc]} fillOpacity={active ? 0.13 : 0.04} />
               )}
               <path
                 d={curves[sc]}
                 fill="none"
                 stroke={SC_COLORS[sc]}
-                strokeWidth={active ? 2.5 : sc === 'N' ? 1.1 : 1.5}
-                strokeOpacity={active ? 1 : 0.45}
+                strokeWidth={active ? 1.8 : 1.1}
+                strokeOpacity={active ? 1 : 0.6}
                 strokeDasharray={sc === 'S' ? '5 3' : undefined}
               />
             </g>
@@ -191,19 +199,19 @@ export function TimelineBar({
         })}
 
         {/* Baseline & chapter ticks */}
-        <line x1={xOf(1)} x2={xOf(36)} y1={63} y2={63} stroke="#24324A" />
+        <line x1={xOf(1)} x2={xOf(36)} y1={63} y2={63} stroke="#3A3F47" strokeWidth={0.8} />
         {ticks.map(([m, label, col]) => (
           <g key={m}>
-            <line x1={xOf(m)} x2={xOf(m)} y1={60} y2={66} stroke="#3B5277" />
-            <text x={xOf(m)} y={80} textAnchor="middle" fontSize={10.5} fill={col}>
+            <line x1={xOf(m)} x2={xOf(m)} y1={63} y2={67} stroke="#4A4F57" strokeWidth={0.8} />
+            <text x={xOf(m)} y={80} textAnchor="middle" fontSize={10} fill={col} fontFamily="-apple-system, 'PingFang SC', sans-serif">
               {label}
             </text>
           </g>
         ))}
 
         {/* Playhead */}
-        <line x1={xOf(month)} x2={xOf(month)} y1={2} y2={64} stroke="#FFFFFF" strokeWidth={1.2} strokeOpacity={0.85} />
-        <circle cx={xOf(month)} cy={yOf(curVal)} r={4.5} fill="#FFFFFF" stroke={SC_COLORS[scenario]} strokeWidth={2.2} />
+        <line x1={xOf(month)} x2={xOf(month)} y1={2} y2={64} stroke="#E8E4DC" strokeWidth={0.8} strokeOpacity={0.6} />
+        <circle cx={xOf(month)} cy={yOf(curVal)} r={3.2} fill={SC_COLORS[scenario]} stroke="#0E1014" strokeWidth={1.2} />
       </svg>
     </div>
   );

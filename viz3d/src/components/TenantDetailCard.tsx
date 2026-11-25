@@ -15,9 +15,9 @@ interface TenantDetailCardProps {
 }
 
 const GROUP_COLORS: Record<IncomeGroup, string> = {
-  low: '#2DD4BF',
-  mid: '#A78BFA',
-  high: '#F472B6',
+  low: '#7FA8A0',
+  mid: '#B7A27A',
+  high: '#9C7FB0',
 };
 
 export function TenantDetailCard({
@@ -58,7 +58,7 @@ export function TenantDetailCard({
         padding: '13px 15px',
         display: 'flex',
         flexDirection: 'column',
-        background: 'rgba(10, 16, 28, 0.96)',
+        background: 'rgba(14, 16, 20, 0.96)',
         boxShadow: '0 16px 48px rgba(0, 0, 0, 0.7)',
         overflow: 'hidden',
       }}
@@ -111,7 +111,7 @@ export function TenantDetailCard({
               key={idx}
               style={{
                 padding: '10px 11px',
-                background: 'rgba(22, 35, 58, 0.55)',
+                background: 'rgba(255, 255, 255, 0.035)',
                 border: '1px solid var(--line)',
                 borderRadius: 4,
                 fontSize: 12,
@@ -141,7 +141,7 @@ export function TenantDetailCard({
                           onClick={() => c.room_id !== undefined && onSelectRoom(c.room_id)}
                           style={{
                             border: `1px solid ${applied ? 'var(--announce)' : 'var(--line)'}`,
-                            background: applied ? 'rgba(255,176,46,0.16)' : '#0D1524',
+                            background: applied ? 'rgba(228, 87, 46,0.16)' : '#0D1524',
                             color: applied ? 'var(--announce)' : 'var(--sub)',
                             borderRadius: 3,
                             padding: '2px 6px',

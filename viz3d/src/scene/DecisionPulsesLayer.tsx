@@ -15,7 +15,7 @@ const PULSE_DURATION = 1.4; // 1.4s pulse fade (§4.3)
 
 /**
  * L9: Expanding glowing pulse rings over rooms with LLM decisions this month.
- * Normal decisions = cool (#5FB4FF); decisions mentioning East Express = announce (#FFB02E).
+ * Normal decisions = cool (#8FA6BD); decisions mentioning East Express = announce (#E4572E).
  */
 export function DecisionPulsesLayer({ month, decisions, rooms, visible, highlighted = false }: DecisionPulsesLayerProps) {
   const meshRef = useRef<THREE.InstancedMesh>(null);
@@ -64,7 +64,7 @@ export function DecisionPulsesLayer({ month, decisions, rooms, visible, highligh
       const cycle = ((elapsed - p.delay) % 2.2 + 2.2) % 2.2;
       const t = Math.min(1, cycle / PULSE_DURATION);
       const alive = cycle < PULSE_DURATION;
-      const radius = 0.25 + t * (p.mentions ? 1.75 : 1.15);
+      const radius = 0.2 + t * (p.mentions ? 0.9 : 0.6);
       const fade = alive ? Math.pow(1 - t, 1.5) : 0;
 
       dummy.position.set(p.x, 0.12 + t * 0.15, p.z);
@@ -73,8 +73,8 @@ export function DecisionPulsesLayer({ month, decisions, rooms, visible, highligh
       mesh.setMatrixAt(i, dummy.matrix);
 
       tmpCol
-        .set(p.mentions ? '#FFB02E' : '#5FB4FF')
-        .multiplyScalar(fade * (p.mentions ? 2.2 : 1.4) * (highlighted ? 1.4 : 1.0));
+        .set(p.mentions ? '#E4572E' : '#8A8F98')
+        .multiplyScalar(fade * (p.mentions ? 0.9 : 0.5) * (highlighted ? 1.4 : 1.0));
       mesh.setColorAt(i, tmpCol);
     }
     mesh.instanceMatrix.needsUpdate = true;
@@ -87,11 +87,10 @@ export function DecisionPulsesLayer({ month, decisions, rooms, visible, highligh
     <instancedMesh ref={meshRef} name="L9_decision_pulses" args={[ringGeo, undefined, pulses.length]} frustumCulled={false}>
       <meshBasicMaterial
         transparent
-        opacity={0.92}
+        opacity={0.9}
         blending={THREE.AdditiveBlending}
         side={THREE.DoubleSide}
         depthWrite={false}
-        toneMapped={false}
       />
     </instancedMesh>
   );

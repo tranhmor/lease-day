@@ -47,7 +47,7 @@ export function MoverProfileOverlay({ monthlyP, monthlyS, lang }: MoverProfileOv
             {Math.round(d.meanCash).toLocaleString()}
           </span>
         </div>
-        <div style={{ display: 'flex', height: 10, borderRadius: 3, overflow: 'hidden', background: '#172338' }}>
+        <div style={{ display: 'flex', height: 10, borderRadius: 3, overflow: 'hidden', background: '#1C2026' }}>
           <div style={{ width: `${(d.groups.low / tot) * 100}%`, background: 'var(--inc-low)' }} title={`low: ${d.groups.low}`} />
           <div style={{ width: `${(d.groups.mid / tot) * 100}%`, background: 'var(--inc-mid)' }} title={`mid: ${d.groups.mid}`} />
           <div style={{ width: `${(d.groups.high / tot) * 100}%`, background: 'var(--inc-high)' }} title={`high: ${d.groups.high}`} />
@@ -87,15 +87,15 @@ interface VerdictOverlayProps {
 }
 
 function badgeColor(v?: string): { bg: string; border: string; text: string } {
-  if (!v) return { bg: 'rgba(125,138,163,0.16)', border: '#4A5875', text: '#9AA7BD' };
+  if (!v) return { bg: 'rgba(138, 143, 152,0.16)', border: '#4A4F57', text: '#9AA7BD' };
   const u = v.toUpperCase();
   if (u.startsWith('SUPPORTED') || u === 'PASS' || u === 'OK' || u.startsWith('NOT OVER')) {
-    return { bg: 'rgba(107,211,160,0.16)', border: '#6BD3A0', text: '#6BD3A0' };
+    return { bg: 'rgba(111, 159, 199,0.16)', border: '#6F9FC7', text: '#6F9FC7' };
   }
   if (u.startsWith('DIRECTIONAL') || u.startsWith('CAVEAT')) {
-    return { bg: 'rgba(255,176,46,0.16)', border: '#FFB02E', text: '#FFB02E' };
+    return { bg: 'rgba(228, 87, 46,0.16)', border: '#E4572E', text: '#E4572E' };
   }
-  return { bg: 'rgba(255,107,87,0.16)', border: '#FF6B57', text: '#FF8A6B' };
+  return { bg: 'rgba(228, 87, 46,0.16)', border: '#E4572E', text: '#E4572E' };
 }
 
 /**
@@ -124,7 +124,7 @@ export function VerdictOverlay({ verdicts, lang }: VerdictOverlayProps) {
         maxHeight: '100%',
         margin: '0 auto',
         padding: '12px 15px',
-        background: 'rgba(10, 16, 28, 0.92)',
+        background: 'rgba(14, 16, 20, 0.92)',
       }}
     >
       <div className="panel-header" style={{ marginBottom: 4 }}>
@@ -137,7 +137,7 @@ export function VerdictOverlay({ verdicts, lang }: VerdictOverlayProps) {
 
       <div style={{ display: 'flex', flexDirection: 'column', gap: 9 }}>
         {/* H1 */}
-        <div style={{ padding: '10px 12px', background: 'rgba(22,35,58,0.6)', border: '1px solid var(--line)', borderRadius: 4 }}>
+        <div style={{ padding: '10px 12px', background: 'rgba(255,255,255,0.03)', border: '1px solid var(--line)', borderRadius: 4 }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 8 }}>
             <span style={{ fontWeight: 600, fontSize: 13 }}>{t.verdicts.h1Title}</span>
             <span
@@ -164,7 +164,7 @@ export function VerdictOverlay({ verdicts, lang }: VerdictOverlayProps) {
         </div>
 
         {/* H2 */}
-        <div style={{ padding: '10px 12px', background: 'rgba(22,35,58,0.6)', border: '1px solid var(--line)', borderRadius: 4 }}>
+        <div style={{ padding: '10px 12px', background: 'rgba(255,255,255,0.03)', border: '1px solid var(--line)', borderRadius: 4 }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 8 }}>
             <span style={{ fontWeight: 600, fontSize: 13 }}>{t.verdicts.h2Title}</span>
             <span
@@ -193,7 +193,7 @@ export function VerdictOverlay({ verdicts, lang }: VerdictOverlayProps) {
         </div>
 
         {/* H3 */}
-        <div style={{ padding: '10px 12px', background: 'rgba(22,35,58,0.6)', border: '1px solid var(--line)', borderRadius: 4 }}>
+        <div style={{ padding: '10px 12px', background: 'rgba(255,255,255,0.03)', border: '1px solid var(--line)', borderRadius: 4 }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 8 }}>
             <span style={{ fontWeight: 600, fontSize: 13 }}>{t.verdicts.h3Title}</span>
             <span
@@ -223,13 +223,13 @@ export function VerdictOverlay({ verdicts, lang }: VerdictOverlayProps) {
 
         {/* Bias B & Quality Gate Row */}
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8 }}>
-          <div style={{ padding: '8px 10px', background: 'rgba(16,24,38,0.65)', border: '1px solid var(--line)', borderRadius: 4 }}>
+          <div style={{ padding: '8px 10px', background: 'rgba(20, 23, 28,0.65)', border: '1px solid var(--line)', borderRadius: 4 }}>
             <div style={{ fontSize: 10.5, color: 'var(--sub)' }}>{t.verdicts.biasTitle}</div>
             <div className="mono" style={{ fontSize: 11, marginTop: 4, color: bStyle.text }}>
               {r.B?.verdict ?? 'N/A'}
             </div>
           </div>
-          <div style={{ padding: '8px 10px', background: 'rgba(16,24,38,0.65)', border: '1px solid var(--line)', borderRadius: 4 }}>
+          <div style={{ padding: '8px 10px', background: 'rgba(20, 23, 28,0.65)', border: '1px solid var(--line)', borderRadius: 4 }}>
             <div style={{ fontSize: 10.5, color: 'var(--sub)' }}>{t.verdicts.qualityTitle}</div>
             <div className="mono" style={{ fontSize: 11, marginTop: 4, color: qStyle.text }}>
               {r.quality ? `${r.quality.verdict} (max ${(r.quality.max_fallback_rate * 100).toFixed(2)}%)` : 'N/A'}

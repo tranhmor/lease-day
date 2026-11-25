@@ -141,13 +141,13 @@ export function LandlordConstellationLayer({
       const isActive = activeRoomLinks.has(e.roomId);
 
       if (isMention) {
-        cTmp.set('#FFB02E').multiplyScalar(1.85);
+        cTmp.set('#E4572E').multiplyScalar(0.8);
       } else if (e.treated && (announced || opened)) {
-        cTmp.set('#FFB02E').multiplyScalar(isActive ? 1.35 : 0.72);
+        cTmp.set('#E4572E').multiplyScalar(isActive ? 0.6 : 0.3);
       } else if (isActive && !isDim) {
-        cTmp.set('#7EC8FF').multiplyScalar(1.15);
+        cTmp.set('#8A8F98').multiplyScalar(0.5);
       } else {
-        cTmp.set('#4E79B2').multiplyScalar(isDim ? 0.14 : 0.42);
+        cTmp.set('#4A4F57').multiplyScalar(isDim ? 0.08 : 0.22);
       }
 
       // Slightly brighter at landlord brain apex, softer at room anchor
@@ -198,13 +198,13 @@ export function LandlordConstellationLayer({
       nMesh.setMatrixAt(i, dummy.matrix);
 
       if (isMention) {
-        tmpCol.set('#FFB02E').multiplyScalar(1.9);
+        tmpCol.set('#E4572E');
       } else if (ll.treated && (announced || opened)) {
-        tmpCol.set('#FFB02E').multiplyScalar(1.3);
+        tmpCol.set('#E4572E').multiplyScalar(0.85);
       } else if (isActive && !isDim) {
-        tmpCol.set('#9FD8FF').multiplyScalar(1.35);
+        tmpCol.set('#E8E4DC');
       } else {
-        tmpCol.set(ll.agency ? '#A78BFA' : '#6FAFF0').multiplyScalar(isDim ? 0.2 : 0.8);
+        tmpCol.set('#8A8F98').multiplyScalar(isDim ? 0.25 : 0.85);
       }
       nMesh.setColorAt(i, tmpCol);
 

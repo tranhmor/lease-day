@@ -37,16 +37,16 @@ export function IntegrityFooter({
             right: 24,
             bottom: 30,
             zIndex: 50,
-            background: 'rgba(255, 176, 46, 0.16)',
-            border: '1px solid var(--announce)',
-            color: 'var(--announce)',
+            background: '#14171C',
+            border: '1px solid var(--line)',
+            color: 'var(--text)',
             fontSize: 10.5,
             padding: '4px 10px',
             borderRadius: 4,
             cursor: 'pointer',
           }}
         >
-          ⚡ {t.export.autoDegraded}
+          {t.export.autoDegraded}
         </button>
       )}
 
@@ -55,13 +55,16 @@ export function IntegrityFooter({
           position: 'absolute',
           left: 0,
           right: 0,
-          bottom: 5,
+          bottom: 0,
+          height: 26,
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          gap: 12,
-          fontSize: 10.5,
-          color: '#6C7D9B',
+          gap: 10,
+          fontSize: 11.5,
+          color: '#A7ADB5',
+          background: '#0E1014',
+          borderTop: '1px solid var(--line)',
           pointerEvents: 'none',
           zIndex: 24,
           padding: '0 24px',
@@ -73,22 +76,18 @@ export function IntegrityFooter({
         {meta.is_illustrative && (
           <span
             style={{
-              background: 'rgba(255, 176, 46, 0.18)',
-              border: '1px solid rgba(255, 176, 46, 0.6)',
-              color: 'var(--announce)',
-              padding: '1px 7px',
-              borderRadius: 3,
+              color: 'var(--accent)',
               fontWeight: 600,
             }}
           >
-            ⚠ {t.footer.illustrative}
+            {t.footer.illustrative}
           </span>
         )}
         <span>{t.footer.schematic}</span>
         <span>·</span>
         <span>{t.footer.hypothetical}</span>
         <span>·</span>
-        <span className="mono">{fmt(t.footer.medianSeed, { seed: meta.default_seed, val: psStr })}</span>
+        <span className="num">{fmt(t.footer.medianSeed, { seed: meta.default_seed, val: psStr })}</span>
         <span>·</span>
         <span>{fmt(t.footer.source, { src: meta.source_label })}</span>
       </div>

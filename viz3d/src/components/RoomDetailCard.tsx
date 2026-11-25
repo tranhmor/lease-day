@@ -16,9 +16,9 @@ interface RoomDetailCardProps {
 }
 
 const GROUP_COLORS: Record<IncomeGroup, string> = {
-  low: '#2DD4BF',
-  mid: '#A78BFA',
-  high: '#F472B6',
+  low: '#7FA8A0',
+  mid: '#B7A27A',
+  high: '#9C7FB0',
 };
 
 export function RoomDetailCard({
@@ -127,7 +127,7 @@ export function RoomDetailCard({
         padding: '13px 15px',
         display: 'flex',
         flexDirection: 'column',
-        background: 'rgba(10, 16, 28, 0.95)',
+        background: 'rgba(14, 16, 20, 0.95)',
         boxShadow: '0 16px 48px rgba(0, 0, 0, 0.65)',
         overflow: 'hidden',
       }}
@@ -158,30 +158,30 @@ export function RoomDetailCard({
           ¥{Math.round(minR)}–{Math.round(maxR)}
         </span>
       </div>
-      <svg viewBox={`0 0 ${W} ${H}`} style={{ width: '100%', height: 90, background: 'rgba(16,24,38,0.55)', borderRadius: 4 }}>
-        <line x1={x(13)} x2={x(13)} y1={4} y2={H - 4} stroke="#FFB02E" strokeOpacity={0.45} strokeDasharray="3 2" />
-        <line x1={x(25)} x2={x(25)} y1={4} y2={H - 4} stroke="#5FB4FF" strokeOpacity={0.45} strokeDasharray="3 2" />
-        <text x={x(13) + 3} y={12} fontSize={8.5} fill="#FFB02E" fontFamily="monospace">
+      <svg viewBox={`0 0 ${W} ${H}`} style={{ width: '100%', height: 90, background: 'rgba(20, 23, 28,0.55)', borderRadius: 4 }}>
+        <line x1={x(13)} x2={x(13)} y1={4} y2={H - 4} stroke="#E4572E" strokeOpacity={0.45} strokeDasharray="3 2" />
+        <line x1={x(25)} x2={x(25)} y1={4} y2={H - 4} stroke="#8FA6BD" strokeOpacity={0.45} strokeDasharray="3 2" />
+        <text x={x(13) + 3} y={12} fontSize={8.5} fill="#E4572E" fontFamily="monospace">
           M13
         </text>
-        <text x={x(25) + 3} y={12} fontSize={8.5} fill="#5FB4FF" fontFamily="monospace">
+        <text x={x(25) + 3} y={12} fontSize={8.5} fill="#8FA6BD" fontFamily="monospace">
           M25
         </text>
-        <path d={pathS} fill="none" stroke="#4EA8FF" strokeWidth={1.6} strokeDasharray="4 3" />
-        <path d={pathP} fill="none" stroke="#FF6B57" strokeWidth={2.0} />
+        <path d={pathS} fill="none" stroke="#7C9CB8" strokeWidth={1.6} strokeDasharray="4 3" />
+        <path d={pathP} fill="none" stroke="#E4572E" strokeWidth={2.0} />
         <line x1={x(month)} x2={x(month)} y1={2} y2={H - 2} stroke="#fff" strokeOpacity={0.45} />
-        <circle cx={x(month)} cy={y(rentsP[month - 1])} r={3.5} fill="#FF6B57" stroke="#fff" strokeWidth={1} />
+        <circle cx={x(month)} cy={y(rentsP[month - 1])} r={3.5} fill="#E4572E" stroke="#fff" strokeWidth={1} />
       </svg>
 
       {/* Tenant Occupancy Ribbon (clickable -> Tenant Card!) */}
       <div style={{ fontSize: 10.5, color: 'var(--sub)', marginTop: 10, marginBottom: 4 }}>
         {t.roomCard.tenantBarTitle}
       </div>
-      <div style={{ display: 'flex', height: 22, gap: 2, borderRadius: 3, overflow: 'hidden', background: '#111A2B' }}>
+      <div style={{ display: 'flex', height: 22, gap: 2, borderRadius: 3, overflow: 'hidden', background: '#181B21' }}>
         {tenantSpans.map((sp, i) => {
           const widthPct = ((sp.endM - sp.startM + 1) / 36) * 100;
           const isVac = sp.tenantId < 0;
-          const bg = isVac ? '#1F2C44' : GROUP_COLORS[sp.group ?? 'mid'];
+          const bg = isVac ? '#262A31' : GROUP_COLORS[sp.group ?? 'mid'];
           const tooltip = isVac
             ? `M${sp.startM}–M${sp.endM}: ${t.roomCard.vacant}`
             : `M${sp.startM}–M${sp.endM}: Tenant #${sp.tenantId} (${sp.group}, ¥${Math.round(sp.income)}/m)`;
@@ -199,7 +199,7 @@ export function RoomDetailCard({
                 background: bg,
                 opacity: isVac ? 0.55 : 0.88,
                 cursor: isVac ? 'default' : 'pointer',
-                color: '#0B111C',
+                color: '#0E1014',
                 fontSize: 9.5,
                 fontWeight: 700,
                 fontFamily: 'var(--font-mono)',
@@ -221,9 +221,15 @@ export function RoomDetailCard({
         {curDec ? (
           <>
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', fontSize: 12, marginBottom: 6 }}>
-              <span className="mono" style={{ color: 'var(--announce)', fontWeight: 600 }}>
+              <span className="num" style={{ color: 'var(--text)', fontWeight: 600 }}>
                 M{String(curDec.m).padStart(2, '0')} ·{' '}
-                {curDec.decision === 'renewal_offer' ? t.feed.renewal : t.feed.vacant}
+                {curDec.decision === 'renewal_offer'
+                  ? t.feed.renewal
+                  : curDec.decision === 'price_vacant'
+                    ? t.feed.vacant
+                    : curDec.decision === 'answer_counter'
+                      ? t.feed.counter
+                      : t.feed.pick}
               </span>
               <span className="mono" style={{ color: 'var(--text)' }}>
                 ¥{Math.round(curDec.rent_before ?? 0)} → <b>¥{Math.round(curDec.rent_after ?? 0)}</b>
@@ -236,12 +242,12 @@ export function RoomDetailCard({
             <div
               style={{
                 padding: '9px 11px',
-                background: 'rgba(22, 35, 58, 0.72)',
+                background: 'rgba(255, 255, 255, 0.035)',
                 borderLeft: `2.5px solid ${curDec.mentions_line ? 'var(--announce)' : 'var(--cool)'}`,
                 borderRadius: '0 4px 4px 0',
                 fontSize: 12.5,
                 lineHeight: 1.55,
-                color: '#E6ECF5',
+                color: '#E8E4DC',
               }}
             >
               “{curDec.reason}”
@@ -265,11 +271,11 @@ export function RoomDetailCard({
                     marginTop: 6,
                     padding: 8,
                     maxHeight: 165,
-                    background: '#080D16',
+                    background: '#0A0C0F',
                     border: '1px solid var(--line)',
                     borderRadius: 4,
                     fontSize: 10,
-                    color: '#9EC5FF',
+                    color: '#AEB6C0',
                     whiteSpace: 'pre-wrap',
                     wordBreak: 'break-all',
                   }}

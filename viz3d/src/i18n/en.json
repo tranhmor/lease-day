@@ -1,13 +1,25 @@
 {
   "appTitle": "Lease Day v0.7 · 36-Month Beijing Rental Market 3D Replay",
   "cityTag": "BEIJING",
-  "subtitle": "Lease Day · 240 Rooms · 36 Months",
+  "subtitle": "Lease Day · rental market simulation",
   "introSubtitle": "240 Rooms · 40 LLM Landlords · 36-Month Rental Market Simulation",
   "introHint": "Press → for next chapter · Esc for Explore mode",
   "scenarios": {
-    "N": { "label": "N", "short": "No Line", "desc": "Control world: new line never arrives" },
-    "S": { "label": "S", "short": "Sudden Open", "desc": "Opens at M25 with no prior notice" },
-    "P": { "label": "P", "short": "Pre-Announced", "desc": "Announced M13, opens M25" }
+    "N": {
+      "label": "N",
+      "short": "No Line",
+      "desc": "Control world: new line never arrives"
+    },
+    "S": {
+      "label": "S",
+      "short": "Sudden Open",
+      "desc": "Opens at M25 with no prior notice"
+    },
+    "P": {
+      "label": "P",
+      "short": "Pre-Announced",
+      "desc": "Announced M13, opens M25"
+    }
   },
   "modes": {
     "presentation": "Present",
@@ -18,17 +30,17 @@
     "diff": "Diff P − S"
   },
   "styles": {
-    "constellation": "Constellation · Mind",
-    "terrain": "Bid-Rent Contour"
+    "constellation": "Landlord network",
+    "terrain": "Rent terrain"
   },
   "layers": {
-    "rooms": "240 Real Rooms",
-    "metro": "Metro Veins",
-    "newline": "East Express (Hyp.)",
-    "pulse": "LLM Pulses",
-    "commute": "Real Tenant Flow",
-    "arcs": "Move Arcs",
-    "mindTags": "Mind Callouts",
+    "rooms": "Rooms",
+    "metro": "Metro",
+    "newline": "East Express (hyp.)",
+    "pulse": "Decisions",
+    "commute": "Commutes",
+    "arcs": "Moves",
+    "mindTags": "Reasons",
     "isochrone": "Isochrones"
   },
   "phases": {
@@ -43,11 +55,11 @@
   },
   "stories": {
     "warmup": "All three worlds are identical: same tenants, same landlords, same exogenous shocks.",
-    "announce_P": "📢 Only P landlords & tenants learn that the East Express Line will open in Month 25.",
+    "announce_P": "Only P landlords & tenants learn that the East Express Line will open in Month 25.",
     "announce_S": "S receives no announcement—landlords price as usual. P − S isolates the value of knowing early.",
     "announce_N": "N world: the line never arrives, controlling for baseline market drift.",
-    "open_P": "🚇 East Express opens: CBD commute drops ~12 min in Guoyuan (Z05) and ~15 min in Wuyi (Z11).",
-    "open_S": "🚇 East Express opens abruptly in S with the exact same 12–15 min commute savings.",
+    "open_P": "East Express opens: CBD commute drops ~12 min in Guoyuan (Z05) and ~15 min in Wuyi (Z11).",
+    "open_S": "East Express opens abruptly in S with the exact same 12–15 min commute savings.",
     "open_N": "N world: the line never arrives, controlling for baseline market drift."
   },
   "vitals": {
@@ -101,12 +113,12 @@
     "caption": "36 MONTHS · 60 SEC",
     "dragHint": "Scrub · Space Play/Pause",
     "ticks": {
-      "m1": "Warm-up",
-      "m7": "Obs.",
-      "m13": "📢 Ann.",
-      "m19": "Wait",
-      "m25": "🚇 Open",
-      "m31": "Post",
+      "m1": "M1",
+      "m7": "M7",
+      "m13": "M13 announced",
+      "m19": "M19",
+      "m25": "M25 opens",
+      "m31": "M31",
       "m36": "M36"
     },
     "ciNote": "Shaded bands = cross-seed 95% CI"
@@ -130,7 +142,11 @@
     "title": "Tenant Card",
     "income": "Monthly Income",
     "group": "Income Group",
-    "groups": { "low": "Low Income", "mid": "Mid Income", "high": "High Income" },
+    "groups": {
+      "low": "Low Income",
+      "mid": "Mid Income",
+      "high": "High Income"
+    },
     "decisionsTitle": "Search & Expiry Decision History",
     "candidates": "Candidate Rooms",
     "applied": "Applied",
@@ -228,11 +244,11 @@
     "autoDegraded": "FPS dropped below 30; auto-downgraded for smoothness (click to restore)"
   },
   "split": {
-    "leftLabel": "S · Sudden Open (Uninformed)",
-    "rightLabel": "P · Pre-Announced (M13 Notice)",
+    "leftLabel": "S · sudden opening",
+    "rightLabel": "P · announced in M13",
     "dragTip": "Drag divider to compare",
     "exit": "Exit Split",
-    "toDiff": "Switch to Diff (P − S)",
+    "toDiff": "Difference view",
     "toSplit": "Switch to Curtain (S | P)"
   },
   "roomKinds": {

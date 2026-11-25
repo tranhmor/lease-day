@@ -98,7 +98,7 @@ export function ExportModal({ meta, month, scenario, viewMode, lang, sceneHandle
         width: 340,
         padding: '14px 16px',
         zIndex: 55,
-        background: 'rgba(10, 16, 28, 0.96)',
+        background: 'rgba(14, 16, 20, 0.96)',
         boxShadow: '0 16px 42px rgba(0,0,0,0.65)',
       }}
     >

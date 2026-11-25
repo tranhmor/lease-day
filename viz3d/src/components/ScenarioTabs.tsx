@@ -1,4 +1,5 @@
-import { Camera, Columns2, Compass, Globe, HelpCircle, Layers, Mountain, Network, Presentation, Sliders } from 'lucide-react';
+import type React from 'react';
+import { Camera, Compass, Globe, HelpCircle, Layers, Mountain, Network, Presentation } from 'lucide-react';
 import type { AppMode, Lang, QualityTier, Scenario, ViewMode, VisualStyle } from '@/types/viz';
 import { getDict } from '@/i18n';
 
@@ -21,9 +22,9 @@ interface ScenarioTabsProps {
 }
 
 const SC_COLORS: Record<Scenario, string> = {
-  N: '#8A94A8',
-  S: '#4EA8FF',
-  P: '#FF6B57',
+  N: '#6E7480',
+  S: '#7C9CB8',
+  P: '#E4572E',
 };
 
 export function ScenarioTabs({
@@ -45,19 +46,22 @@ export function ScenarioTabs({
 }: ScenarioTabsProps) {
   const t = getDict(lang);
 
+  const seg = (on: boolean): React.CSSProperties => ({
+    flex: 1,
+    border: 'none',
+    borderBottom: `2px solid ${on ? 'var(--text)' : 'transparent'}`,
+    background: 'transparent',
+    color: on ? 'var(--text)' : 'var(--faint)',
+    padding: '6px 2px 7px',
+    cursor: 'pointer',
+    fontSize: 12.5,
+    fontFamily: 'var(--font-sans)',
+    transition: 'color 0.15s',
+  });
+
   return (
-    <div style={{ width: '100%', display: 'flex', flexDirection: 'column', gap: 6, flexShrink: 0 }}>
-      {/* N | S | P Tabs */}
-      <div
-        className="hud-panel"
-        style={{
-          display: 'flex',
-          padding: 0,
-          overflow: 'hidden',
-          boxShadow: highlightTabs ? '0 0 22px rgba(255, 176, 46, 0.45)' : undefined,
-          borderColor: highlightTabs ? 'var(--announce)' : undefined,
-        }}
-      >
+    <div className="hud-panel" style={{ width: '100%', padding: '10px 14px 10px', flexShrink: 0 }}>
+      <div style={{ display: 'flex', borderBottom: '1px solid var(--line-soft)' }}>
         {(['N', 'S', 'P'] as Scenario[]).map((sc) => {
           const on = scenario === sc && viewMode === 'single';
           return (
@@ -65,106 +69,69 @@ export function ScenarioTabs({
               key={sc}
               type="button"
               title={t.scenarios[sc].desc}
+              style={{
+                ...seg(on),
+                borderBottomColor: on ? SC_COLORS[sc] : 'transparent',
+                boxShadow: highlightTabs && !on ? 'inset 0 -1px 0 var(--faint)' : undefined,
+              }}
               onClick={() => {
                 if (viewMode !== 'single') onViewModeChange('single');
                 onScenarioChange(sc);
               }}
-              style={{
-                flex: 1,
-                border: 'none',
-                borderBottom: `2.5px solid ${on ? SC_COLORS[sc] : 'transparent'}`,
-                background: on ? 'rgba(95, 180, 255, 0.1)' : 'transparent',
-                color: on ? 'var(--text)' : 'var(--sub)',
-                padding: '10px 4px',
-                cursor: 'pointer',
-                fontSize: 14,
-                fontWeight: on ? 600 : 400,
-                transition: 'all 0.2s',
-              }}
             >
-              <span>{sc}</span>
-              <small style={{ fontSize: 10, marginLeft: 4, opacity: 0.78 }}>{t.scenarios[sc].short}</small>
+              <b style={{ fontWeight: 600, marginRight: 4 }}>{sc}</b>
+              {t.scenarios[sc].short}
             </button>
           );
         })}
       </div>
 
-      {/* Visual Style Switcher: Constellation vs Bid-Rent Terrain (Shortcut: V) */}
-      <div style={{ display: 'flex', gap: 5 }}>
-        <button
-          type="button"
-          className={`btn-hud ${visualStyle === 'constellation' ? 'amber-active' : ''}`}
-          style={{ flex: 1, justifyContent: 'center' }}
-          onClick={() => onVisualStyleChange('constellation')}
-          title="Shortcut: V"
-        >
-          <Network size={12} />
-          {t.styles.constellation}
+      <div style={{ display: 'flex', gap: 2, marginTop: 6 }}>
+        <button type="button" style={seg(viewMode === 'split')} onClick={() => onViewModeChange(viewMode === 'split' ? 'single' : 'split')} title="D">
+          {t.modes.split}
         </button>
-        <button
-          type="button"
-          className={`btn-hud ${visualStyle === 'terrain' ? 'amber-active' : ''}`}
-          style={{ flex: 1, justifyContent: 'center' }}
-          onClick={() => onVisualStyleChange('terrain')}
-          title="Shortcut: V"
-        >
-          <Mountain size={12} />
-          {t.styles.terrain}
+        <button type="button" style={seg(viewMode === 'diff')} onClick={() => onViewModeChange(viewMode === 'diff' ? 'single' : 'diff')}>
+          {t.modes.diff}
         </button>
       </div>
 
-      {/* Compact Control Strip */}
-      <div style={{ display: 'flex', gap: 5, justifyContent: 'space-between', flexWrap: 'wrap' }}>
-        <button
-          type="button"
-          className={`btn-hud ${mode === 'presentation' ? 'amber-active' : 'active'}`}
-          onClick={onToggleMode}
-          title={mode === 'presentation' ? t.modes.explore : t.modes.presentation}
-        >
+      <div style={{ display: 'flex', alignItems: 'center', gap: 4, marginTop: 8, fontSize: 11.5, color: 'var(--sub)' }}>
+        <button type="button" className="btn-hud" onClick={onToggleMode} style={{ border: 'none', padding: '3px 4px' }}>
           {mode === 'presentation' ? <Presentation size={12} /> : <Compass size={12} />}
           {mode === 'presentation' ? t.modes.presentation : t.modes.explore}
         </button>
-
+        <span style={{ color: 'var(--line)' }}>|</span>
         <button
           type="button"
-          className={`btn-hud ${viewMode === 'split' ? 'amber-active' : ''}`}
-          onClick={() => onViewModeChange(viewMode === 'split' ? 'single' : 'split')}
-          title="Shortcut: D"
+          className="btn-hud"
+          style={{ border: 'none', padding: '3px 4px' }}
+          onClick={() => onVisualStyleChange(visualStyle === 'constellation' ? 'terrain' : 'constellation')}
+          title="V"
         >
-          <Columns2 size={12} />
-          {t.modes.split}
+          {visualStyle === 'constellation' ? <Network size={12} /> : <Mountain size={12} />}
+          {visualStyle === 'constellation' ? t.styles.constellation : t.styles.terrain}
         </button>
-
+        <span style={{ flex: 1 }} />
+        <button type="button" className="btn-hud" style={{ border: 'none', padding: '3px 5px' }} onClick={onToggleLang} title="中文 / English">
+          <Globe size={12} />
+          {lang === 'zh' ? 'EN' : '中'}
+        </button>
         <button
           type="button"
-          className={`btn-hud ${viewMode === 'diff' ? 'amber-active' : ''}`}
-          onClick={() => onViewModeChange(viewMode === 'diff' ? 'single' : 'diff')}
+          className="btn-hud"
+          style={{ border: 'none', padding: '3px 5px', color: qualityTier > 0 ? 'var(--accent)' : undefined }}
+          onClick={onCycleQuality}
+          title={qualityTier === 0 ? t.export.quality0 : qualityTier === 1 ? t.export.quality1 : t.export.quality2}
         >
-          <Sliders size={12} />
-          {t.modes.diff}
+          <Layers size={12} />
+          {qualityTier === 0 ? '3D' : qualityTier === 1 ? 'T1' : '2D'}
         </button>
-
-        <div style={{ display: 'flex', gap: 4 }}>
-          <button type="button" className="btn-hud" onClick={onToggleLang} title="Switch Chinese / English">
-            <Globe size={12} />
-            {lang === 'zh' ? 'EN' : '中文'}
-          </button>
-          <button
-            type="button"
-            className={`btn-hud ${qualityTier > 0 ? 'amber-active' : ''}`}
-            onClick={onCycleQuality}
-            title={qualityTier === 0 ? t.export.quality0 : qualityTier === 1 ? t.export.quality1 : t.export.quality2}
-          >
-            <Layers size={12} />
-            {qualityTier === 0 ? '3D' : qualityTier === 1 ? 'T1' : '2D'}
-          </button>
-          <button type="button" className="btn-hud" onClick={onOpenExport} title={t.export.png4k}>
-            <Camera size={12} />
-          </button>
-          <button type="button" className="btn-hud" onClick={onOpenLegend} title={t.legend.title}>
-            <HelpCircle size={12} />
-          </button>
-        </div>
+        <button type="button" className="btn-hud" style={{ border: 'none', padding: '3px 5px' }} onClick={onOpenExport} title={t.export.png4k}>
+          <Camera size={12} />
+        </button>
+        <button type="button" className="btn-hud" style={{ border: 'none', padding: '3px 5px' }} onClick={onOpenLegend} title={t.legend.title}>
+          <HelpCircle size={12} />
+        </button>
       </div>
     </div>
   );

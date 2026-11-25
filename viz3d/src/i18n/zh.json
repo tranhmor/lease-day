@@ -1,13 +1,25 @@
 {
   "appTitle": "到期日 · 租赁市场 36 个月三维回放",
   "cityTag": "BEIJING",
-  "subtitle": "到期日 · 240 间房 · 36 个月",
+  "subtitle": "到期日 · 租赁市场模拟",
   "introSubtitle": "240 间房 · 40 名 LLM 房东 · 36 个月租赁市场模拟",
   "introHint": "按 → 进入下一章 · Esc 切换自由探索",
   "scenarios": {
-    "N": { "label": "N", "short": "无新线", "desc": "对照世界：新线永远不会来" },
-    "S": { "label": "S", "short": "突然开通", "desc": "第 25 月无预警开通" },
-    "P": { "label": "P", "short": "提前公告", "desc": "第 13 月公告，第 25 月开通" }
+    "N": {
+      "label": "N",
+      "short": "无新线",
+      "desc": "对照世界：新线永远不会来"
+    },
+    "S": {
+      "label": "S",
+      "short": "突然开通",
+      "desc": "第 25 月无预警开通"
+    },
+    "P": {
+      "label": "P",
+      "short": "提前公告",
+      "desc": "第 13 月公告，第 25 月开通"
+    }
   },
   "modes": {
     "presentation": "演示模式",
@@ -18,18 +30,18 @@
     "diff": "差值 P − S"
   },
   "styles": {
-    "constellation": "房东星座 × 思维云",
-    "terrain": "竞租等高曲面"
+    "constellation": "房东网络",
+    "terrain": "租金地形"
   },
   "layers": {
-    "rooms": "240 间真实房源",
-    "metro": "地铁脉络",
+    "rooms": "房源",
+    "metro": "地铁",
     "newline": "东向快线（假想）",
-    "pulse": "LLM 决策脉冲",
-    "commute": "真实租客通勤流",
-    "arcs": "搬家弧线",
-    "mindTags": "空间思维浮标",
-    "isochrone": "通勤等时圈"
+    "pulse": "决策",
+    "commute": "通勤",
+    "arcs": "搬家",
+    "mindTags": "理由标注",
+    "isochrone": "等时圈"
   },
   "phases": {
     "warmup": "热身 / 观察期",
@@ -43,11 +55,11 @@
   },
   "stories": {
     "warmup": "三个世界此时完全一样：同一批租客、同一批房东、同样的随机事件。",
-    "announce_P": "📢 只有 P 世界的房东和租客收到“东向快线将于第 25 月开通”。",
+    "announce_P": "只有 P 世界的房东和租客收到“东向快线将于第 25 月开通”。",
     "announce_S": "S 世界没有任何公告，房东照常定价。与 P 的差，就是“提前知道”的价值。",
     "announce_N": "N 世界：新线永远不会来，用来扣除市场本身的波动。",
-    "open_P": "🚇 新线开通，果园、武夷花园到 CBD 分别缩短约 12、15 分钟。",
-    "open_S": "🚇 新线突然开通，同样缩短约 12、15 分钟。",
+    "open_P": "新线开通，果园、武夷花园到 CBD 分别缩短约 12、15 分钟。",
+    "open_S": "新线突然开通，同样缩短约 12、15 分钟。",
     "open_N": "N 世界：新线永远不会来，用来扣除市场本身的波动。"
   },
   "vitals": {
@@ -101,12 +113,12 @@
     "caption": "36 MONTHS · 60 SEC",
     "dragHint": "拖动跳转 · Space 播放/暂停",
     "ticks": {
-      "m1": "热身",
-      "m7": "观察",
-      "m13": "📢 公告",
-      "m19": "等待",
-      "m25": "🚇 开通",
-      "m31": "开通后",
+      "m1": "M1",
+      "m7": "M7",
+      "m13": "M13 公告",
+      "m19": "M19",
+      "m25": "M25 开通",
+      "m31": "M31",
       "m36": "M36"
     },
     "ciNote": "阴影为跨种子 95% CI"
@@ -130,7 +142,11 @@
     "title": "租客卡片",
     "income": "月收入",
     "group": "收入组",
-    "groups": { "low": "低收入", "mid": "中等收入", "high": "高收入" },
+    "groups": {
+      "low": "低收入",
+      "mid": "中等收入",
+      "high": "高收入"
+    },
     "decisionsTitle": "申请与搬迁决策记录",
     "candidates": "评估候选房",
     "applied": "提交申请",
@@ -228,11 +244,11 @@
     "autoDegraded": "检测到帧率低于 30 fps，已自动降级以保持流畅（点击可切回）"
   },
   "split": {
-    "leftLabel": "S · 突然开通（无公告）",
-    "rightLabel": "P · 提前公告（M13 知情）",
+    "leftLabel": "S · 突然开通",
+    "rightLabel": "P · 第 13 月公告",
     "dragTip": "拖动中间分隔线对比",
     "exit": "退出分屏",
-    "toDiff": "切换差值视图 (P − S)",
+    "toDiff": "差值视图",
     "toSplit": "切换卷帘对比 (S | P)"
   },
   "roomKinds": {

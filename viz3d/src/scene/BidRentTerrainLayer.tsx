@@ -49,22 +49,22 @@ const TERRAIN_FRAG = /* glsl */ `
 
     // Subtle delicate slope wireframe grid
     vec2 gCoord = vWorldXZ / 1.25;
-    vec2 gDist = abs(fract(gCoord - 0.5) - 0.5) / max(0.001, fwidth(gCoord));
+    vec2 gDist = abs(fract(gCoord - 0.5) - 0.5) / max(vec2(0.001), fwidth(gCoord));
     float wire = 1.0 - min(min(gDist.x, gDist.y) / 0.9, 1.0);
 
     // Diverging urban economics ramp: cool blue (negative) -> amber -> coral (surging rent peaks)
-    vec3 colNeg = vec3(0.37, 0.71, 1.0);
-    vec3 colMid = vec3(1.0, 0.69, 0.18);
-    vec3 colHot = vec3(1.0, 0.36, 0.24);
+    vec3 colNeg = vec3(0.44, 0.62, 0.78);
+    vec3 colMid = vec3(0.85, 0.55, 0.40);
+    vec3 colHot = vec3(0.89, 0.34, 0.18);
     vec3 baseCol = pts >= 0.0
       ? mix(colMid, colHot, smoothstep(1.5, 4.5, pts))
       : colNeg;
 
-    float fillAlpha = visibility * 0.17;
-    float lineAlpha = visibility * (contour * 0.72 + wire * 0.22);
+    float fillAlpha = visibility * 0.10;
+    float lineAlpha = visibility * (contour * 0.55 + wire * 0.05);
     float totalAlpha = clamp(fillAlpha + lineAlpha, 0.0, 0.88);
 
-    vec3 finalCol = baseCol * (0.95 + contour * 0.85);
+    vec3 finalCol = baseCol * (0.85 + contour * 0.2);
     gl_FragColor = vec4(finalCol, totalAlpha);
   }
 `;

@@ -55,11 +55,9 @@ const PARTICLE_FRAG = /* glsl */ `
     if (vAlpha <= 0.01) discard;
     float d = length(gl_PointCoord - vec2(0.5));
     if (d > 0.5) discard;
-    float core = exp(-d * d * 18.0);
-    vec3 cool = vec3(0.70, 0.90, 1.0);
-    vec3 amber = vec3(1.0, 0.78, 0.30);
-    vec3 col = mix(cool, mix(cool, amber, 0.35 + 0.65 * uOpened), vTreated);
-    gl_FragColor = vec4(col * 1.65, core * vAlpha * uOpacity);
+    float core = smoothstep(0.5, 0.3, d);
+    vec3 col = mix(vec3(0.66, 0.68, 0.71), vec3(0.89, 0.34, 0.18), vTreated * uOpened);
+    gl_FragColor = vec4(col, core * vAlpha * uOpacity * 0.55);
   }
 `;
 
@@ -132,7 +130,7 @@ export function CommuteParticles({ rooms, states, visible, opened, highlighted =
     m.uniforms.uTime.value += delta;
     m.uniforms.uOpened.value = THREE.MathUtils.lerp(m.uniforms.uOpened.value, opened ? 1 : 0, Math.min(1, delta * 2.5));
     m.uniforms.uOpacity.value = highlighted ? 1.0 : 0.82;
-    m.uniforms.uSize.value = highlighted ? 8.2 : 6.2;
+    m.uniforms.uSize.value = highlighted ? 4.5 : 3.2;
   });
 
   if (!visible) return null;
@@ -145,9 +143,7 @@ export function CommuteParticles({ rooms, states, visible, opened, highlighted =
         fragmentShader={PARTICLE_FRAG}
         uniforms={uniforms}
         transparent
-        blending={THREE.AdditiveBlending}
         depthWrite={false}
-        toneMapped={false}
       />
     </points>
   );

@@ -247,7 +247,7 @@ function InnerCityScene(props: InnerSceneProps) {
           const scale = targetW / 1920;
           if (viewMode === 'split') {
             const dx = Math.round(targetW * splitRatio);
-            ctx.strokeStyle = '#FFB02E';
+            ctx.strokeStyle = '#E4572E';
             ctx.lineWidth = Math.max(2, 2 * scale);
             ctx.beginPath();
             ctx.moveTo(dx, 0);
@@ -255,9 +255,9 @@ function InnerCityScene(props: InnerSceneProps) {
             ctx.stroke();
 
             ctx.font = `600 ${Math.round(22 * scale)}px "JetBrains Mono", sans-serif`;
-            ctx.fillStyle = '#4EA8FF';
+            ctx.fillStyle = '#7C9CB8';
             ctx.fillText('S · Sudden Open (Uninformed)', Math.round(36 * scale), Math.round(52 * scale));
-            ctx.fillStyle = '#FF6B57';
+            ctx.fillStyle = '#E4572E';
             ctx.textAlign = 'right';
             ctx.fillText('P · Pre-Announced (M13 Notice)', targetW - Math.round(36 * scale), Math.round(52 * scale));
             ctx.textAlign = 'left';
@@ -268,10 +268,10 @@ function InnerCityScene(props: InnerSceneProps) {
             const padX = Math.round(28 * scale);
             const padY = Math.round(24 * scale);
             ctx.font = `500 ${Math.round(16 * scale)}px "Source Han Sans SC", "PingFang SC", sans-serif`;
-            ctx.fillStyle = 'rgba(11, 17, 28, 0.72)';
+            ctx.fillStyle = 'rgba(14, 16, 20, 0.72)';
             const barH = Math.round((watermarkLines.length * 24 + 18) * scale);
             ctx.fillRect(0, targetH - barH, targetW, barH);
-            ctx.fillStyle = '#CBD6E8';
+            ctx.fillStyle = '#D9D5CD';
             watermarkLines.forEach((line, i) => {
               ctx.fillText(line, padX, targetH - barH + padY + i * Math.round(24 * scale));
             });
@@ -335,10 +335,11 @@ function InnerCityScene(props: InnerSceneProps) {
 
   return (
     <>
-      <color attach="background" args={['#243347']} />
-      {qualityTier === 0 && <fogExp2 attach="fog" args={['#243347', 0.0135]} />}
+      <color attach="background" args={['#0E1014']} />
+      {qualityTier === 0 && <fogExp2 attach="fog" args={['#0E1014', 0.011]} />}
 
-      <ambientLight intensity={0.85} color="#B8D4F5" />
+      <ambientLight intensity={0.75} color="#FFFFFF" />
+      <directionalLight position={[-14, 26, 18]} intensity={1.15} color="#FFFFFF" />
 
       <OrbitControls
         ref={controlsRef}
@@ -592,8 +593,7 @@ export function CityScene(props: CitySceneProps) {
           antialias: true,
           preserveDrawingBuffer: true, // required for instant 4K PNG export & video recording
           powerPreference: 'high-performance',
-          toneMapping: THREE.ACESFilmicToneMapping,
-          toneMappingExposure: 1.08,
+          toneMapping: THREE.NoToneMapping,
         }}
       >
         <InnerCityScene {...props} />

@@ -12,9 +12,9 @@ interface MoveArcsLayerProps {
 }
 
 const INCOME_COLORS: Record<IncomeGroup, string> = {
-  low: '#2DD4BF',
-  mid: '#A78BFA',
-  high: '#F472B6',
+  low: '#7FA8A0',
+  mid: '#B7A27A',
+  high: '#9C7FB0',
 };
 
 const SEGMENTS = 28;
@@ -83,7 +83,7 @@ export function MoveArcsLayer({ month, events, rooms, visible, highlighted = fal
       const tail = Math.max(0, progress - 0.55);
       const fade = localT > 1.25 ? (highlighted ? 0.8 : 0.45) : 1.0 - Math.max(0, (progress - 0.95) / 0.35) * 0.5;
 
-      tmpCol.set(INCOME_COLORS[arc.group]).multiplyScalar(highlighted ? 1.6 : 1.25);
+      tmpCol.set(INCOME_COLORS[arc.group]).multiplyScalar(highlighted ? 1.0 : 0.8);
 
       for (let s = 0; s < SEGMENTS; s++) {
         const t0 = s / SEGMENTS;
@@ -141,7 +141,6 @@ export function MoveArcsLayer({ month, events, rooms, visible, highlighted = fal
         opacity={0.9}
         blending={THREE.AdditiveBlending}
         depthWrite={false}
-        toneMapped={false}
       />
     </lineSegments>
   );

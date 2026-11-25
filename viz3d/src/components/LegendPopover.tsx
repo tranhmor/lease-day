@@ -20,7 +20,7 @@ export function LegendPopover({ lang, onClose }: LegendPopoverProps) {
         width: 364,
         padding: '14px 16px',
         zIndex: 55,
-        background: 'rgba(10, 16, 28, 0.96)',
+        background: 'rgba(14, 16, 20, 0.96)',
         boxShadow: '0 16px 42px rgba(0,0,0,0.65)',
         fontSize: 11.5,
         lineHeight: 1.55,
@@ -40,7 +40,7 @@ export function LegendPopover({ lang, onClose }: LegendPopoverProps) {
           style={{
             height: 8,
             borderRadius: 4,
-            background: 'linear-gradient(90deg, #5FB4FF 0%, #9AA7BD 50%, #FFB02E 75%, #FF5A3C 100%)',
+            background: 'linear-gradient(90deg, #8FA6BD 0%, #9AA7BD 50%, #E4572E 75%, #C63B1E 100%)',
           }}
         />
         <div className="mono" style={{ display: 'flex', justifyContent: 'space-between', fontSize: 10, color: 'var(--sub)', marginTop: 2 }}>
