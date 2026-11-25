@@ -3,7 +3,9 @@
   "seeds": [
     0,
     1,
-    2
+    2,
+    3,
+    4
   ],
   "criteria": {
     "H1": "Treated-zone landlord quotes (renewal_offer + price_vacant), M13-M24, y = (new-cur)/cur on [1, is_P, zone_vacancy_smooth]; seed-clustered SE (CR1), CI uses t(G-1). SUPPORTED if b_P > 0 and the 95% CI excludes 0. Also reported: per-seed b_P signs (k of G > 0) and P-S treated rent index at M24 (auxiliary, paired over seeds).",
@@ -15,81 +17,85 @@
   },
   "results": {
     "quality": {
-      "max_fallback_rate": 0.0,
+      "max_fallback_rate": 0.0061,
       "void_runs": {},
       "verdict": "PASS"
     },
     "H1": {
-      "n_offers": 345,
+      "n_offers": 639,
       "per_seed_b_P_pct": {
-        "0": 0.992,
-        "1": 0.833,
-        "2": 1.529
+        "0": 0.012,
+        "1": 0.504,
+        "2": 1.087,
+        "3": 1.065,
+        "4": 0.494
       },
-      "seeds_positive": "3/3",
-      "b_P_pct": 1.075,
+      "seeds_positive": "5/5",
+      "b_P_pct": 0.762,
       "ci95_pct": [
-        0.246,
-        1.903
+        0.108,
+        1.416
       ],
-      "b_vacancy": -0.0889,
-      "clusters": 3,
-      "aux_P_minus_S_rent_index_M24": "+1.42 ± 0.62",
+      "b_vacancy": -0.4647,
+      "clusters": 5,
+      "aux_P_minus_S_rent_index_M24": "+0.75 ± 0.80",
       "verdict": "SUPPORTED"
     },
     "H2": {
       "income": {
-        "P_minus_S": -637.1,
+        "P_minus_S": 1812.7,
         "ci95": [
-          -3856.7,
-          4402.8
+          -299.5,
+          4529.3
         ]
       },
       "cash": {
-        "P_minus_S": -4196.1,
+        "P_minus_S": 9911.1,
         "ci95": [
-          -21507.0,
-          15653.6
+          -3636.3,
+          26382.2
         ]
       },
       "n_move_ins": {
-        "P": 44,
-        "S": 48
+        "P": 101,
+        "S": 108
       },
-      "verdict": "NOT SUPPORTED"
+      "verdict": "DIRECTIONAL (CI includes 0; low power)"
     },
     "B": {
       "diff_mean_ci95": {
         "rent_index_all": [
-          3.446,
-          1.098
+          4.099,
+          1.218
         ],
         "rent_index_treated": [
-          -0.039,
-          1.254
+          -2.353,
+          4.101
         ],
         "vacancy_all": [
-          -0.008,
-          0.012
+          0.004,
+          0.022
         ],
         "commute_all": [
-          1.323,
-          0.694
+          0.592,
+          1.284
         ]
       },
       "verdict": "CAVEAT REQUIRED (rent gap > 3 pts)"
     },
     "H3": {
-      "L_no_hike_when_tight": 0.322,
-      "L_counter_accept": 0.812,
-      "n_tight_quotes": 677,
-      "n_counters": 32,
-      "R_no_hike_when_tight": 0.401,
-      "R_counter_accept": 0.951,
+      "L_no_hike_when_tight": 0.219,
+      "L_counter_accept": 0.839,
+      "n_tight_quotes": 1241,
+      "n_counters": 304,
+      "R_no_hike_when_tight": 0.398,
+      "R_counter_accept": 0.945,
       "baseline_seeds": [
         0,
         1,
-        2
+        2,
+        3,
+        4
       ],
       "verdict": "NOT OVER-CONCESSIVE"
     },
@@ -119,28 +125,44 @@
           "all_risk_怕空置": 18,
           "all_kind_托管机构": 12,
           "all_n": 40
+        },
+        "3": {
+          "treated_n": 7,
+          "treated_risk_怕空置": 4,
+          "treated_kind_托管机构": 2,
+          "all_risk_怕空置": 22,
+          "all_kind_托管机构": 11,
+          "all_n": 40
+        },
+        "4": {
+          "treated_n": 7,
+          "treated_risk_怕空置": 6,
+          "treated_kind_托管机构": 3,
+          "all_risk_怕空置": 26,
+          "all_kind_托管机构": 22,
+          "all_n": 40
         }
       },
       "treated_quote_change_by_persona": {
         "kind=个人房东": {
-          "P_minus_S_pct": 1.148,
-          "n_P": 121,
-          "n_S": 139
+          "P_minus_S_pct": 0.91,
+          "n_P": 232,
+          "n_S": 233
         },
         "kind=托管机构": {
-          "P_minus_S_pct": 1.198,
-          "n_P": 42,
-          "n_S": 43
+          "P_minus_S_pct": 0.427,
+          "n_P": 86,
+          "n_S": 88
         },
         "risk=怕空置": {
-          "P_minus_S_pct": 1.511,
-          "n_P": 76,
-          "n_S": 82
+          "P_minus_S_pct": 0.696,
+          "n_P": 176,
+          "n_S": 187
         },
         "risk=愿意等": {
-          "P_minus_S_pct": 0.86,
-          "n_P": 87,
-          "n_S": 100
+          "P_minus_S_pct": 0.72,
+          "n_P": 142,
+          "n_S": 134
         }
       }
     }

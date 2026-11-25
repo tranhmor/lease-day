@@ -56,7 +56,7 @@ export function ScenarioTabs({
     <div style={{ width: '100%', display: 'flex', flexDirection: 'column', gap: 6, flexShrink: 0 }}>
       {/* N | S | P */}
       <div
-        className="hud-panel"
+        className="hud-panel plain"
         style={{
           display: 'flex',
           padding: 0,
@@ -64,7 +64,7 @@ export function ScenarioTabs({
           borderColor: highlightTabs ? 'var(--announce)' : undefined,
         }}
       >
-        {(['N', 'S', 'P'] as Scenario[]).map((sc) => {
+        {(['N', 'S', 'P'] as Scenario[]).map((sc, idx) => {
           const on = scenario === sc && viewMode === 'single';
           return (
             <button
@@ -78,19 +78,26 @@ export function ScenarioTabs({
               style={{
                 flex: 1,
                 border: 'none',
+                borderRight: idx < 2 ? '1px solid var(--line-soft)' : 'none',
                 borderBottom: `2.5px solid ${on ? SC_COLORS[sc] : 'transparent'}`,
-                background: on ? 'color-mix(in srgb, var(--cool) 10%, transparent)' : 'transparent',
+                background: on ? `color-mix(in srgb, ${SC_COLORS[sc]} 11%, transparent)` : 'transparent',
                 color: on ? 'var(--text)' : 'var(--sub)',
-                padding: '10px 4px',
+                padding: '9px 6px',
                 cursor: 'pointer',
-                fontSize: 14,
+                fontSize: 13.5,
                 fontWeight: on ? 600 : 400,
                 fontFamily: 'var(--font-sans)',
+                display: 'inline-flex',
+                alignItems: 'baseline',
+                justifyContent: 'center',
+                gap: 5,
                 transition: 'all 0.2s',
               }}
             >
-              <span>{sc}</span>
-              <small style={{ fontSize: 10.5, marginLeft: 4, opacity: 0.78 }}>{t.scenarios[sc].short}</small>
+              <span className="num" style={{ fontWeight: 700, color: on ? SC_COLORS[sc] : 'var(--text-soft)', letterSpacing: '0.02em' }}>
+                {sc}
+              </span>
+              <small style={{ fontSize: 10.5, opacity: on ? 0.92 : 0.72, letterSpacing: '0.01em' }}>{t.scenarios[sc].short}</small>
             </button>
           );
         })}

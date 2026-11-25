@@ -27,9 +27,9 @@ export function ExportModal({ meta, month, scenario, viewMode, lang, sceneHandle
       lines.push(t.footer.illustrative);
     }
     lines.push(
-      `Lease Day v${meta.version} · M${String(month).padStart(2, '0')}/36 · ${
-        viewMode === 'split' ? 'Split S | P' : `Scenario ${scenario}`
-      } · Seed #${meta.default_seed} · ${meta.source_label} · ${t.footer.schematic} · ${t.footer.hypothetical}`
+      `Lease Day v${meta.version} | M${String(month).padStart(2, '0')}/36 | ${
+        viewMode === 'split' ? 'Split S / P' : `Scenario ${scenario}`
+      } | Seed #${meta.default_seed} | ${meta.source_label} | ${t.footer.schematic} | ${t.footer.hypothetical}`
     );
     return lines;
   };
@@ -93,13 +93,13 @@ export function ExportModal({ meta, month, scenario, viewMode, lang, sceneHandle
       className="hud-panel amber"
       style={{
         position: 'absolute',
-        right: 18,
-        top: 152,
-        width: 340,
+        right: 20,
+        top: 174,
+        width: 344,
         padding: '14px 16px',
         zIndex: 55,
-        background: 'var(--panel-strong)',
-        boxShadow: 'var(--shadow-strong)',
+        backgroundColor: 'var(--panel-strong)',
+        boxShadow: 'var(--shadow-strong), var(--amber-rim)',
       }}
     >
       <div className="panel-header">
@@ -111,11 +111,15 @@ export function ExportModal({ meta, month, scenario, viewMode, lang, sceneHandle
 
       <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
         <button type="button" className="btn-hud amber-active" style={{ justifyContent: 'center', padding: '8px 12px' }} onClick={() => handleExportPNG(3840, 2160)}>
-          <Camera size={13} /> {t.export.png4k} (3840 × 2160)
+          <Camera size={13} />
+          <span>{t.export.png4k}</span>
+          <span className="num" style={{ opacity: 0.78 }}>(3840 × 2160)</span>
         </button>
 
         <button type="button" className="btn-hud" style={{ justifyContent: 'center', padding: '7px 12px' }} onClick={() => handleExportPNG(1920, 1080)}>
-          <Download size={13} /> {t.export.pngScreen} (1920 × 1080)
+          <Download size={13} />
+          <span>{t.export.pngScreen}</span>
+          <span className="num" style={{ opacity: 0.72 }}>(1920 × 1080)</span>
         </button>
 
         <button

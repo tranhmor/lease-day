@@ -93,9 +93,9 @@ export function TimelineBar({
   const ticks: Array<[number, string, string]> = [
     [1, t.timeline.ticks.m1, 'var(--sub)'],
     [7, t.timeline.ticks.m7, 'var(--sub)'],
-    [announceMonth, t.timeline.ticks.m13, 'var(--text)'],
+    [announceMonth, t.timeline.ticks.m13, 'var(--up)'],
     [19, t.timeline.ticks.m19, 'var(--sub)'],
-    [openMonth, t.timeline.ticks.m25, 'var(--text)'],
+    [openMonth, t.timeline.ticks.m25, 'var(--announce)'],
     [31, t.timeline.ticks.m31, 'var(--sub)'],
     [36, t.timeline.ticks.m36, 'var(--sub)'],
   ];
@@ -105,7 +105,7 @@ export function TimelineBar({
       className="hud-panel"
       style={{
         width: '100%',
-        padding: '10px 16px 6px',
+        padding: '8px 14px 6px',
         flexShrink: 0,
       }}
     >
@@ -114,33 +114,35 @@ export function TimelineBar({
           display: 'flex',
           alignItems: 'center',
           gap: 8,
-          fontSize: 12,
+          fontSize: 11.5,
           color: 'var(--sub)',
-          marginBottom: 2,
+          marginBottom: 3,
           whiteSpace: 'nowrap',
           overflow: 'hidden',
         }}
       >
-        <button type="button" className="btn-hud" style={{ color: 'var(--text)' }} onClick={onTogglePlay}>
+        <button type="button" className="btn-hud active" onClick={onTogglePlay}>
           {playing ? <Pause size={11} /> : <Play size={11} />}
           {playing ? t.timeline.pause : t.timeline.play}
         </button>
         <button type="button" className="btn-hud num" onClick={onCycleSpeed}>
           {speed}×
         </button>
-        <span className="serif" style={{ fontSize: 13.5, color: 'var(--text)', marginLeft: 6, overflow: 'hidden', textOverflow: 'ellipsis', minWidth: 0, flex: '0 1 auto' }}>
+        <span style={{ fontSize: 12, fontWeight: 500, color: 'var(--text)', marginLeft: 4, overflow: 'hidden', textOverflow: 'ellipsis', minWidth: 0, flex: '0 1 auto' }}>
           {lang === 'zh' ? '受益区租金指数，三个世界' : 'Treated-zone rent index, three worlds'}
         </span>
-        <span style={{ display: 'inline-flex', gap: 12, marginLeft: 'auto', fontSize: 11.5, minWidth: 0, overflow: 'hidden', flex: '0 1 auto' }}>
+        <span style={{ display: 'inline-flex', alignItems: 'center', gap: 10, marginLeft: 'auto', fontSize: 11, minWidth: 0, overflow: 'hidden', flex: '0 1 auto' }}>
           {(['P', 'S', 'N'] as Scenario[]).map((sc) => (
-            <span key={sc} style={{ display: 'inline-flex', alignItems: 'center', gap: 5 }}>
-              <svg width={16} height={6}>
-                <line x1={0} x2={16} y1={3} y2={3} stroke={SC_COLORS[sc]} strokeWidth={sc === scenario ? 2 : 1.3} strokeDasharray={sc === 'S' ? '4 2' : undefined} />
+            <span key={sc} style={{ display: 'inline-flex', alignItems: 'center', gap: 4, color: sc === scenario ? 'var(--text)' : 'var(--sub)' }}>
+              <svg width={14} height={6}>
+                <line x1={0} x2={14} y1={3} y2={3} stroke={SC_COLORS[sc]} strokeWidth={sc === scenario ? 2.2 : 1.3} strokeDasharray={sc === 'S' ? '4 2' : undefined} />
               </svg>
-              {sc} {t.scenarios[sc].short}
+              <span className="num" style={{ color: SC_COLORS[sc] }}>{sc}</span>
+              <span>{t.scenarios[sc].short}</span>
             </span>
           ))}
-          <span style={{ color: 'var(--faint)' }}>{t.timeline.ciNote}</span>
+          <span className="sep" />
+          <span style={{ color: 'var(--sub)', opacity: 0.78, fontSize: 10.5 }}>{t.timeline.ciNote}</span>
         </span>
       </div>
 
@@ -160,22 +162,22 @@ export function TimelineBar({
           draggingRef.current = false;
         }}
       >
-        {/* Phase background shading */}
+        {/* Phase background shading (v1 vibrant warmth) */}
         <rect
           x={xOf(announceMonth)}
           y={4}
           width={xOf(openMonth) - xOf(announceMonth)}
           height={58}
-          fill="var(--text)"
-          fillOpacity={0.035}
+          fill="var(--p)"
+          fillOpacity={0.075}
         />
         <rect
           x={xOf(openMonth)}
           y={4}
           width={xOf(36) - xOf(openMonth)}
           height={58}
-          fill="var(--text)"
-          fillOpacity={0.018}
+          fill="var(--announce)"
+          fillOpacity={0.055}
         />
 
         {/* Cross-seed 95% CI ribbons + curves */}
@@ -184,34 +186,34 @@ export function TimelineBar({
           return (
             <g key={sc}>
               {ciBands[sc] && (
-                <path d={ciBands[sc]} fill={SC_COLORS[sc]} fillOpacity={active ? 0.13 : 0.04} />
+                <path d={ciBands[sc]} fill={SC_COLORS[sc]} fillOpacity={active ? 0.16 : 0.055} />
               )}
               <path
                 d={curves[sc]}
                 fill="none"
                 stroke={SC_COLORS[sc]}
-                strokeWidth={active ? 1.8 : 1.1}
-                strokeOpacity={active ? 1 : 0.6}
+                strokeWidth={active ? 2.4 : sc === 'N' ? 1.1 : 1.5}
+                strokeOpacity={active ? 1 : 0.48}
                 strokeDasharray={sc === 'S' ? '5 3' : undefined}
               />
             </g>
           );
         })}
 
-        {/* Baseline & chapter ticks */}
-        <line x1={xOf(1)} x2={xOf(36)} y1={63} y2={63} stroke="var(--line)" strokeWidth={0.8} />
+        {/* Baseline & lively icon chapter ticks */}
+        <line x1={xOf(1)} x2={xOf(36)} y1={63} y2={63} stroke="var(--line)" strokeWidth={0.9} />
         {ticks.map(([m, label, col]) => (
           <g key={m}>
-            <line x1={xOf(m)} x2={xOf(m)} y1={63} y2={67} stroke="var(--tick)" strokeWidth={0.8} />
-            <text x={xOf(m)} y={80} textAnchor="middle" fontSize={10} fill={col} fontFamily="-apple-system, 'PingFang SC', sans-serif">
+            <line x1={xOf(m)} x2={xOf(m)} y1={60} y2={66} stroke="var(--tick)" strokeWidth={0.9} />
+            <text x={xOf(m)} y={80} textAnchor="middle" fontSize={10.5} fill={col} fontFamily="var(--font-sans)">
               {label}
             </text>
           </g>
         ))}
 
         {/* Playhead */}
-        <line x1={xOf(month)} x2={xOf(month)} y1={2} y2={64} stroke="var(--text)" strokeWidth={0.8} strokeOpacity={0.6} />
-        <circle cx={xOf(month)} cy={yOf(curVal)} r={3.2} fill={SC_COLORS[scenario]} stroke="var(--panel-solid)" strokeWidth={1.2} />
+        <line x1={xOf(month)} x2={xOf(month)} y1={2} y2={64} stroke="var(--text-strong)" strokeWidth={1.2} strokeOpacity={0.82} />
+        <circle cx={xOf(month)} cy={yOf(curVal)} r={4.3} fill="var(--panel-solid)" stroke={SC_COLORS[scenario]} strokeWidth={2.2} />
       </svg>
     </div>
   );

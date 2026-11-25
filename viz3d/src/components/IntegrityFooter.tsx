@@ -10,11 +10,7 @@ interface IntegrityFooterProps {
 }
 
 /**
- * §9 Academic Integrity Persistent Footer & Watermark Bar:
- * - Illustrative watermark whenever is_illustrative = true (§9.1)
- * - Schematic intra-zone positions notice (§9.6)
- * - Hypothetical East Express notice (§9.5)
- * - Median seed identifier (§9.3) + data source
+ * §9 Academic Integrity Persistent Footer & Watermark Bar (clean 1px hairline separators, zero middots).
  */
 export function IntegrityFooter({
   meta,
@@ -24,7 +20,7 @@ export function IntegrityFooter({
   onRestoreQuality,
 }: IntegrityFooterProps) {
   const t = getDict(lang);
-  const psStr = `${monthlyCI.median_seed_m24_ps >= 0 ? '+' : ''}${monthlyCI.median_seed_m24_ps.toFixed(2)}`;
+  const psStr = `${monthlyCI.median_seed_m24_ps >= 0 ? '+' : '−'}${Math.abs(monthlyCI.median_seed_m24_ps).toFixed(2)}`;
 
   return (
     <>
@@ -35,14 +31,14 @@ export function IntegrityFooter({
           style={{
             position: 'absolute',
             right: 24,
-            bottom: 30,
+            bottom: 32,
             zIndex: 50,
             background: 'var(--panel-solid)',
-            border: '1px solid var(--line)',
-            color: 'var(--text)',
-            fontSize: 10.5,
+            border: '1px solid var(--announce)',
+            color: 'var(--announce)',
+            fontSize: 11,
             padding: '4px 10px',
-            borderRadius: 4,
+            borderRadius: 6,
             cursor: 'pointer',
           }}
         >
@@ -60,8 +56,9 @@ export function IntegrityFooter({
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          gap: 10,
-          fontSize: 11.5,
+          gap: 12,
+          fontSize: 11,
+          letterSpacing: '0.015em',
           color: 'var(--sub)',
           background: 'var(--panel-solid)',
           borderTop: '1px solid var(--line)',
@@ -74,21 +71,17 @@ export function IntegrityFooter({
         }}
       >
         {meta.is_illustrative && (
-          <span
-            style={{
-              color: 'var(--accent)',
-              fontWeight: 600,
-            }}
-          >
-            {t.footer.illustrative}
-          </span>
+          <>
+            <span style={{ color: 'var(--accent)', fontWeight: 600 }}>{t.footer.illustrative}</span>
+            <span className="sep" />
+          </>
         )}
         <span>{t.footer.schematic}</span>
-        <span>·</span>
+        <span className="sep" />
         <span>{t.footer.hypothetical}</span>
-        <span>·</span>
+        <span className="sep" />
         <span className="num">{fmt(t.footer.medianSeed, { seed: meta.default_seed, val: psStr })}</span>
-        <span>·</span>
+        <span className="sep" />
         <span>{fmt(t.footer.source, { src: meta.source_label })}</span>
       </div>
     </>

@@ -1,6 +1,6 @@
 {
   "version": "0.7",
-  "generated_at": "2026-11-25T19:38:47",
+  "generated_at": "2026-11-25T22:49:46",
   "group": "L",
   "scenarios": [
     "N",
@@ -8,14 +8,16 @@
     "P"
   ],
   "seeds": [
-    0
+    1
   ],
   "all_aggregate_seeds": [
     0,
     1,
-    2
+    2,
+    3,
+    4
   ],
-  "default_seed": 0,
+  "default_seed": 1,
   "default_seed_rule": "median_m24_p_minus_s",
   "months": 36,
   "n_rooms": 240,
@@ -28,7 +30,7 @@
     "Z05",
     "Z11"
   ],
-  "source_label": "runs_x_qwen (L, 3 paired seeds, qwen3.5:9b)",
+  "source_label": "runs_l (L, 5 paired seeds, hy4-flash)",
   "is_illustrative": false,
   "has_room_states": true,
   "mention_keywords": [

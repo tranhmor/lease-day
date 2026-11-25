@@ -1,22 +1,25 @@
-/* Offline stylesheet: editorial layout, v1 colour palette, dark / light themes */
+/* Offline stylesheet: refined editorial layout, unified typography, dark / light themes */
 :root {
-  /* Dark "night" theme: original v1 palette */
+  /* Dark "night" theme */
   --bg: #182334;
   --bg-radial: #22324A;
-  --panel: rgba(15, 22, 34, 0.68);
-  --glow-cool: 0 0 6px rgba(95, 180, 255, 0.85), 0 0 12px rgba(95, 180, 255, 0.45);
-  --glow-amber: 0 0 6px rgba(255, 176, 46, 0.85), 0 0 12px rgba(255, 176, 46, 0.45);
-  --panel-shadow: 0 8px 28px rgba(0, 0, 0, 0.3);
-  --panel-solid: #111A28;
-  --panel-strong: rgba(13, 19, 30, 0.8);
+  --panel: rgba(15, 22, 34, 0.74);
+  --glow-cool: 0 0 6px rgba(95, 180, 255, 0.8), 0 0 12px rgba(95, 180, 255, 0.35);
+  --glow-amber: 0 0 6px rgba(255, 176, 46, 0.8), 0 0 12px rgba(255, 176, 46, 0.35);
+  --panel-shadow: 0 8px 28px rgba(0, 0, 0, 0.35);
+  --panel-solid: #101826;
+  --panel-strong: rgba(13, 19, 30, 0.9);
   --line: #2C3E57;
-  --line-soft: rgba(230, 236, 245, 0.08);
+  --line-soft: rgba(230, 236, 245, 0.085);
+  --line-dashed: rgba(125, 138, 163, 0.2);
+  --sep-color: rgba(168, 186, 212, 0.24);
   --text: #E6ECF5;
-  --text-soft: #C9D3E2;
-  --text-strong: #F5F8FC;
-  --sub: #8796AE;
-  --faint: #5D6B82;
+  --text-soft: #CFD7E6;
+  --text-strong: #F7FAFF;
+  --sub: #7D8AA3;
+  --faint: #5F6F87;
   --cool: #5FB4FF;
+  --cool-soft: #9FD3FF;
   --accent: #FFB02E;
   --announce: #FFB02E;
   --p: #FF6B57;
@@ -30,15 +33,18 @@
   --rent-neg: #5FB4FF;
   --rent-zero: #9AA7BD;
   --rent-max: #FF5A3C;
-  --track: #1C2A3F;
-  --btn-bg: rgba(17, 26, 43, 0.9);
+  --bar-cool: linear-gradient(90deg, #3B82F6, #5FB4FF);
+  --bar-amber: linear-gradient(90deg, #FF6B57, #FFB02E);
+  --track: #1A2740;
+  --btn-bg: rgba(17, 26, 43, 0.88);
   --btn-hover-bg: rgba(27, 42, 68, 0.95);
   --tick: #3B5277;
   --hover: #4A6488;
-  --inset: rgba(255, 255, 255, 0.035);
+  --inset: rgba(11, 17, 28, 0.48);
+  --inset-amber: rgba(255, 176, 46, 0.065);
   --code-bg: #0B121D;
   --on-text: #111A28;
-  --shadow-strong: 0 16px 42px rgba(0, 0, 0, 0.6);
+  --shadow-strong: 0 18px 44px rgba(0, 0, 0, 0.58);
   --halo: #142033;
   --veil: rgba(17, 26, 40, 0.94);
   --veil-mid: rgba(17, 26, 40, 0.8);
@@ -46,52 +52,66 @@
   --clock-veil: rgba(11, 17, 28, 0.82);
   --clock-veil-0: rgba(11, 17, 28, 0);
   --clock-shadow: 0 4px 24px rgba(11, 17, 28, 0.92);
-  --story: #9EB0CC;
-  --font-serif: "Songti SC", "STSong", "New York", "Iowan Old Style", Georgia, "Noto Serif CJK SC", serif;
-  --font-sans: "PingFang SC", "Hiragino Sans GB", -apple-system, BlinkMacSystemFont, "Helvetica Neue", "Microsoft YaHei", sans-serif;
-  --font-mono: "JetBrains Mono", "Barlow", "DIN Alternate", "SF Mono", Menlo, Consolas, monospace;
+  --story: #A4B5CE;
+  /* Pure glass + ambient wash (regular cards) vs subtle amber border (hero cards) */
+  --panel-ambient: radial-gradient(88% 48px at 50% 0%, rgba(112, 188, 255, 0.095) 0%, rgba(112, 188, 255, 0.024) 58%, transparent 100%);
+  --glass-rim: inset 0 1px 0 rgba(196, 224, 255, 0.13);
+  --amber-border: color-mix(in srgb, var(--announce) 34%, var(--line));
+  --amber-rim: inset 0 1px 0 color-mix(in srgb, var(--announce) 20%, transparent);
+  /* v1 Chinese sans + tight condensed DIN KPI numerals + ultra-light SF hero clock + strict mono */
+  --font-sans: "Source Han Sans SC", "Noto Sans CJK SC", "PingFang SC", "Hiragino Sans GB", -apple-system, BlinkMacSystemFont, "Helvetica Neue", "Microsoft YaHei", sans-serif;
+  --font-serif: "Source Han Sans SC", "Noto Sans CJK SC", "PingFang SC", "Hiragino Sans GB", -apple-system, BlinkMacSystemFont, "Helvetica Neue", "Microsoft YaHei", sans-serif;
+  --font-num: "DIN Alternate", "Barlow", "SF Pro Display", -apple-system, "PingFang SC", sans-serif;
+  --font-clock: -apple-system, "SF Pro Display", "Helvetica Neue", "Source Han Sans SC", "PingFang SC", sans-serif;
+  --font-mono: "JetBrains Mono", "SF Mono", Menlo, Consolas, monospace;
 }
 
-/* Light "paper" theme: tokens.json light palette */
+/* Light "paper" theme */
 :root[data-theme="light"] {
   --bg: #E9EDF2;
   --bg-radial: #F7F8FA;
-  --panel: rgba(255, 255, 255, 0.74);
-  --glow-cool: 0 0 5px rgba(47, 128, 204, 0.55);
-  --glow-amber: 0 0 5px rgba(217, 138, 16, 0.55);
-  --panel-shadow: 0 6px 22px rgba(30, 45, 70, 0.12);
+  --panel: rgba(255, 255, 255, 0.78);
+  --glow-cool: 0 0 5px rgba(47, 128, 204, 0.45);
+  --glow-amber: 0 0 5px rgba(217, 138, 16, 0.45);
+  --panel-shadow: 0 6px 24px rgba(24, 38, 62, 0.1);
   --panel-solid: #FFFFFF;
-  --panel-strong: rgba(255, 255, 255, 0.86);
-  --line: #D3DAE4;
+  --panel-strong: rgba(255, 255, 255, 0.92);
+  --line: #D4DCE6;
   --line-soft: rgba(24, 33, 50, 0.08);
+  --line-dashed: rgba(24, 33, 50, 0.14);
+  --sep-color: rgba(24, 33, 50, 0.18);
   --text: #182132;
   --text-soft: #36425A;
   --text-strong: #0F1726;
-  --sub: #5C687D;
-  --faint: #8C97A8;
+  --sub: #5B677C;
+  --faint: #8894A6;
   --cool: #2F80CC;
+  --cool-soft: #246BB0;
   --accent: #D98A10;
   --announce: #D98A10;
   --p: #D95B4A;
   --s: #3A88CF;
   --n: #788191;
-  --up: #D96B52;
-  --down: #2E9A6B;
+  --up: #D45D44;
+  --down: #279163;
   --inc-low: #1E9E90;
   --inc-mid: #7F65C4;
   --inc-high: #CC5A8E;
   --rent-neg: #2F86D0;
   --rent-zero: #8A96A8;
   --rent-max: #D9432A;
+  --bar-cool: linear-gradient(90deg, #3A88CF, #5DA4E5);
+  --bar-amber: linear-gradient(90deg, #D95B4A, #D98A10);
   --track: #E3E8EF;
-  --btn-bg: rgba(255, 255, 255, 0.95);
+  --btn-bg: rgba(255, 255, 255, 0.94);
   --btn-hover-bg: #EEF2F7;
   --tick: #A9B4C4;
   --hover: #9FB0C6;
-  --inset: rgba(24, 33, 50, 0.03);
+  --inset: rgba(24, 33, 50, 0.036);
+  --inset-amber: rgba(217, 138, 16, 0.075);
   --code-bg: #F3F5F8;
   --on-text: #FFFFFF;
-  --shadow-strong: 0 14px 38px rgba(24, 33, 50, 0.16);
+  --shadow-strong: 0 14px 38px rgba(24, 33, 50, 0.15);
   --halo: #F4F6F9;
   --veil: rgba(244, 246, 249, 0.95);
   --veil-mid: rgba(244, 246, 249, 0.82);
@@ -100,6 +120,10 @@
   --clock-veil-0: rgba(246, 248, 250, 0);
   --clock-shadow: 0 2px 14px rgba(255, 255, 255, 0.9);
   --story: #4A566B;
+  --panel-ambient: radial-gradient(88% 48px at 50% 0%, rgba(47, 128, 204, 0.068) 0%, rgba(47, 128, 204, 0.014) 58%, transparent 100%);
+  --glass-rim: inset 0 1px 0 rgba(255, 255, 255, 0.92);
+  --amber-border: color-mix(in srgb, var(--announce) 40%, var(--line));
+  --amber-rim: inset 0 1px 0 rgba(255, 255, 255, 0.92);
 }
 
 * {
@@ -116,10 +140,26 @@ html, body, #root {
   background: var(--bg);
   color: var(--text);
   font-family: var(--font-sans);
+  font-size: 13px;
   -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
   user-select: none;
 }
 
+/* Crisp condensed tabular numerals (v1 dashboard aesthetic) for KPIs, tables, prices, steps */
+.num {
+  font-family: var(--font-num);
+  font-variant-numeric: tabular-nums lining-nums;
+}
+
+/* Ultra-light display numerals for hero clock (M22/36) */
+.num-clock {
+  font-family: var(--font-clock);
+  font-variant-numeric: tabular-nums lining-nums;
+}
+
+/* Monospace reserved strictly for JSON, hashes, URLs, and statistical notation */
 .mono {
   font-family: var(--font-mono);
   font-variant-numeric: tabular-nums;
@@ -127,23 +167,55 @@ html, body, #root {
 
 .serif {
   font-family: var(--font-serif);
+  letter-spacing: 0.015em;
 }
 
-.num {
-  font-family: var(--font-sans);
-  font-variant-numeric: tabular-nums lining-nums;
+/* Hairline vertical separator: replaces wide CJK middot with crisp 1px architectural rhythm */
+.sep {
+  display: inline-block;
+  width: 1px;
+  height: 10px;
+  background: var(--sep-color);
+  vertical-align: middle;
+  flex-shrink: 0;
 }
 
-/* Panel: flat, hairline, no glass, no glow */
+.meta-row {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 7px;
+}
+
+/* Compact Swiss-style ID prefix (H1, S, P, M15, 01) */
+.tag-id {
+  font-family: var(--font-num);
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+}
+
+/* Panel: pure frosted glass; secondary cards get top-edge ambient wash, main cards (.amber) get subtle amber border */
 .hud-panel {
-  background: var(--panel);
+  background-color: var(--panel);
+  background-image: var(--panel-ambient);
   border: 1px solid var(--line);
   border-radius: 10px;
-  box-shadow: var(--panel-shadow);
-  backdrop-filter: blur(12px) saturate(1.2);
-  -webkit-backdrop-filter: blur(12px) saturate(1.2);
+  box-shadow: var(--panel-shadow), var(--glass-rim);
+  backdrop-filter: blur(12px) saturate(1.18);
+  -webkit-backdrop-filter: blur(12px) saturate(1.18);
   position: relative;
   pointer-events: auto;
+}
+
+.hud-panel.amber {
+  background-image: none;
+  border-color: var(--amber-border);
+  box-shadow: var(--panel-shadow), var(--amber-rim);
+}
+
+.hud-panel.plain {
+  background-image: none;
 }
 
 .panel-header {
@@ -151,17 +223,17 @@ html, body, #root {
   justify-content: space-between;
   align-items: baseline;
   gap: 8px;
-  font-family: var(--font-serif);
-  font-size: 15px;
+  font-family: var(--font-sans);
+  font-size: 13.5px;
   font-weight: 600;
-  margin-bottom: 10px;
-  padding-bottom: 8px;
-  border-bottom: 1px solid var(--line-soft);
+  letter-spacing: 0.02em;
+  margin-bottom: 9px;
 }
 
 .panel-header small {
   font-family: var(--font-sans);
-  font-size: 11px;
+  font-size: 10.5px;
+  letter-spacing: 0.01em;
   color: var(--sub);
   font-weight: 400;
 }
@@ -169,10 +241,10 @@ html, body, #root {
 .kicker {
   font-size: 11px;
   color: var(--sub);
-  letter-spacing: 0.02em;
+  letter-spacing: 0.08em;
 }
 
-/* Layer toggles: plain text with a small square, not pills */
+/* Layer toggles: quiet architectural checkboxes */
 .chip {
   display: inline-flex;
   align-items: center;
@@ -182,6 +254,7 @@ html, body, #root {
   background: transparent;
   padding: 4px 2px;
   font-size: 12px;
+  letter-spacing: 0.015em;
   font-family: var(--font-sans);
   cursor: pointer;
   color: var(--faint);
@@ -218,7 +291,7 @@ html, body, #root {
   box-shadow: var(--glow-amber);
 }
 
-/* Buttons: quiet text buttons with hairline */
+/* Buttons: quiet hairline buttons with crisp focus states */
 .btn-hud {
   display: inline-flex;
   align-items: center;
@@ -229,11 +302,12 @@ html, body, #root {
   border-radius: 6px;
   padding: 5px 10px;
   font-size: 11.5px;
+  letter-spacing: 0.015em;
   font-family: var(--font-sans);
-  line-height: 1.2;
+  line-height: 1.25;
   white-space: nowrap;
   cursor: pointer;
-  transition: border-color 0.15s, background 0.15s, color 0.15s;
+  transition: border-color 0.15s, background 0.15s, color 0.15s, box-shadow 0.15s;
   pointer-events: auto;
 }
 
@@ -244,16 +318,16 @@ html, body, #root {
 
 .btn-hud.active {
   border-color: var(--cool);
-  background: color-mix(in srgb, var(--cool) 16%, transparent);
+  background: color-mix(in srgb, var(--cool) 15%, transparent);
   color: var(--text-strong);
-  box-shadow: 0 0 10px color-mix(in srgb, var(--cool) 35%, transparent);
+  box-shadow: 0 0 10px color-mix(in srgb, var(--cool) 28%, transparent);
 }
 
 .btn-hud.amber-active {
   border-color: var(--announce);
-  background: color-mix(in srgb, var(--announce) 18%, transparent);
+  background: color-mix(in srgb, var(--announce) 16%, transparent);
   color: var(--announce);
-  box-shadow: 0 0 10px color-mix(in srgb, var(--announce) 35%, transparent);
+  box-shadow: 0 0 10px color-mix(in srgb, var(--announce) 28%, transparent);
 }
 
 .btn-hud.ghost {
@@ -280,25 +354,28 @@ html, body, #root {
   border-radius: 2px;
 }
 
-/* Keyword highlight: underline only */
+/* Keyword highlight: crisp amber underline with faint warm tint */
 .kw-mark {
-  background: transparent;
+  background: color-mix(in srgb, var(--announce) 11%, transparent);
   color: inherit;
   border-bottom: 1.5px solid var(--announce);
-  padding: 0;
+  padding: 0 2px;
+  border-radius: 2px;
 }
 
 @keyframes fadeInFeed {
   from {
     opacity: 0;
+    transform: translateY(-4px);
   }
   to {
     opacity: 1;
+    transform: translateY(0);
   }
 }
 
 .feed-item {
-  animation: fadeInFeed 0.4s ease both;
+  animation: fadeInFeed 0.35s ease both;
 }
 
 body.export-mode {

@@ -25,7 +25,7 @@ export function SplitHeaderBar({
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'space-between',
-        gap: 6,
+        gap: 8,
         flexWrap: 'wrap',
         pointerEvents: 'none',
         flexShrink: 0,
@@ -35,20 +35,25 @@ export function SplitHeaderBar({
         className="hud-panel"
         style={{
           padding: '5px 12px',
-          fontSize: 13,
-          fontWeight: 600,
+          fontSize: 12.5,
           color: 'var(--text)',
-          borderLeft: '2px solid var(--s)',
+          borderLeft: '2.5px solid var(--s)',
+          display: 'inline-flex',
+          alignItems: 'baseline',
+          gap: 7,
         }}
       >
-        {t.split.leftLabel}
+        <span className="tag-id" style={{ color: 'var(--s)', fontSize: 13 }}>
+          {t.split.leftCode}
+        </span>
+        <span style={{ fontWeight: 500 }}>{t.split.leftLabel}</span>
       </div>
 
-      <div style={{ display: 'flex', gap: 5, pointerEvents: 'auto' }}>
-        <button type="button" className="btn-hud" style={{ background: "var(--panel-solid)" }} onClick={onSwitchToDiff}>
+      <div style={{ display: 'flex', gap: 6, pointerEvents: 'auto' }}>
+        <button type="button" className="btn-hud" style={{ background: 'var(--panel-solid)' }} onClick={onSwitchToDiff}>
           <Sliders size={11} /> {t.split.toDiff}
         </button>
-        <button type="button" className="btn-hud" style={{ background: "var(--panel-solid)" }} onClick={onExit}>
+        <button type="button" className="btn-hud" style={{ background: 'var(--panel-solid)' }} onClick={onExit}>
           <X size={11} /> {t.split.exit}
         </button>
       </div>
@@ -57,13 +62,18 @@ export function SplitHeaderBar({
         className="hud-panel"
         style={{
           padding: '5px 12px',
-          fontSize: 13,
-          fontWeight: 600,
+          fontSize: 12.5,
           color: 'var(--text)',
-          borderRight: '2px solid var(--p)',
+          borderRight: '2.5px solid var(--p)',
+          display: 'inline-flex',
+          alignItems: 'baseline',
+          gap: 7,
         }}
       >
-        {t.split.rightLabel}
+        <span className="tag-id" style={{ color: 'var(--p)', fontSize: 13 }}>
+          {t.split.rightCode}
+        </span>
+        <span style={{ fontWeight: 500 }}>{t.split.rightLabel}</span>
       </div>
     </div>
   );
@@ -84,9 +94,9 @@ export function SplitOverlay({ splitRatio, lang, onChangeRatio }: SplitOverlayPr
           top: 0,
           bottom: 0,
           left: pct,
-          width: 1,
-          background: 'var(--text)',
-          opacity: 0.7,
+          width: 1.5,
+          background: 'var(--announce)',
+          opacity: 0.85,
           transform: 'translateX(-1px)',
         }}
       />
@@ -99,15 +109,16 @@ export function SplitOverlay({ splitRatio, lang, onChangeRatio }: SplitOverlayPr
           top: '50%',
           left: pct,
           transform: 'translate(-50%, -50%)',
-          width: 18,
-          height: 40,
-          borderRadius: 2,
+          width: 22,
+          height: 44,
+          borderRadius: 6,
           background: 'var(--panel-solid)',
-          border: '1px solid var(--text)',
+          border: '1px solid var(--announce)',
+          boxShadow: 'var(--panel-shadow)',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          color: 'var(--text)',
+          color: 'var(--announce)',
           cursor: 'ew-resize',
           pointerEvents: 'auto',
         }}
@@ -124,7 +135,7 @@ export function SplitOverlay({ splitRatio, lang, onChangeRatio }: SplitOverlayPr
           draggingRef.current = false;
         }}
       >
-        <GripVertical size={12} />
+        <GripVertical size={13} />
       </div>
     </div>
   );

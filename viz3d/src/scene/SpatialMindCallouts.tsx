@@ -60,6 +60,7 @@ export function SpatialMindCallouts({
       z: number;
       y: number;
       zoneName: string;
+      pct: number;
       deltaPct: string;
       snippet: string;
     }> = [];
@@ -83,6 +84,7 @@ export function SpatialMindCallouts({
         z: room.layout_xy[1],
         y: 2.3 + picked.length * 0.75,
         zoneName: zInfo ? (lang === 'zh' ? zInfo.name : zInfo.name_en) : d.zone || '',
+        pct,
         deltaPct: `${pct >= 0 ? '+' : ''}${pct.toFixed(1)}%`,
         snippet: summarizeSnippet(d.reason, mentionKeywords),
       });
@@ -128,10 +130,20 @@ export function SpatialMindCallouts({
               }}
             >
               <span style={{ color: 'var(--text)', fontWeight: 600 }}>{c.zoneName}</span>
-              <span className="num" style={{ color: 'var(--sub)', fontSize: 11 }}>
+              <span
+                className="num"
+                style={{
+                  color: c.pct > 0.05 ? 'var(--up)' : c.pct < -0.05 ? 'var(--down)' : 'var(--sub)',
+                  fontSize: 11,
+                  fontWeight: 600,
+                }}
+              >
                 {c.deltaPct}
               </span>
-              <span className="serif" style={{ color: 'var(--text-soft)', overflow: 'hidden', textOverflow: 'ellipsis' }}>“{c.snippet}”</span>
+              <span className="sep" />
+              <span className="serif" style={{ color: 'var(--text-soft)', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                “{c.snippet}”
+              </span>
             </div>
           </Html>
         </group>

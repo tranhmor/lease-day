@@ -234,9 +234,9 @@ export function App() {
       if (!dataset || !sceneHandleRef.current) return null;
       const wm = [
         ...(dataset.meta.is_illustrative ? ['示意数据，非实验结果 / ILLUSTRATIVE DATA'] : []),
-        `Lease Day v${dataset.meta.version} · M${String(month).padStart(2, '0')}/36 · ${
-          viewMode === 'split' ? 'Split S | P' : `Scenario ${scenario}`
-        } · Seed #${dataset.meta.default_seed} · ${dataset.meta.source_label}`,
+        `Lease Day v${dataset.meta.version} | M${String(month).padStart(2, '0')}/36 | ${
+          viewMode === 'split' ? 'Split S / P' : `Scenario ${scenario}`
+        } | Seed #${dataset.meta.default_seed} | ${dataset.meta.source_label}`,
       ];
       return sceneHandleRef.current.exportPNG(w, h, wm);
     };
@@ -304,7 +304,11 @@ export function App() {
   if (!dataset || !runActive || !runP || !runS) {
     return (
       <div style={{ display: 'flex', height: '100%', alignItems: 'center', justifyContent: 'center', flexDirection: 'column', gap: 12 }}>
-        <div className="serif" style={{ fontSize: 20 }}>到期日 · Lease Day</div>
+        <div className="meta-row" style={{ gap: 10 }}>
+          <span className="serif" style={{ fontSize: 20 }}>到期日</span>
+          <span className="sep" style={{ height: 14 }} />
+          <span className="serif" style={{ fontSize: 18, color: 'var(--sub)' }}>Lease Day</span>
+        </div>
         <div style={{ fontSize: 12, color: 'var(--sub)' }}>Loading 3D urban stage & simulation telemetry…</div>
       </div>
     );

@@ -65,7 +65,7 @@ export function ZoneLabelsLayer({
                   fontWeight: z.treated ? 600 : 400,
                   color: z.treated ? 'var(--text-strong)' : 'var(--text-soft)',
                   textShadow: '0 0 3px var(--bg), 0 0 6px var(--bg), 0 0 10px var(--bg)',
-                  fontFamily: z.treated ? 'var(--font-serif)' : 'var(--font-sans)',
+                  fontFamily: 'var(--font-sans)',
                 }}
               >
                 {label}

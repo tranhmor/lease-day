@@ -42,7 +42,6 @@ export function RoomDetailCard({
 
   const [showInputs, setShowInputs] = useState(false);
 
-  // Extract 36-month P & S rent history + active scenario tenant ribbon
   const { rentsP, rentsS, activeStates, minR, maxR } = useMemo(() => {
     const rP: number[] = [];
     const rS: number[] = [];
@@ -63,16 +62,11 @@ export function RoomDetailCard({
     return { rentsP: rP, rentsS: rS, activeStates: act, minR: Math.max(0, lo - pad), maxR: hi + pad };
   }, [runP, runS, runActive, roomId, dataset.rooms.length]);
 
-  // All landlord pricing decisions for this room in active scenario
   const roomDecisions = useMemo(
-    () =>
-      runActive.decisions.decisions.filter(
-        (d) => d.agent_type === 'landlord' && d.room_id === roomId
-      ),
+    () => runActive.decisions.decisions.filter((d) => d.agent_type === 'landlord' && d.room_id === roomId),
     [runActive, roomId]
   );
 
-  // Default to the latest decision <= current month
   const defaultIdx = useMemo(() => {
     let idx = 0;
     for (let i = 0; i < roomDecisions.length; i++) {
@@ -89,7 +83,6 @@ export function RoomDetailCard({
 
   const curDec = roomDecisions[decIdx];
 
-  // Build SVG paths for P solid vs S dashed
   const W = 380;
   const H = 90;
   const x = (m: number) => 8 + ((W - 16) * (m - 1)) / 35;
@@ -97,7 +90,6 @@ export function RoomDetailCard({
   const pathP = rentsP.map((v, i) => `${i === 0 ? 'M' : 'L'}${x(i + 1).toFixed(1)},${y(v).toFixed(1)}`).join('');
   const pathS = rentsS.map((v, i) => `${i === 0 ? 'M' : 'L'}${x(i + 1).toFixed(1)},${y(v).toFixed(1)}`).join('');
 
-  // Group consecutive months of the same tenant for clickable lease blocks
   const tenantSpans = useMemo(() => {
     const spans: Array<{ startM: number; endM: number; tenantId: number; group: IncomeGroup | null; income: number }> = [];
     for (let m = 1; m <= 36; m++) {
@@ -121,27 +113,53 @@ export function RoomDetailCard({
       className="hud-panel amber"
       style={{
         width: '100%',
-        maxWidth: 440,
+        maxWidth: 444,
         maxHeight: '100%',
         margin: '0 auto',
-        padding: '13px 15px',
+        padding: '15px 17px',
         display: 'flex',
         flexDirection: 'column',
-        background: 'var(--panel-strong)',
-        boxShadow: 'var(--shadow-strong)',
+        backgroundColor: 'var(--panel-strong)',
+        boxShadow: 'var(--shadow-strong), var(--amber-rim)',
         overflow: 'hidden',
       }}
     >
-      {/* Header */}
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: 8 }}>
+      {/* Header — zero middots, clean Swiss title & hairline metadata row */}
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: 10 }}>
         <div>
-          <div style={{ fontSize: 15, fontWeight: 600 }}>
-            {t.roomCard.room} #{room.id} · {lang === 'zh' ? zone.name : zone.name_en} ({room.zone}) ·{' '}
-            <span style={{ color: 'var(--cool)' }}>{roomKindLabel}</span>
+          <div className="meta-row" style={{ gap: 8 }}>
+            <span className="serif" style={{ fontSize: 15.5, fontWeight: 600, color: 'var(--text-strong)' }}>
+              {t.roomCard.room} <span className="num">#{room.id}</span>
+            </span>
+            <span className="sep" />
+            <span style={{ fontSize: 13.5, fontWeight: 500, color: zone.treated ? 'var(--accent)' : 'var(--text)' }}>
+              {lang === 'zh' ? zone.name : zone.name_en} ({room.zone})
+            </span>
+            <span
+              style={{
+                fontSize: 10.5,
+                padding: '1px 6px',
+                borderRadius: 4,
+                background: 'color-mix(in srgb, var(--cool) 14%, transparent)',
+                color: 'var(--cool)',
+                fontWeight: 500,
+              }}
+            >
+              {roomKindLabel}
+            </span>
           </div>
-          <div style={{ fontSize: 11.5, color: 'var(--sub)', marginTop: 3 }}>
-            {t.roomCard.landlord} #{room.landlord_id} · {llKind} · {llRisk} ·{' '}
-            {fmt(t.roomCard.manages, { n: landlord?.n_rooms ?? 6 })} · {fmt(t.roomCard.stationDist, { m: room.station_dist_m })}
+          <div className="meta-row" style={{ fontSize: 11.5, color: 'var(--sub)', marginTop: 5, gap: 7 }}>
+            <span className="num">
+              {t.roomCard.landlord} #{room.landlord_id}
+            </span>
+            <span className="sep" />
+            <span>
+              {llKind} / {llRisk}
+            </span>
+            <span className="sep" />
+            <span className="num">{fmt(t.roomCard.manages, { n: landlord?.n_rooms ?? 6 })}</span>
+            <span className="sep" />
+            <span className="num">{fmt(t.roomCard.stationDist, { m: room.station_dist_m })}</span>
           </div>
         </div>
         <button type="button" className="btn-hud" style={{ padding: 4 }} onClick={onClose}>
@@ -149,35 +167,35 @@ export function RoomDetailCard({
         </button>
       </div>
 
-      <div style={{ height: 1, background: 'var(--line)', margin: '10px 0' }} />
+      <div style={{ height: 1, background: 'var(--line-soft)', margin: '11px 0' }} />
 
       {/* 36-month P vs S Rent Trajectory */}
-      <div style={{ fontSize: 10.5, color: 'var(--sub)', marginBottom: 4, display: 'flex', justifyContent: 'space-between' }}>
+      <div style={{ fontSize: 11, color: 'var(--sub)', marginBottom: 5, display: 'flex', justifyContent: 'space-between' }}>
         <span>{t.roomCard.rentChartTitle}</span>
-        <span className="mono">
+        <span className="num">
           ¥{Math.round(minR)}–{Math.round(maxR)}
         </span>
       </div>
-      <svg viewBox={`0 0 ${W} ${H}`} style={{ width: '100%', height: 90, background: 'var(--inset)', borderRadius: 4 }}>
+      <svg viewBox={`0 0 ${W} ${H}`} style={{ width: '100%', height: 90, background: 'var(--inset)', borderRadius: 6 }}>
         <line x1={x(13)} x2={x(13)} y1={4} y2={H - 4} stroke="var(--announce)" strokeOpacity={0.6} strokeDasharray="3 2" />
         <line x1={x(25)} x2={x(25)} y1={4} y2={H - 4} stroke="var(--cool)" strokeOpacity={0.45} strokeDasharray="3 2" />
-        <text x={x(13) + 3} y={12} fontSize={8.5} fill="var(--announce)" fontFamily="monospace">
+        <text x={x(13) + 4} y={13} fontSize={9} fill="var(--announce)" fontFamily="var(--font-num)">
           M13
         </text>
-        <text x={x(25) + 3} y={12} fontSize={8.5} fill="var(--cool)" fontFamily="monospace">
+        <text x={x(25) + 4} y={13} fontSize={9} fill="var(--cool)" fontFamily="var(--font-num)">
           M25
         </text>
         <path d={pathS} fill="none" stroke="var(--s)" strokeWidth={1.6} strokeDasharray="4 3" />
         <path d={pathP} fill="none" stroke="var(--p)" strokeWidth={2.0} />
-        <line x1={x(month)} x2={x(month)} y1={2} y2={H - 2} stroke="var(--panel-solid)" strokeOpacity={0.45} />
-        <circle cx={x(month)} cy={y(rentsP[month - 1])} r={3.5} fill="var(--p)" stroke="var(--panel-solid)" strokeWidth={1} />
+        <line x1={x(month)} x2={x(month)} y1={2} y2={H - 2} stroke="var(--text)" strokeOpacity={0.35} />
+        <circle cx={x(month)} cy={y(rentsP[month - 1])} r={3.5} fill="var(--p)" stroke="var(--panel-solid)" strokeWidth={1.2} />
       </svg>
 
-      {/* Tenant Occupancy Ribbon (clickable -> Tenant Card!) */}
-      <div style={{ fontSize: 10.5, color: 'var(--sub)', marginTop: 10, marginBottom: 4 }}>
+      {/* Tenant Occupancy Ribbon */}
+      <div style={{ fontSize: 11, color: 'var(--sub)', marginTop: 11, marginBottom: 5 }}>
         {t.roomCard.tenantBarTitle}
       </div>
-      <div style={{ display: 'flex', height: 22, gap: 2, borderRadius: 3, overflow: 'hidden', background: 'var(--track)' }}>
+      <div style={{ display: 'flex', height: 22, gap: 2, borderRadius: 4, overflow: 'hidden', background: 'var(--track)' }}>
         {tenantSpans.map((sp, i) => {
           const widthPct = ((sp.endM - sp.startM + 1) / 36) * 100;
           const isVac = sp.tenantId < 0;
@@ -200,9 +218,9 @@ export function RoomDetailCard({
                 opacity: isVac ? 0.55 : 0.88,
                 cursor: isVac ? 'default' : 'pointer',
                 color: 'var(--on-text)',
-                fontSize: 9.5,
-                fontWeight: 700,
-                fontFamily: 'var(--font-mono)',
+                fontSize: 10,
+                fontWeight: 600,
+                fontFamily: 'var(--font-num)',
                 overflow: 'hidden',
                 whiteSpace: 'nowrap',
                 padding: '0 2px',
@@ -214,39 +232,44 @@ export function RoomDetailCard({
         })}
       </div>
 
-      <div style={{ height: 1, background: 'var(--line)', margin: '10px 0' }} />
+      <div style={{ height: 1, background: 'var(--line-soft)', margin: '11px 0' }} />
 
       {/* Decision Stepper & Verbatim LLM Reasoning */}
       <div className="hud-scroll" style={{ flex: 1 }}>
         {curDec ? (
           <>
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', fontSize: 12, marginBottom: 6 }}>
-              <span className="num" style={{ color: 'var(--text)', fontWeight: 600 }}>
-                M{String(curDec.m).padStart(2, '0')} ·{' '}
-                {curDec.decision === 'renewal_offer'
-                  ? t.feed.renewal
-                  : curDec.decision === 'price_vacant'
-                    ? t.feed.vacant
-                    : curDec.decision === 'answer_counter'
-                      ? t.feed.counter
-                      : t.feed.pick}
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 8, fontSize: 12, marginBottom: 7 }}>
+              <span style={{ display: 'inline-flex', alignItems: 'baseline', gap: 7 }}>
+                <span className="tag-id" style={{ color: 'var(--announce)' }}>
+                  M{String(curDec.m).padStart(2, '0')}
+                </span>
+                <span style={{ color: 'var(--text)', fontWeight: 500 }}>
+                  {curDec.decision === 'renewal_offer'
+                    ? t.feed.renewal
+                    : curDec.decision === 'price_vacant'
+                      ? t.feed.vacant
+                      : curDec.decision === 'answer_counter'
+                        ? t.feed.counter
+                        : t.feed.pick}
+                </span>
               </span>
-              <span className="mono" style={{ color: 'var(--text)' }}>
+              <span className="num" style={{ color: 'var(--text)', fontSize: 12.5 }}>
                 ¥{Math.round(curDec.rent_before ?? 0)} → <b>¥{Math.round(curDec.rent_after ?? 0)}</b>
               </span>
               {curDec.vacant_for ? (
-                <span style={{ fontSize: 10.5, color: 'var(--sub)' }}>{fmt(t.roomCard.vacantFor, { n: curDec.vacant_for })}</span>
+                <span style={{ fontSize: 11, color: 'var(--sub)' }}>{fmt(t.roomCard.vacantFor, { n: curDec.vacant_for })}</span>
               ) : null}
             </div>
 
             <div
+              className="serif"
               style={{
-                padding: '9px 11px',
+                padding: '10px 12px',
                 background: 'var(--inset)',
-                borderLeft: `2.5px solid ${curDec.mentions_line ? 'var(--announce)' : 'var(--cool)'}`,
-                borderRadius: '0 4px 4px 0',
-                fontSize: 12.5,
-                lineHeight: 1.55,
+                borderLeft: `2px solid ${curDec.mentions_line ? 'var(--announce)' : 'var(--cool)'}`,
+                borderRadius: '0 6px 6px 0',
+                fontSize: 13.5,
+                lineHeight: 1.65,
                 color: 'var(--text)',
               }}
             >
@@ -254,7 +277,7 @@ export function RoomDetailCard({
             </div>
 
             {/* Collapsible Raw JSON LLM Input Inspector */}
-            <div style={{ marginTop: 8 }}>
+            <div style={{ marginTop: 9 }}>
               <button
                 type="button"
                 className="btn-hud"
@@ -269,12 +292,13 @@ export function RoomDetailCard({
                   className="mono hud-scroll"
                   style={{
                     marginTop: 6,
-                    padding: 8,
+                    padding: 9,
                     maxHeight: 165,
                     background: 'var(--code-bg)',
                     border: '1px solid var(--line)',
-                    borderRadius: 4,
-                    fontSize: 10,
+                    borderRadius: 6,
+                    fontSize: 10.5,
+                    lineHeight: 1.45,
                     color: 'var(--text-soft)',
                     whiteSpace: 'pre-wrap',
                     wordBreak: 'break-all',
@@ -286,7 +310,7 @@ export function RoomDetailCard({
             </div>
 
             {/* Prev / Next decision buttons */}
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: 9 }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: 10 }}>
               <button
                 type="button"
                 className="btn-hud"
@@ -296,7 +320,7 @@ export function RoomDetailCard({
               >
                 <ChevronLeft size={12} /> {t.roomCard.prevDec}
               </button>
-              <span className="mono" style={{ fontSize: 10.5, color: 'var(--sub)' }}>
+              <span className="num" style={{ fontSize: 11.5, color: 'var(--sub)' }}>
                 {decIdx + 1} / {roomDecisions.length}
               </span>
               <button

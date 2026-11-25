@@ -43,33 +43,32 @@ export function TenantDetailCard({
     [run, tenantId]
   );
 
-  const group: IncomeGroup =
-    tenantDecisions[0]?.tenant_group ?? tenantEvents[0]?.income_group ?? 'mid';
+  const group: IncomeGroup = tenantDecisions[0]?.tenant_group ?? tenantEvents[0]?.income_group ?? 'mid';
   const income = tenantDecisions[0]?.tenant_income ?? tenantEvents[0]?.income ?? 0;
 
   return (
     <div
-      className="hud-panel"
+      className="hud-panel accent-cool"
       style={{
         width: '100%',
-        maxWidth: 440,
+        maxWidth: 444,
         maxHeight: '100%',
         margin: '0 auto',
-        padding: '13px 15px',
+        padding: '15px 17px',
         display: 'flex',
         flexDirection: 'column',
-        background: 'var(--panel-strong)',
-        boxShadow: 'var(--shadow-strong)',
+        backgroundColor: 'var(--panel-strong)',
+        boxShadow: 'var(--shadow-strong), var(--glass-rim)',
         overflow: 'hidden',
       }}
     >
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 8 }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
           <button type="button" className="btn-hud" onClick={onBackToRoom}>
             <ArrowLeft size={12} /> {t.tenantCard.backToRoom}
           </button>
-          <span style={{ fontSize: 15, fontWeight: 600 }}>
-            {t.tenantCard.title} #{tenantId}
+          <span className="serif" style={{ fontSize: 15.5, fontWeight: 600 }}>
+            {t.tenantCard.title} <span className="num">#{tenantId}</span>
           </span>
         </div>
         <button type="button" className="btn-hud" style={{ padding: 4 }} onClick={onClose}>
@@ -78,29 +77,33 @@ export function TenantDetailCard({
       </div>
 
       {/* Tenant Summary Chips */}
-      <div style={{ display: 'flex', gap: 10, marginTop: 10, fontSize: 12 }}>
+      <div className="meta-row" style={{ gap: 10, marginTop: 11, fontSize: 12 }}>
         <span
           style={{
-            padding: '3px 9px',
+            padding: '2.5px 9px',
             borderRadius: 4,
-            background: `${GROUP_COLORS[group]}22`,
+            background: `color-mix(in srgb, ${GROUP_COLORS[group]} 15%, transparent)`,
             color: GROUP_COLORS[group],
-            border: `1px solid ${GROUP_COLORS[group]}66`,
+            border: `1px solid color-mix(in srgb, ${GROUP_COLORS[group]} 42%, transparent)`,
             fontWeight: 600,
+            fontSize: 11.5,
           }}
         >
           {t.tenantCard.groups[group]}
         </span>
         {income > 0 && (
-          <span className="mono" style={{ padding: '3px 8px', color: 'var(--text)' }}>
-            {t.tenantCard.income}: ¥{Math.round(income).toLocaleString()}
+          <span className="num" style={{ color: 'var(--text)', fontSize: 12.5 }}>
+            <span style={{ color: 'var(--sub)', marginRight: 5, fontFamily: 'var(--font-sans)', fontSize: 11.5 }}>
+              {t.tenantCard.income}
+            </span>
+            ¥{Math.round(income).toLocaleString()}
           </span>
         )}
       </div>
 
-      <div style={{ height: 1, background: 'var(--line)', margin: '10px 0' }} />
+      <div style={{ height: 1, background: 'var(--line-soft)', margin: '11px 0' }} />
 
-      <div style={{ fontSize: 11.5, color: 'var(--sub)', marginBottom: 6 }}>{t.tenantCard.decisionsTitle}</div>
+      <div style={{ fontSize: 11.5, color: 'var(--sub)', marginBottom: 7 }}>{t.tenantCard.decisionsTitle}</div>
 
       <div className="hud-scroll" style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: 10 }}>
         {tenantDecisions.length === 0 ? (
@@ -110,27 +113,32 @@ export function TenantDetailCard({
             <div
               key={idx}
               style={{
-                padding: '10px 11px',
+                padding: '10px 12px',
                 background: 'var(--inset)',
-                border: '1px solid var(--line)',
-                borderRadius: 4,
+                border: '1px solid var(--line-soft)',
+                borderRadius: 6,
                 fontSize: 12,
               }}
             >
-              <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 5 }}>
-                <span className="mono" style={{ color: 'var(--cool)', fontWeight: 600 }}>
-                  M{String(d.m).padStart(2, '0')} · {d.decision}
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: 6 }}>
+                <span style={{ display: 'inline-flex', alignItems: 'baseline', gap: 7 }}>
+                  <span className="tag-id" style={{ color: 'var(--cool)' }}>
+                    M{String(d.m).padStart(2, '0')}
+                  </span>
+                  <span className="mono" style={{ fontSize: 11, color: 'var(--sub)' }}>
+                    {d.decision}
+                  </span>
                 </span>
-                <span className="mono" style={{ color: 'var(--announce)' }}>
+                <span style={{ color: 'var(--announce)', fontSize: 11.5, fontWeight: 500 }}>
                   {t.tenantCard.action}: {d.action}
                 </span>
               </div>
 
-              {/* Candidate Rooms Evaluated */}
+              {/* Candidate Rooms Evaluated — crisp spacing, zero middots */}
               {d.candidates && d.candidates.length > 0 && (
-                <div style={{ marginBottom: 6 }}>
-                  <div style={{ fontSize: 10, color: 'var(--sub)', marginBottom: 3 }}>{t.tenantCard.candidates}:</div>
-                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: 4 }}>
+                <div style={{ marginBottom: 7 }}>
+                  <div style={{ fontSize: 10.5, color: 'var(--sub)', marginBottom: 4 }}>{t.tenantCard.candidates}</div>
+                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: 5 }}>
                     {d.candidates.map((c, ci) => {
                       const applied = d.apply?.some((a) => a.room_id === c.room_id);
                       const z = c.zone ? dataset.zoneById[c.zone] : undefined;
@@ -140,18 +148,31 @@ export function TenantDetailCard({
                           type="button"
                           onClick={() => c.room_id !== undefined && onSelectRoom(c.room_id)}
                           style={{
+                            display: 'inline-flex',
+                            alignItems: 'baseline',
+                            gap: 5,
                             border: `1px solid ${applied ? 'var(--announce)' : 'var(--line)'}`,
-                            background: applied ? 'color-mix(in srgb, var(--announce) 16%, transparent)' : 'var(--inset)',
-                            color: applied ? 'var(--announce)' : 'var(--sub)',
-                            borderRadius: 3,
-                            padding: '2px 6px',
-                            fontSize: 10,
+                            background: applied ? 'color-mix(in srgb, var(--announce) 14%, transparent)' : 'var(--panel-solid)',
+                            color: applied ? 'var(--announce)' : 'var(--text-soft)',
+                            borderRadius: 4,
+                            padding: '2.5px 7px',
+                            fontSize: 10.5,
                             cursor: 'pointer',
                           }}
                         >
-                          #{c.room_id} {z ? (lang === 'zh' ? z.name : z.name_en) : c.zone} · ¥{Math.round(c.rent ?? 0)}
-                          {c.min != null ? ` · ${c.min}m` : ''}
-                          {applied ? ' ★' : ''}
+                          <span className="num" style={{ opacity: 0.7 }}>
+                            #{c.room_id}
+                          </span>
+                          <span>{z ? (lang === 'zh' ? z.name : z.name_en) : c.zone}</span>
+                          <span className="num" style={{ fontWeight: 500 }}>
+                            ¥{Math.round(c.rent ?? 0)}
+                          </span>
+                          {c.min != null && (
+                            <span className="num" style={{ opacity: 0.75 }}>
+                              {c.min}m
+                            </span>
+                          )}
+                          {applied && <span>★</span>}
                         </button>
                       );
                     })}
@@ -159,7 +180,9 @@ export function TenantDetailCard({
                 </div>
               )}
 
-              <div style={{ color: 'var(--text-soft)', lineHeight: 1.5 }}>“{d.reason}”</div>
+              <div className="serif" style={{ color: 'var(--text)', lineHeight: 1.62, fontSize: 13 }}>
+                “{d.reason}”
+              </div>
             </div>
           ))
         )}

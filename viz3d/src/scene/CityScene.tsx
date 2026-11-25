@@ -259,12 +259,12 @@ function InnerCityScene(props: InnerSceneProps) {
             ctx.lineTo(dx, targetH);
             ctx.stroke();
 
-            ctx.font = `600 ${Math.round(22 * scale)}px "JetBrains Mono", sans-serif`;
+            ctx.font = `600 ${Math.round(22 * scale)}px "DIN Alternate", "JetBrains Mono", sans-serif`;
             ctx.fillStyle = '#4EA8FF';
-            ctx.fillText('S · Sudden Open (Uninformed)', Math.round(36 * scale), Math.round(52 * scale));
+            ctx.fillText('S  Sudden Open (Uninformed)', Math.round(36 * scale), Math.round(52 * scale));
             ctx.fillStyle = '#FF6B57';
             ctx.textAlign = 'right';
-            ctx.fillText('P · Pre-Announced (M13 Notice)', targetW - Math.round(36 * scale), Math.round(52 * scale));
+            ctx.fillText('P  Pre-Announced (M13 Notice)', targetW - Math.round(36 * scale), Math.round(52 * scale));
             ctx.textAlign = 'left';
           }
 

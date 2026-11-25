@@ -33,23 +33,26 @@ export function ChapterBar({ mode, chapterIndex, lang, onSelectChapter, onExitPr
         }}
       >
         <div style={{ maxWidth: 760, padding: '0 32px', textAlign: 'left' }}>
-          <div className="kicker" style={{ fontSize: 13, color: 'var(--sub)' }}>
-            {lang === 'zh' ? '北京 · LLM 多智能体租赁市场实验' : 'Beijing · an LLM multi-agent rental market experiment'}
+          <div className="meta-row kicker" style={{ fontSize: 12.5, gap: 10 }}>
+            <span style={{ color: 'var(--cool)', fontWeight: 600 }}>{lang === 'zh' ? '北京' : 'BEIJING'}</span>
+            <span className="sep" />
+            <span>{lang === 'zh' ? 'LLM 多智能体租赁市场实验' : 'An LLM multi-agent rental market experiment'}</span>
           </div>
           <h1
             className="serif"
             style={{
               fontSize: 'clamp(40px, 4.6vw, 68px)',
               fontWeight: 600,
-              lineHeight: 1.15,
-              marginTop: 14,
+              lineHeight: 1.18,
+              letterSpacing: '0.02em',
+              marginTop: 16,
             }}
           >
             {lang === 'zh' ? '一条还没开通的地铁，' : 'A metro line that has not opened yet'}
             <br />
             {lang === 'zh' ? '会不会先抬高房租？' : 'Does it raise rents first?'}
           </h1>
-          <p className="serif" style={{ fontSize: 18, color: 'var(--text-soft)', marginTop: 22, lineHeight: 1.7, maxWidth: 620 }}>
+          <p className="serif" style={{ fontSize: 17.5, color: 'var(--text-soft)', marginTop: 22, lineHeight: 1.75, maxWidth: 620 }}>
             {ch.narration}
           </p>
           <div
@@ -66,12 +69,12 @@ export function ChapterBar({ mode, chapterIndex, lang, onSelectChapter, onExitPr
             <button
               type="button"
               className="btn-hud"
-              style={{ padding: '9px 20px', fontSize: 14, color: 'var(--on-text)', background: 'var(--text)', borderColor: 'var(--text)' }}
+              style={{ padding: '9px 22px', fontSize: 14, color: 'var(--on-text)', background: 'var(--text)', borderColor: 'var(--text)' }}
               onClick={() => onSelectChapter(1)}
             >
               {lang === 'zh' ? '开始演示 →' : 'Start →'}
             </button>
-            <button type="button" className="btn-hud" style={{ padding: '9px 4px', fontSize: 14, border: 'none' }} onClick={onExitPresentation}>
+            <button type="button" className="btn-hud ghost" style={{ padding: '9px 6px', fontSize: 13.5 }} onClick={onExitPresentation}>
               {lang === 'zh' ? '自由探索（Esc）' : 'Explore freely (Esc)'}
             </button>
           </div>
@@ -83,10 +86,10 @@ export function ChapterBar({ mode, chapterIndex, lang, onSelectChapter, onExitPr
 
   return (
     <div
-      className="hud-panel"
+      className="hud-panel amber"
       style={{
         width: '100%',
-        padding: '10px 16px',
+        padding: '8px 13px',
         display: 'flex',
         flexDirection: 'column',
         gap: 5,
@@ -99,12 +102,12 @@ export function ChapterBar({ mode, chapterIndex, lang, onSelectChapter, onExitPr
           className="btn-hud"
           disabled={chapterIndex <= 0}
           onClick={() => onSelectChapter(Math.max(0, chapterIndex - 1))}
-          style={{ padding: '2px 6px', border: 'none', opacity: chapterIndex <= 0 ? 0.3 : 1 }}
+          style={{ padding: '2px 6px', opacity: chapterIndex <= 0 ? 0.35 : 1 }}
         >
           <ChevronLeft size={13} />
         </button>
 
-        <div style={{ display: 'flex', gap: 2, flex: 1, justifyContent: 'center', flexWrap: 'nowrap', minWidth: 0 }}>
+        <div style={{ display: 'flex', gap: 4, flex: 1, justifyContent: 'center', flexWrap: 'wrap', minWidth: 0 }}>
           {CHAPTERS.map((c) => {
             const on = c.id === chapterIndex;
             return (
@@ -112,16 +115,20 @@ export function ChapterBar({ mode, chapterIndex, lang, onSelectChapter, onExitPr
                 key={c.id}
                 type="button"
                 onClick={() => onSelectChapter(c.id)}
+                className="num"
                 style={{
-                  border: 'none',
-                  borderBottom: `1.5px solid ${on ? 'var(--text)' : 'transparent'}`,
-                  background: 'transparent',
-                  color: on ? 'var(--text)' : 'var(--faint)',
-                  padding: '1px 6px 3px',
-                  fontSize: 12,
+                  border: `1px solid ${on ? 'var(--announce)' : 'var(--line)'}`,
+                  background: on ? 'color-mix(in srgb, var(--announce) 20%, transparent)' : 'var(--btn-bg)',
+                  color: on ? 'var(--announce)' : 'var(--sub)',
+                  boxShadow: on ? '0 0 10px color-mix(in srgb, var(--announce) 26%, transparent)' : 'none',
+                  borderRadius: 5,
+                  minWidth: 24,
+                  padding: '2px 7px',
+                  fontSize: 11,
+                  fontWeight: on ? 600 : 400,
+                  lineHeight: 1.25,
                   cursor: 'pointer',
-                  fontFamily: 'var(--font-sans)',
-                  fontVariantNumeric: 'tabular-nums',
+                  transition: 'all 0.15s ease',
                 }}
               >
                 {c.id}
@@ -135,15 +142,24 @@ export function ChapterBar({ mode, chapterIndex, lang, onSelectChapter, onExitPr
           className="btn-hud"
           disabled={chapterIndex >= CHAPTERS.length - 1}
           onClick={() => onSelectChapter(Math.min(CHAPTERS.length - 1, chapterIndex + 1))}
-          style={{ padding: '2px 6px', border: 'none', opacity: chapterIndex >= CHAPTERS.length - 1 ? 0.3 : 1 }}
+          style={{ padding: '2px 6px', opacity: chapterIndex >= CHAPTERS.length - 1 ? 0.35 : 1 }}
         >
           <ChevronRight size={13} />
         </button>
       </div>
 
-      <div style={{ display: 'flex', alignItems: 'baseline', columnGap: 10, rowGap: 2, flexWrap: 'wrap' }}>
-        <span className="serif" style={{ fontSize: 15, fontWeight: 600, color: 'var(--text)' }}>{ch.title}</span>
-        <span className="serif" style={{ fontSize: 14, color: 'var(--text-soft)', lineHeight: 1.55, flex: '1 1 260px', minWidth: 0 }}>{ch.narration}</span>
+      <div style={{ display: 'flex', alignItems: 'baseline', gap: 10 }}>
+        <span style={{ display: 'inline-flex', alignItems: 'baseline', gap: 5, whiteSpace: 'nowrap', flexShrink: 0 }}>
+          <span className="tag-id" style={{ fontSize: 12, color: 'var(--announce)' }}>
+            {ch.code}
+          </span>
+          <span style={{ fontSize: 12, fontWeight: 600, color: 'var(--announce)' }}>
+            {ch.title}
+          </span>
+        </span>
+        <span style={{ fontSize: 12, color: 'var(--text)', lineHeight: 1.45, minWidth: 0 }}>
+          {ch.narration}
+        </span>
       </div>
     </div>
   );

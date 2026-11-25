@@ -37,17 +37,25 @@ export function MoverProfileOverlay({ monthlyP, monthlyS, lang }: MoverProfileOv
     const d = stats[sc];
     const tot = Math.max(1, d.total);
     return (
-      <div style={{ marginBottom: 8 }}>
-        <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 11, marginBottom: 3 }}>
-          <span style={{ color: sc === 'P' ? 'var(--p)' : 'var(--s)', fontWeight: 600 }}>
-            {sc} ({d.total} {t.moverProfile.totalMoves})
+      <div style={{ marginBottom: 9 }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: 11.5, marginBottom: 4, gap: 8 }}>
+          <span style={{ display: 'inline-flex', alignItems: 'baseline', gap: 6 }}>
+            <span className="tag-id" style={{ color: sc === 'P' ? 'var(--p)' : 'var(--s)', fontSize: 11.5 }}>{sc}</span>
+            <span className="num" style={{ color: 'var(--sub)', fontSize: 11 }}>
+              {d.total} {t.moverProfile.totalMoves}
+            </span>
           </span>
-          <span className="mono" style={{ color: 'var(--sub)' }}>
-            {t.moverProfile.meanIncome}: ¥{Math.round(d.meanInc).toLocaleString()} · {t.moverProfile.meanCash}: ¥
-            {Math.round(d.meanCash).toLocaleString()}
+          <span className="meta-row num" style={{ color: 'var(--sub)', fontSize: 11 }}>
+            <span>
+              {t.moverProfile.meanIncome} ¥{Math.round(d.meanInc).toLocaleString()}
+            </span>
+            <span className="sep" />
+            <span>
+              {t.moverProfile.meanCash} ¥{Math.round(d.meanCash).toLocaleString()}
+            </span>
           </span>
         </div>
-        <div style={{ display: 'flex', height: 10, borderRadius: 3, overflow: 'hidden', background: 'var(--track)' }}>
+        <div style={{ display: 'flex', height: 9, borderRadius: 3, overflow: 'hidden', background: 'var(--track)' }}>
           <div style={{ width: `${(d.groups.low / tot) * 100}%`, background: 'var(--inc-low)' }} title={`low: ${d.groups.low}`} />
           <div style={{ width: `${(d.groups.mid / tot) * 100}%`, background: 'var(--inc-mid)' }} title={`mid: ${d.groups.mid}`} />
           <div style={{ width: `${(d.groups.high / tot) * 100}%`, background: 'var(--inc-high)' }} title={`high: ${d.groups.high}`} />
@@ -58,18 +66,18 @@ export function MoverProfileOverlay({ monthlyP, monthlyS, lang }: MoverProfileOv
 
   return (
     <div
-      className="hud-panel"
+      className="hud-panel accent-cool"
       style={{
         width: '100%',
         maxWidth: 480,
         margin: '0 auto',
-        padding: '10px 14px',
+        padding: '12px 15px',
         flexShrink: 0,
       }}
     >
-      <div className="panel-header" style={{ marginBottom: 8 }}>
+      <div className="panel-header" style={{ marginBottom: 10 }}>
         <span>{t.moverProfile.title}</span>
-        <div style={{ display: 'flex', gap: 8, fontSize: 10 }}>
+        <div style={{ display: 'flex', gap: 10, fontSize: 10.5 }}>
           <span style={{ color: 'var(--inc-low)' }}>■ {t.moverProfile.low}</span>
           <span style={{ color: 'var(--inc-mid)' }}>■ {t.moverProfile.mid}</span>
           <span style={{ color: 'var(--inc-high)' }}>■ {t.moverProfile.high}</span>
@@ -90,12 +98,24 @@ function badgeColor(v?: string): { bg: string; border: string; text: string } {
   if (!v) return { bg: 'var(--line-soft)', border: 'var(--tick)', text: 'var(--sub)' };
   const u = v.toUpperCase();
   if (u.startsWith('SUPPORTED') || u === 'PASS' || u === 'OK' || u.startsWith('NOT OVER')) {
-    return { bg: 'color-mix(in srgb, var(--cool) 16%, transparent)', border: 'var(--down)', text: 'var(--down)' };
+    return {
+      bg: 'color-mix(in srgb, var(--down) 14%, transparent)',
+      border: 'color-mix(in srgb, var(--down) 55%, transparent)',
+      text: 'var(--down)',
+    };
   }
   if (u.startsWith('DIRECTIONAL') || u.startsWith('CAVEAT')) {
-    return { bg: 'color-mix(in srgb, var(--announce) 16%, transparent)', border: 'var(--up)', text: 'var(--up)' };
+    return {
+      bg: 'color-mix(in srgb, var(--announce) 14%, transparent)',
+      border: 'color-mix(in srgb, var(--announce) 55%, transparent)',
+      text: 'var(--announce)',
+    };
   }
-  return { bg: 'color-mix(in srgb, var(--announce) 16%, transparent)', border: 'var(--up)', text: 'var(--up)' };
+  return {
+    bg: 'color-mix(in srgb, var(--p) 14%, transparent)',
+    border: 'color-mix(in srgb, var(--p) 55%, transparent)',
+    text: 'var(--p)',
+  };
 }
 
 /**
@@ -120,32 +140,41 @@ export function VerdictOverlay({ verdicts, lang }: VerdictOverlayProps) {
       className="hud-panel amber hud-scroll"
       style={{
         width: '100%',
-        maxWidth: 560,
+        maxWidth: 580,
         maxHeight: '100%',
         margin: '0 auto',
-        padding: '12px 15px',
-        background: 'var(--panel-strong)',
+        padding: '13px 16px',
+        backgroundColor: 'var(--panel-strong)',
       }}
     >
       <div className="panel-header" style={{ marginBottom: 4 }}>
-        <span style={{ fontSize: 15 }}>{t.verdicts.title}</span>
-        <span className="mono" style={{ fontSize: 11, color: 'var(--announce)' }}>
-          {verdicts.group} · {verdicts.seeds.length} {lang === 'zh' ? '种子' : 'seeds'}
+        <span className="serif" style={{ fontSize: 15.5, fontWeight: 500, letterSpacing: '0.02em' }}>
+          {t.verdicts.title}
+        </span>
+        <span className="meta-row num" style={{ fontSize: 11, color: 'var(--announce)' }}>
+          <span>{verdicts.group}</span>
+          <span className="sep" />
+          <span>
+            {verdicts.seeds.length} {lang === 'zh' ? '种子' : 'seeds'}
+          </span>
         </span>
       </div>
-      <div style={{ fontSize: 10.5, color: 'var(--sub)', marginBottom: 12 }}>{t.verdicts.subtitle}</div>
+      <div style={{ fontSize: 11, color: 'var(--sub)', marginBottom: 12, lineHeight: 1.5 }}>{t.verdicts.subtitle}</div>
 
       <div style={{ display: 'flex', flexDirection: 'column', gap: 9 }}>
         {/* H1 */}
-        <div style={{ padding: '10px 12px', background: 'var(--inset)', border: '1px solid var(--line)', borderRadius: 4 }}>
+        <div style={{ padding: '10px 13px', background: 'var(--inset)', border: '1px solid var(--line)', borderRadius: 6 }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 8 }}>
-            <span style={{ fontWeight: 600, fontSize: 13 }}>{t.verdicts.h1Title}</span>
+            <span style={{ display: 'inline-flex', alignItems: 'baseline', gap: 7, fontWeight: 600, fontSize: 13 }}>
+              <span className="tag-id" style={{ color: 'var(--announce)' }}>{t.verdicts.h1Code}</span>
+              <span>{t.verdicts.h1Title}</span>
+            </span>
             <span
               className="mono"
               style={{
                 fontSize: 10.5,
                 padding: '2px 8px',
-                borderRadius: 3,
+                borderRadius: 4,
                 background: h1Style.bg,
                 border: `1px solid ${h1Style.border}`,
                 color: h1Style.text,
@@ -154,25 +183,35 @@ export function VerdictOverlay({ verdicts, lang }: VerdictOverlayProps) {
               {r.H1?.verdict ?? 'N/A'}
             </span>
           </div>
-          <div style={{ fontSize: 11, color: 'var(--sub)', marginTop: 3 }}>{t.verdicts.h1Desc}</div>
+          <div style={{ fontSize: 11, color: 'var(--sub)', marginTop: 4, lineHeight: 1.5 }}>{t.verdicts.h1Desc}</div>
           {r.H1 && (
-            <div className="mono" style={{ fontSize: 11.5, marginTop: 6, color: 'var(--text)' }}>
-              b_P = <b>{r.H1.b_P_pct !== null ? `${r.H1.b_P_pct >= 0 ? '+' : ''}${r.H1.b_P_pct}%` : '—'}</b> · 95% CI:{' '}
-              {fmtCI(r.H1.ci95_pct, '%')} · n={r.H1.n_offers} · Aux M24 P−S: {r.H1.aux_P_minus_S_rent_index_M24}
+            <div className="meta-row mono" style={{ fontSize: 11, marginTop: 7, color: 'var(--text)', rowGap: 4 }}>
+              <span>
+                b_P = <b>{r.H1.b_P_pct !== null ? `${r.H1.b_P_pct >= 0 ? '+' : ''}${r.H1.b_P_pct}%` : '—'}</b>
+              </span>
+              <span className="sep" />
+              <span>95% CI {fmtCI(r.H1.ci95_pct, '%')}</span>
+              <span className="sep" />
+              <span>n={r.H1.n_offers}</span>
+              <span className="sep" />
+              <span>Aux M24 P−S: {r.H1.aux_P_minus_S_rent_index_M24}</span>
             </div>
           )}
         </div>
 
         {/* H2 */}
-        <div style={{ padding: '10px 12px', background: 'var(--inset)', border: '1px solid var(--line)', borderRadius: 4 }}>
+        <div style={{ padding: '10px 13px', background: 'var(--inset)', border: '1px solid var(--line)', borderRadius: 6 }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 8 }}>
-            <span style={{ fontWeight: 600, fontSize: 13 }}>{t.verdicts.h2Title}</span>
+            <span style={{ display: 'inline-flex', alignItems: 'baseline', gap: 7, fontWeight: 600, fontSize: 13 }}>
+              <span className="tag-id" style={{ color: 'var(--announce)' }}>{t.verdicts.h2Code}</span>
+              <span>{t.verdicts.h2Title}</span>
+            </span>
             <span
               className="mono"
               style={{
                 fontSize: 10.5,
                 padding: '2px 8px',
-                borderRadius: 3,
+                borderRadius: 4,
                 background: h2Style.bg,
                 border: `1px solid ${h2Style.border}`,
                 color: h2Style.text,
@@ -181,27 +220,40 @@ export function VerdictOverlay({ verdicts, lang }: VerdictOverlayProps) {
               {r.H2?.verdict ?? 'N/A'}
             </span>
           </div>
-          <div style={{ fontSize: 11, color: 'var(--sub)', marginTop: 3 }}>{t.verdicts.h2Desc}</div>
+          <div style={{ fontSize: 11, color: 'var(--sub)', marginTop: 4, lineHeight: 1.5 }}>{t.verdicts.h2Desc}</div>
           {r.H2 && (
-            <div className="mono" style={{ fontSize: 11.5, marginTop: 6, color: 'var(--text)' }}>
-              ΔIncome: <b>{r.H2.income.P_minus_S !== null ? `${r.H2.income.P_minus_S >= 0 ? '+' : ''}¥${r.H2.income.P_minus_S}` : '—'}</b>{' '}
-              {fmtCI(r.H2.income.ci95)} · ΔCash:{' '}
-              <b>{r.H2.cash.P_minus_S !== null ? `${r.H2.cash.P_minus_S >= 0 ? '+' : ''}¥${r.H2.cash.P_minus_S}` : '—'}</b>{' '}
-              (n: P={r.H2.n_move_ins.P}, S={r.H2.n_move_ins.S})
+            <div className="meta-row mono" style={{ fontSize: 11, marginTop: 7, color: 'var(--text)', rowGap: 4 }}>
+              <span>
+                ΔIncome{' '}
+                <b>{r.H2.income.P_minus_S !== null ? `${r.H2.income.P_minus_S >= 0 ? '+' : ''}¥${r.H2.income.P_minus_S}` : '—'}</b>{' '}
+                {fmtCI(r.H2.income.ci95)}
+              </span>
+              <span className="sep" />
+              <span>
+                ΔCash{' '}
+                <b>{r.H2.cash.P_minus_S !== null ? `${r.H2.cash.P_minus_S >= 0 ? '+' : ''}¥${r.H2.cash.P_minus_S}` : '—'}</b>
+              </span>
+              <span className="sep" />
+              <span>
+                n: P={r.H2.n_move_ins.P}, S={r.H2.n_move_ins.S}
+              </span>
             </div>
           )}
         </div>
 
         {/* H3 */}
-        <div style={{ padding: '10px 12px', background: 'var(--inset)', border: '1px solid var(--line)', borderRadius: 4 }}>
+        <div style={{ padding: '10px 13px', background: 'var(--inset)', border: '1px solid var(--line)', borderRadius: 6 }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 8 }}>
-            <span style={{ fontWeight: 600, fontSize: 13 }}>{t.verdicts.h3Title}</span>
+            <span style={{ display: 'inline-flex', alignItems: 'baseline', gap: 7, fontWeight: 600, fontSize: 13 }}>
+              <span className="tag-id" style={{ color: 'var(--announce)' }}>{t.verdicts.h3Code}</span>
+              <span>{t.verdicts.h3Title}</span>
+            </span>
             <span
               className="mono"
               style={{
                 fontSize: 10.5,
                 padding: '2px 8px',
-                borderRadius: 3,
+                borderRadius: 4,
                 background: h3Style.bg,
                 border: `1px solid ${h3Style.border}`,
                 color: h3Style.text,
@@ -210,28 +262,36 @@ export function VerdictOverlay({ verdicts, lang }: VerdictOverlayProps) {
               {r.H3?.verdict ?? 'N/A'}
             </span>
           </div>
-          <div style={{ fontSize: 11, color: 'var(--sub)', marginTop: 3 }}>{t.verdicts.h3Desc}</div>
+          <div style={{ fontSize: 11, color: 'var(--sub)', marginTop: 4, lineHeight: 1.5 }}>{t.verdicts.h3Desc}</div>
           {r.H3 && (
-            <div className="mono" style={{ fontSize: 11.5, marginTop: 6, color: 'var(--text)' }}>
-              No-hike (tight): L={r.H3.L_no_hike_when_tight !== null ? `${(r.H3.L_no_hike_when_tight * 100).toFixed(1)}%` : '—'} vs R=
-              {r.H3.R_no_hike_when_tight != null ? `${(r.H3.R_no_hike_when_tight * 100).toFixed(1)}%` : '—'} · Counter accept: L=
-              {r.H3.L_counter_accept !== null ? `${(r.H3.L_counter_accept * 100).toFixed(1)}%` : '—'} vs R=
-              {r.H3.R_counter_accept != null ? `${(r.H3.R_counter_accept * 100).toFixed(1)}%` : '—'}
+            <div className="meta-row mono" style={{ fontSize: 11, marginTop: 7, color: 'var(--text)', rowGap: 4 }}>
+              <span>
+                No-hike (tight): L={r.H3.L_no_hike_when_tight !== null ? `${(r.H3.L_no_hike_when_tight * 100).toFixed(1)}%` : '—'} vs R=
+                {r.H3.R_no_hike_when_tight != null ? `${(r.H3.R_no_hike_when_tight * 100).toFixed(1)}%` : '—'}
+              </span>
+              <span className="sep" />
+              <span>
+                Counter accept: L={r.H3.L_counter_accept !== null ? `${(r.H3.L_counter_accept * 100).toFixed(1)}%` : '—'} vs R=
+                {r.H3.R_counter_accept != null ? `${(r.H3.R_counter_accept * 100).toFixed(1)}%` : '—'}
+              </span>
             </div>
           )}
         </div>
 
         {/* Bias B & Quality Gate Row */}
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8 }}>
-          <div style={{ padding: '8px 10px', background: 'var(--inset)', border: '1px solid var(--line)', borderRadius: 4 }}>
-            <div style={{ fontSize: 10.5, color: 'var(--sub)' }}>{t.verdicts.biasTitle}</div>
-            <div className="mono" style={{ fontSize: 11, marginTop: 4, color: bStyle.text }}>
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 9 }}>
+          <div style={{ padding: '9px 11px', background: 'var(--inset)', border: '1px solid var(--line)', borderRadius: 6 }}>
+            <div style={{ display: 'inline-flex', alignItems: 'baseline', gap: 6, fontSize: 11, color: 'var(--sub)' }}>
+              <span className="tag-id" style={{ color: 'var(--text-soft)', fontSize: 10.5 }}>{t.verdicts.biasCode}</span>
+              <span>{t.verdicts.biasTitle}</span>
+            </div>
+            <div className="mono" style={{ fontSize: 11, marginTop: 5, color: bStyle.text }}>
               {r.B?.verdict ?? 'N/A'}
             </div>
           </div>
-          <div style={{ padding: '8px 10px', background: 'var(--inset)', border: '1px solid var(--line)', borderRadius: 4 }}>
-            <div style={{ fontSize: 10.5, color: 'var(--sub)' }}>{t.verdicts.qualityTitle}</div>
-            <div className="mono" style={{ fontSize: 11, marginTop: 4, color: qStyle.text }}>
+          <div style={{ padding: '9px 11px', background: 'var(--inset)', border: '1px solid var(--line)', borderRadius: 6 }}>
+            <div style={{ fontSize: 11, color: 'var(--sub)' }}>{t.verdicts.qualityTitle}</div>
+            <div className="mono" style={{ fontSize: 11, marginTop: 5, color: qStyle.text }}>
               {r.quality ? `${r.quality.verdict} (max ${(r.quality.max_fallback_rate * 100).toFixed(2)}%)` : 'N/A'}
             </div>
           </div>
