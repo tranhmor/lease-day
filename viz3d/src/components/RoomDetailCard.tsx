@@ -16,9 +16,9 @@ interface RoomDetailCardProps {
 }
 
 const GROUP_COLORS: Record<IncomeGroup, string> = {
-  low: '#7FA8A0',
-  mid: '#B7A27A',
-  high: '#9C7FB0',
+  low: 'var(--inc-low)',
+  mid: 'var(--inc-mid)',
+  high: 'var(--inc-high)',
 };
 
 export function RoomDetailCard({
@@ -127,8 +127,8 @@ export function RoomDetailCard({
         padding: '13px 15px',
         display: 'flex',
         flexDirection: 'column',
-        background: 'rgba(14, 16, 20, 0.95)',
-        boxShadow: '0 16px 48px rgba(0, 0, 0, 0.65)',
+        background: 'var(--panel-strong)',
+        boxShadow: 'var(--shadow-strong)',
         overflow: 'hidden',
       }}
     >
@@ -158,30 +158,30 @@ export function RoomDetailCard({
           ¥{Math.round(minR)}–{Math.round(maxR)}
         </span>
       </div>
-      <svg viewBox={`0 0 ${W} ${H}`} style={{ width: '100%', height: 90, background: 'rgba(20, 23, 28,0.55)', borderRadius: 4 }}>
-        <line x1={x(13)} x2={x(13)} y1={4} y2={H - 4} stroke="#E4572E" strokeOpacity={0.45} strokeDasharray="3 2" />
-        <line x1={x(25)} x2={x(25)} y1={4} y2={H - 4} stroke="#8FA6BD" strokeOpacity={0.45} strokeDasharray="3 2" />
-        <text x={x(13) + 3} y={12} fontSize={8.5} fill="#E4572E" fontFamily="monospace">
+      <svg viewBox={`0 0 ${W} ${H}`} style={{ width: '100%', height: 90, background: 'var(--panel-inset-2)', borderRadius: 4 }}>
+        <line x1={x(13)} x2={x(13)} y1={4} y2={H - 4} stroke="var(--announce)" strokeOpacity={0.45} strokeDasharray="3 2" />
+        <line x1={x(25)} x2={x(25)} y1={4} y2={H - 4} stroke="var(--cool)" strokeOpacity={0.45} strokeDasharray="3 2" />
+        <text x={x(13) + 3} y={12} fontSize={8.5} fill="var(--announce)" fontFamily="monospace">
           M13
         </text>
-        <text x={x(25) + 3} y={12} fontSize={8.5} fill="#8FA6BD" fontFamily="monospace">
+        <text x={x(25) + 3} y={12} fontSize={8.5} fill="var(--cool)" fontFamily="monospace">
           M25
         </text>
-        <path d={pathS} fill="none" stroke="#7C9CB8" strokeWidth={1.6} strokeDasharray="4 3" />
-        <path d={pathP} fill="none" stroke="#E4572E" strokeWidth={2.0} />
-        <line x1={x(month)} x2={x(month)} y1={2} y2={H - 2} stroke="#fff" strokeOpacity={0.45} />
-        <circle cx={x(month)} cy={y(rentsP[month - 1])} r={3.5} fill="#E4572E" stroke="#fff" strokeWidth={1} />
+        <path d={pathS} fill="none" stroke="var(--s)" strokeWidth={1.6} strokeDasharray="4 3" />
+        <path d={pathP} fill="none" stroke="var(--p)" strokeWidth={2.0} />
+        <line x1={x(month)} x2={x(month)} y1={2} y2={H - 2} stroke="var(--marker)" strokeOpacity={0.45} />
+        <circle cx={x(month)} cy={y(rentsP[month - 1])} r={3.5} fill="var(--p)" stroke="var(--marker)" strokeWidth={1} />
       </svg>
 
       {/* Tenant Occupancy Ribbon (clickable -> Tenant Card!) */}
       <div style={{ fontSize: 10.5, color: 'var(--sub)', marginTop: 10, marginBottom: 4 }}>
         {t.roomCard.tenantBarTitle}
       </div>
-      <div style={{ display: 'flex', height: 22, gap: 2, borderRadius: 3, overflow: 'hidden', background: '#181B21' }}>
+      <div style={{ display: 'flex', height: 22, gap: 2, borderRadius: 3, overflow: 'hidden', background: 'var(--track)' }}>
         {tenantSpans.map((sp, i) => {
           const widthPct = ((sp.endM - sp.startM + 1) / 36) * 100;
           const isVac = sp.tenantId < 0;
-          const bg = isVac ? '#262A31' : GROUP_COLORS[sp.group ?? 'mid'];
+          const bg = isVac ? 'var(--track)' : GROUP_COLORS[sp.group ?? 'mid'];
           const tooltip = isVac
             ? `M${sp.startM}–M${sp.endM}: ${t.roomCard.vacant}`
             : `M${sp.startM}–M${sp.endM}: Tenant #${sp.tenantId} (${sp.group}, ¥${Math.round(sp.income)}/m)`;
@@ -199,7 +199,7 @@ export function RoomDetailCard({
                 background: bg,
                 opacity: isVac ? 0.55 : 0.88,
                 cursor: isVac ? 'default' : 'pointer',
-                color: '#0E1014',
+                color: 'var(--panel-solid)',
                 fontSize: 9.5,
                 fontWeight: 700,
                 fontFamily: 'var(--font-mono)',
@@ -221,7 +221,7 @@ export function RoomDetailCard({
         {curDec ? (
           <>
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', fontSize: 12, marginBottom: 6 }}>
-              <span className="num" style={{ color: 'var(--text)', fontWeight: 600 }}>
+              <span className="mono" style={{ color: 'var(--announce)', fontWeight: 600 }}>
                 M{String(curDec.m).padStart(2, '0')} ·{' '}
                 {curDec.decision === 'renewal_offer'
                   ? t.feed.renewal
@@ -242,12 +242,12 @@ export function RoomDetailCard({
             <div
               style={{
                 padding: '9px 11px',
-                background: 'rgba(255, 255, 255, 0.035)',
+                background: 'var(--panel-inset)',
                 borderLeft: `2.5px solid ${curDec.mentions_line ? 'var(--announce)' : 'var(--cool)'}`,
                 borderRadius: '0 4px 4px 0',
                 fontSize: 12.5,
                 lineHeight: 1.55,
-                color: '#E8E4DC',
+                color: 'var(--text)',
               }}
             >
               “{curDec.reason}”
@@ -271,11 +271,11 @@ export function RoomDetailCard({
                     marginTop: 6,
                     padding: 8,
                     maxHeight: 165,
-                    background: '#0A0C0F',
+                    background: 'var(--code-bg)',
                     border: '1px solid var(--line)',
                     borderRadius: 4,
                     fontSize: 10,
-                    color: '#AEB6C0',
+                    color: 'var(--code-text)',
                     whiteSpace: 'pre-wrap',
                     wordBreak: 'break-all',
                   }}

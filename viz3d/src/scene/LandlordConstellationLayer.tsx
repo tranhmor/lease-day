@@ -1,5 +1,6 @@
 import { useMemo, useRef } from 'react';
 import * as THREE from 'three';
+import { useScenePalette } from '@/theme';
 import { useFrame } from '@react-three/fiber';
 import type { DecisionRecord, LandlordMeta, RoomStatic } from '@/types/viz';
 
@@ -120,8 +121,10 @@ export function LandlordConstellationLayer({
     return { activeLandlords: aLl, mentionLandlords: mLl, activeRoomLinks: aRm, mentionRoomLinks: mRm };
   }, [decisions, month]);
 
+  const pal = useScenePalette();
   // Build vertex-colored constellation filament BufferGeometry
   const edgeGeometry = useMemo(() => {
+    const B = pal.boost;
     const pos = new Float32Array(roomEdges.length * 6);
     const col = new Float32Array(roomEdges.length * 6);
     const cTmp = new THREE.Color();
@@ -141,29 +144,31 @@ export function LandlordConstellationLayer({
       const isActive = activeRoomLinks.has(e.roomId);
 
       if (isMention) {
-        cTmp.set('#E4572E').multiplyScalar(0.8);
+        cTmp.set(pal.announce).multiplyScalar(B(1.85));
       } else if (e.treated && (announced || opened)) {
-        cTmp.set('#E4572E').multiplyScalar(isActive ? 0.6 : 0.3);
+        cTmp.set(pal.announce).multiplyScalar(pal.isLight ? (isActive ? 1 : 0.85) : isActive ? 1.35 : 0.72);
       } else if (isActive && !isDim) {
-        cTmp.set('#8A8F98').multiplyScalar(0.5);
+        cTmp.set(pal.isLight ? '#3D8FD6' : '#7EC8FF').multiplyScalar(B(1.15));
       } else {
-        cTmp.set('#4A4F57').multiplyScalar(isDim ? 0.08 : 0.22);
+        if (pal.isLight) cTmp.set(isDim ? '#E1E6EE' : '#A7B6CA');
+        else cTmp.set('#4E79B2').multiplyScalar(isDim ? 0.14 : 0.42);
       }
 
       // Slightly brighter at landlord brain apex, softer at room anchor
       col[base] = cTmp.r;
       col[base + 1] = cTmp.g;
       col[base + 2] = cTmp.b;
-      col[base + 3] = cTmp.r * 0.55;
-      col[base + 4] = cTmp.g * 0.55;
-      col[base + 5] = cTmp.b * 0.55;
+      const k = pal.isLight ? 1 : 0.55;
+      col[base + 3] = cTmp.r * k;
+      col[base + 4] = cTmp.g * k;
+      col[base + 5] = cTmp.b * k;
     }
 
     const geo = new THREE.BufferGeometry();
     geo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
     geo.setAttribute('color', new THREE.BufferAttribute(col, 3));
     return geo;
-  }, [roomEdges, activeRoomLinks, mentionRoomLinks, announced, opened, isolateTreated]);
+  }, [roomEdges, activeRoomLinks, mentionRoomLinks, announced, opened, isolateTreated, pal]);
 
   const { octGeo, haloRingGeo } = useMemo(() => {
     const oct = new THREE.OctahedronGeometry(0.14, 0);
@@ -198,13 +203,14 @@ export function LandlordConstellationLayer({
       nMesh.setMatrixAt(i, dummy.matrix);
 
       if (isMention) {
-        tmpCol.set('#E4572E');
+        tmpCol.set(pal.announce).multiplyScalar(pal.boost(1.9));
       } else if (ll.treated && (announced || opened)) {
-        tmpCol.set('#E4572E').multiplyScalar(0.85);
+        tmpCol.set(pal.announce).multiplyScalar(pal.boost(1.3));
       } else if (isActive && !isDim) {
-        tmpCol.set('#E8E4DC');
+        tmpCol.set(pal.isLight ? '#2F78BE' : '#9FD8FF').multiplyScalar(pal.boost(1.35));
       } else {
-        tmpCol.set('#8A8F98').multiplyScalar(isDim ? 0.25 : 0.85);
+        if (pal.isLight) tmpCol.set(isDim ? '#D5DCE6' : ll.agency ? '#7F65C4' : '#5D9FD8');
+        else tmpCol.set(ll.agency ? '#A78BFA' : '#6FAFF0').multiplyScalar(isDim ? 0.2 : 0.8);
       }
       nMesh.setColorAt(i, tmpCol);
 
@@ -233,7 +239,7 @@ export function LandlordConstellationLayer({
           vertexColors
           transparent
           opacity={0.78}
-          blending={THREE.AdditiveBlending}
+          blending={pal.glowBlending}
           depthWrite={false}
           toneMapped={false}
         />

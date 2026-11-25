@@ -1,5 +1,6 @@
 import { useMemo } from 'react';
 import * as THREE from 'three';
+import { useScenePalette } from '@/theme';
 import type { GeoJSONCollection, ProjectionMeta } from '@/types/viz';
 import { LocalProjector } from '@/data/geo';
 
@@ -102,25 +103,27 @@ export function BasemapLayer({ basemap, projection, dimmed = false }: BasemapLay
   }, [basemap, projection]);
 
   const dimFactor = dimmed ? 0.42 : 1.0;
+  const pal = useScenePalette();
+  const bm = pal.basemap;
 
   return (
     <group name="L1_basemap">
       {geometries.waterPolyGeo && (
         <mesh geometry={geometries.waterPolyGeo}>
-          <meshBasicMaterial color="#0A0B0E" transparent opacity={0.95 * dimFactor} depthWrite={false} />
+          <meshBasicMaterial color={bm.water} transparent opacity={0.92 * dimFactor} depthWrite={false} />
         </mesh>
       )}
       <lineSegments geometry={geometries.waterLineGeo}>
-        <lineBasicMaterial color="#22262C" transparent opacity={0.7 * dimFactor} depthWrite={false} />
+        <lineBasicMaterial color={bm.arterial} transparent opacity={0.55 * dimFactor} depthWrite={false} />
       </lineSegments>
       <lineSegments geometry={geometries.districtGeo}>
-        <lineBasicMaterial color="#3A3F47" transparent opacity={0.35 * dimFactor} depthWrite={false} />
+        <lineBasicMaterial color={bm.district} transparent opacity={0.28 * dimFactor} depthWrite={false} />
       </lineSegments>
       <lineSegments geometry={geometries.arterialGeo}>
-        <lineBasicMaterial color="#30343B" transparent opacity={0.75 * dimFactor} depthWrite={false} />
+        <lineBasicMaterial color={bm.ring} transparent opacity={0.5 * dimFactor} depthWrite={false} />
       </lineSegments>
       <lineSegments geometry={geometries.ringGeo}>
-        <lineBasicMaterial color="#4A4F57" transparent opacity={0.85 * dimFactor} depthWrite={false} />
+        <lineBasicMaterial color={bm.building} transparent opacity={0.78 * dimFactor} depthWrite={false} />
       </lineSegments>
     </group>
   );

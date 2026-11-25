@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useRef } from 'react';
 import * as THREE from 'three';
+import { useScenePalette } from '@/theme';
 import { useFrame } from '@react-three/fiber';
 import type { IncomeGroup, RoomStatic, SimEvent } from '@/types/viz';
 
@@ -12,9 +13,9 @@ interface MoveArcsLayerProps {
 }
 
 const INCOME_COLORS: Record<IncomeGroup, string> = {
-  low: '#7FA8A0',
-  mid: '#B7A27A',
-  high: '#9C7FB0',
+  low: '#2DD4BF',
+  mid: '#A78BFA',
+  high: '#F472B6',
 };
 
 const SEGMENTS = 28;
@@ -70,6 +71,7 @@ export function MoveArcsLayer({ month, events, rooms, visible, highlighted = fal
 
   const tmpCol = useMemo(() => new THREE.Color(), []);
 
+  const pal = useScenePalette();
   useFrame(() => {
     if (!visible || !lineRef.current || monthMoves.length === 0) return;
     const age = performance.now() / 1000 - birthRef.current;
@@ -83,7 +85,7 @@ export function MoveArcsLayer({ month, events, rooms, visible, highlighted = fal
       const tail = Math.max(0, progress - 0.55);
       const fade = localT > 1.25 ? (highlighted ? 0.8 : 0.45) : 1.0 - Math.max(0, (progress - 0.95) / 0.35) * 0.5;
 
-      tmpCol.set(INCOME_COLORS[arc.group]).multiplyScalar(highlighted ? 1.0 : 0.8);
+      tmpCol.set(pal.income[arc.group] ?? INCOME_COLORS[arc.group]).multiplyScalar(pal.boost(highlighted ? 1.6 : 1.25));
 
       for (let s = 0; s < SEGMENTS; s++) {
         const t0 = s / SEGMENTS;
@@ -139,8 +141,9 @@ export function MoveArcsLayer({ month, events, rooms, visible, highlighted = fal
         vertexColors
         transparent
         opacity={0.9}
-        blending={THREE.AdditiveBlending}
+        blending={pal.glowBlending}
         depthWrite={false}
+        toneMapped={false}
       />
     </lineSegments>
   );

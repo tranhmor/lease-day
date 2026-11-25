@@ -29,6 +29,7 @@ import { ZoneLabelsLayer } from './ZoneLabelsLayer';
 import { LandlordConstellationLayer } from './LandlordConstellationLayer';
 import { SpatialMindCallouts } from './SpatialMindCallouts';
 import { BidRentTerrainLayer } from './BidRentTerrainLayer';
+import { useScenePalette } from '@/theme';
 import { PostEffects } from './PostEffects';
 
 export interface SceneHandle {
@@ -247,7 +248,7 @@ function InnerCityScene(props: InnerSceneProps) {
           const scale = targetW / 1920;
           if (viewMode === 'split') {
             const dx = Math.round(targetW * splitRatio);
-            ctx.strokeStyle = '#E4572E';
+            ctx.strokeStyle = '#FFB02E';
             ctx.lineWidth = Math.max(2, 2 * scale);
             ctx.beginPath();
             ctx.moveTo(dx, 0);
@@ -255,9 +256,9 @@ function InnerCityScene(props: InnerSceneProps) {
             ctx.stroke();
 
             ctx.font = `600 ${Math.round(22 * scale)}px "JetBrains Mono", sans-serif`;
-            ctx.fillStyle = '#7C9CB8';
+            ctx.fillStyle = '#4EA8FF';
             ctx.fillText('S · Sudden Open (Uninformed)', Math.round(36 * scale), Math.round(52 * scale));
-            ctx.fillStyle = '#E4572E';
+            ctx.fillStyle = '#FF6B57';
             ctx.textAlign = 'right';
             ctx.fillText('P · Pre-Announced (M13 Notice)', targetW - Math.round(36 * scale), Math.round(52 * scale));
             ctx.textAlign = 'left';
@@ -268,10 +269,10 @@ function InnerCityScene(props: InnerSceneProps) {
             const padX = Math.round(28 * scale);
             const padY = Math.round(24 * scale);
             ctx.font = `500 ${Math.round(16 * scale)}px "Source Han Sans SC", "PingFang SC", sans-serif`;
-            ctx.fillStyle = 'rgba(14, 16, 20, 0.72)';
+            ctx.fillStyle = 'rgba(11, 17, 28, 0.72)';
             const barH = Math.round((watermarkLines.length * 24 + 18) * scale);
             ctx.fillRect(0, targetH - barH, targetW, barH);
-            ctx.fillStyle = '#D9D5CD';
+            ctx.fillStyle = '#CBD6E8';
             watermarkLines.forEach((line, i) => {
               ctx.fillText(line, padX, targetH - barH + padY + i * Math.round(24 * scale));
             });
@@ -331,15 +332,15 @@ function InnerCityScene(props: InnerSceneProps) {
   const activeAnnounced = scenario === 'P' && month >= dataset.meta.event_months.announce;
   const activeOpened = scenario !== 'N' && month >= dataset.meta.event_months.open;
   const isConstellation = visualStyle === 'constellation';
+  const pal = useScenePalette();
   const isTerrain = visualStyle === 'terrain';
 
   return (
     <>
-      <color attach="background" args={['#0E1014']} />
-      {qualityTier === 0 && <fogExp2 attach="fog" args={['#0E1014', 0.011]} />}
+      <color attach="background" args={[pal.bg]} />
+      {qualityTier === 0 && <fogExp2 attach="fog" args={[pal.bg, pal.isLight ? 0.009 : 0.0135]} />}
 
-      <ambientLight intensity={0.75} color="#FFFFFF" />
-      <directionalLight position={[-14, 26, 18]} intensity={1.15} color="#FFFFFF" />
+      <ambientLight intensity={0.85} color={pal.isLight ? '#FFFFFF' : '#B8D4F5'} />
 
       <OrbitControls
         ref={controlsRef}
@@ -576,7 +577,7 @@ function InnerCityScene(props: InnerSceneProps) {
             isolateTreated={isolateTreated}
             onSelectZone={onSelectZone}
           />
-          <PostEffects enabled={qualityTier === 0} />
+          <PostEffects enabled={qualityTier === 0 && !pal.isLight} />
         </>
       )}
     </>
@@ -593,7 +594,8 @@ export function CityScene(props: CitySceneProps) {
           antialias: true,
           preserveDrawingBuffer: true, // required for instant 4K PNG export & video recording
           powerPreference: 'high-performance',
-          toneMapping: THREE.NoToneMapping,
+          toneMapping: THREE.ACESFilmicToneMapping,
+          toneMappingExposure: 1.08,
         }}
       >
         <InnerCityScene {...props} />

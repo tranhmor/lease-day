@@ -1,5 +1,6 @@
 import { useMemo, useRef } from 'react';
 import * as THREE from 'three';
+import { useScenePalette } from '@/theme';
 import { useFrame } from '@react-three/fiber';
 import type { ZoneInfo } from '@/types/viz';
 
@@ -25,6 +26,7 @@ const HUB_RING_FRAG = /* glsl */ `
   uniform float uIntensity;
   uniform vec3 uColor;
   uniform float uPulseSpeed;
+  uniform float uHdr;
   varying vec2 vUv;
 
   void main() {
@@ -32,16 +34,28 @@ const HUB_RING_FRAG = /* glsl */ `
     float r = length(p);
     if (r > 1.0) discard;
 
-    float ring = smoothstep(0.012, 0.0, abs(r - 0.92));
-    float alpha = ring * uIntensity;
+    // Razor-thin architectural concentric rings (like the Shenzhen reference hubs!)
+    float ang = atan(p.y, p.x);
+    float dashMask = step(0.15, fract(ang * 14.0 / 6.28318));
+
+    float ring1 = smoothstep(0.016, 0.0, abs(r - 0.34));
+    float ring2 = smoothstep(0.014, 0.0, abs(r - 0.62)) * (0.45 + 0.55 * dashMask);
+    float ring3 = smoothstep(0.012, 0.0, abs(r - 0.90)) * 0.65;
+
+    // Gentle expanding scan pulse wave
+    float pulseR = fract(uTime * uPulseSpeed);
+    float wave = smoothstep(0.025, 0.0, abs(r - pulseR)) * (1.0 - pulseR) * 0.9;
+
+    float alpha = (ring1 * 0.55 + ring2 * 0.42 + ring3 * 0.30 + wave * 0.65) * uIntensity;
     if (alpha < 0.01) discard;
 
-    gl_FragColor = vec4(uColor, alpha);
+    gl_FragColor = vec4(uColor * mix(1.0, 1.2 + wave * 0.7, uHdr), alpha);
   }
 `;
 
 /**
- * L6: one static hairline ring around each treated zone (Guoyuan Z05 & Wuyi Garden Z11).
+ * L6: Signature razor-thin concentric radar rings around major urban hubs (cool ice-blue)
+ * and dynamic golden pulsing concentric rings around treated zones (Guoyuan Z05 & Wuyi Garden Z11).
  */
 export function ZoneRipplesLayer({
   zones,
@@ -52,7 +66,7 @@ export function ZoneRipplesLayer({
   isolateTreated = false,
 }: ZoneRipplesLayerProps) {
   const hubZones = useMemo(
-    () => zones.filter((z) => z.treated),
+    () => zones.filter((z) => z.treated || z.id === 'Z00' || z.id === 'Z02' || z.id === 'Z04' || z.id === 'Z03' || z.id === 'Z07'),
     [zones]
   );
   const treated = useMemo(() => zones.filter((z) => z.treated), [zones]);
@@ -66,11 +80,13 @@ export function ZoneRipplesLayer({
       hubZones.map((z) => ({
         uTime: { value: 0 },
         uIntensity: { value: z.treated ? 0.55 : 0.45 },
-        uColor: { value: new THREE.Color(z.treated ? '#E4572E' : '#8FA6BD') },
+        uColor: { value: new THREE.Color(z.treated ? '#FFB02E' : '#85C7FF') },
         uPulseSpeed: { value: z.treated ? 0.28 : 0.16 },
+        uHdr: { value: 1 },
       })),
     [hubZones]
   );
+  const pal = useScenePalette();
 
   useFrame((_, delta) => {
     for (let i = 0; i < hubZones.length; i++) {
@@ -78,11 +94,13 @@ export function ZoneRipplesLayer({
       if (!m) continue;
       const z = hubZones[i];
       m.uniforms.uTime.value += delta;
+      m.uniforms.uHdr.value = pal.isLight ? 0 : 1;
       let targetInt = 0.42;
       if (z.treated) {
-        targetInt = announced || opened ? 0.8 : 0.35;
-        m.uniforms.uColor.value.lerp(new THREE.Color(announced || opened ? '#E4572E' : '#8A8F98'), Math.min(1, delta * 3));
+        targetInt = announced || opened ? Math.min(1.0, 0.55 + Math.abs(psGap) * 0.2 + (opened ? 0.2 : 0)) : 0.38;
+        m.uniforms.uColor.value.lerp(new THREE.Color(announced || opened ? pal.announce : pal.coolSoft), Math.min(1, delta * 3));
       } else {
+        m.uniforms.uColor.value.lerp(new THREE.Color(pal.coolSoft), Math.min(1, delta * 3));
         targetInt = isolateTreated ? 0.12 : z.id === 'Z00' ? 0.62 : 0.38;
       }
       m.uniforms.uIntensity.value = THREE.MathUtils.lerp(m.uniforms.uIntensity.value, targetInt, Math.min(1, delta * 3));
@@ -100,7 +118,7 @@ export function ZoneRipplesLayer({
   return (
     <group name="L6_zone_ripples">
       {hubZones.map((z, idx) => {
-        const baseR = 3.2;
+        const baseR = z.id === 'Z00' ? 3.8 : z.treated ? 3.4 + Math.min(1.4, Math.abs(psGap) * 0.4) : 2.6;
         return (
           <mesh key={z.id} position={[z.x, 0.04, z.z]} rotation={[-Math.PI / 2, 0, 0]} scale={[baseR, baseR, 1]}>
             <planeGeometry args={[2, 2]} />
@@ -112,24 +130,26 @@ export function ZoneRipplesLayer({
               fragmentShader={HUB_RING_FRAG}
               uniforms={uniformsList[idx]}
               transparent
+              blending={pal.glowBlending}
               depthWrite={false}
+              toneMapped={false}
             />
           </mesh>
         );
       })}
 
-      {/* Commute isochrone rings (shrink at M25) */}
+      {/* Commute Isochrone rings (crisp green dashed circles that shrink at M25) */}
       {showIsochrone && (
         <group ref={isoGroupRef}>
           {treated.map((z) => (
             <group key={`iso_${z.id}`} position={[z.x, 0.052, z.z]}>
               {[1.7, 3.0, 4.3].map((r, ri) => (
                 <mesh key={ri} rotation={[-Math.PI / 2, 0, 0]}>
-                  <ringGeometry args={[r - 0.015, r + 0.015, 96]} />
+                  <ringGeometry args={[r - 0.025, r + 0.025, 64]} />
                   <meshBasicMaterial
-                    color="#8A8F98"
+                    color={pal.isochrone}
                     transparent
-                    opacity={0.35 - ri * 0.08}
+                    opacity={0.45 - ri * 0.1}
                     side={THREE.DoubleSide}
                     depthWrite={false}
                   />

@@ -28,54 +28,56 @@ export function ClockHeader({ month, scenario, meta, lang, compact = false }: Cl
     storyKey = scenario === 'P' ? 'open_P' : scenario === 'S' ? 'open_S' : 'open_N';
   }
 
-  const accentPhase = month >= ann && scenario === 'P';
-
   return (
     <div
-      className="hud-panel"
       style={{
         pointerEvents: 'none',
-        padding: '14px 16px 14px',
+        padding: '6px 10px 8px 4px',
+        background: 'radial-gradient(ellipse at 20% 40%, var(--clock-veil) 0%, var(--clock-veil-0) 78%)',
+        borderRadius: 6,
       }}
     >
-      <div className="kicker" style={{ display: 'flex', justifyContent: 'space-between' }}>
-        <span>{t.subtitle}</span>
-        <span>{lang === 'zh' ? '北京' : 'Beijing'}</span>
-      </div>
-      <div style={{ display: 'flex', alignItems: 'baseline', gap: 10, marginTop: 6 }}>
-        <span
-          className="serif num"
-          style={{
-            fontSize: compact ? 44 : 'clamp(46px, 3.8vw, 64px)',
-            fontWeight: 400,
-            lineHeight: 1,
-            letterSpacing: '-0.01em',
-          }}
-        >
-          {lang === 'zh' ? `第 ${month} 月` : `Month ${month}`}
-        </span>
-        <span className="num" style={{ fontSize: 13, color: 'var(--sub)' }}>
-          / {meta.months}
+      <div style={{ fontSize: 10.5, letterSpacing: '0.2em', color: 'var(--cool)', fontWeight: 600 }}>
+        {t.cityTag}{' '}
+        <span style={{ color: 'var(--sub)', letterSpacing: '0.05em', fontWeight: 400 }}>
+          · {t.subtitle}
         </span>
       </div>
       <div
+        className="mono"
         style={{
-          fontSize: 13,
-          fontWeight: 600,
-          marginTop: 10,
-          color: accentPhase ? 'var(--accent)' : 'var(--text)',
+          fontSize: compact ? 48 : 'clamp(50px, 4.4vw, 74px)',
+          fontWeight: 200,
+          lineHeight: 1.02,
+          letterSpacing: '-0.03em',
+          marginTop: 2,
+          textShadow: 'var(--clock-shadow)',
         }}
       >
+        M{String(month).padStart(2, '0')}
+        <small style={{ fontSize: compact ? 18 : 22, color: 'var(--sub)', marginLeft: 5, fontWeight: 300 }}>
+          /{meta.months}
+        </small>
+      </div>
+      <div
+        style={{
+          fontSize: 13.5,
+          fontWeight: 500,
+          marginTop: 2,
+          color: month >= ann && scenario === 'P' ? 'var(--announce)' : 'var(--text)',
+        }}
+      >
+        <span style={{ color: 'var(--sub)', marginRight: 6 }}>—</span>
         {t.phases[phaseKey]}
       </div>
       {!compact && (
         <div
-          className="serif"
           style={{
-            fontSize: 13.5,
-            color: '#C9C4BB',
-            marginTop: 4,
-            lineHeight: 1.6,
+            fontSize: 11.5,
+            color: 'var(--sub-2)',
+            marginTop: 5,
+            lineHeight: 1.48,
+            textShadow: 'var(--clock-shadow)',
           }}
         >
           {t.stories[storyKey]}

@@ -30,6 +30,7 @@ import { MoverProfileOverlay, VerdictOverlay } from '@/components/VerdictOverlay
 import { ExportModal } from '@/components/ExportModal';
 import { LegendPopover } from '@/components/LegendPopover';
 import { IntegrityFooter } from '@/components/IntegrityFooter';
+import { toggleTheme } from '@/theme';
 
 const MONTH_BASE_MS = 1700; // §4.3: 1 month ≈ 1.7s -> 36 months ≈ 60s
 
@@ -201,6 +202,8 @@ export function App() {
         setViewMode((vm) => (vm === 'split' ? 'single' : 'split'));
       } else if (e.key === 'v' || e.key === 'V') {
         setVisualStyle((s) => (s === 'constellation' ? 'terrain' : 'constellation'));
+      } else if (e.key === 't' || e.key === 'T') {
+        toggleTheme();
       } else if (e.key === 'h' || e.key === 'H') {
         setHideUI((h) => !h);
       } else if (e.key === 'f' || e.key === 'F') {
@@ -296,7 +299,7 @@ export function App() {
   if (!dataset || !runActive || !runP || !runS) {
     return (
       <div style={{ display: 'flex', height: '100%', alignItems: 'center', justifyContent: 'center', flexDirection: 'column', gap: 12 }}>
-        <div className="serif" style={{ fontSize: 20 }}>到期日 · Lease Day</div>
+        <div style={{ fontSize: 13, letterSpacing: '0.28em', color: 'var(--cool)' }}>BEIJING · LEASE DAY v0.7</div>
         <div style={{ fontSize: 12, color: 'var(--sub)' }}>Loading 3D urban stage & simulation telemetry…</div>
       </div>
     );
@@ -379,9 +382,9 @@ export function App() {
         <div
           style={{
             position: 'absolute',
-            inset: '16px 20px 38px 20px',
+            inset: '14px 18px 28px 18px',
             display: 'flex',
-            gap: 16,
+            gap: 14,
             pointerEvents: 'none',
             zIndex: 22,
           }}
@@ -389,7 +392,7 @@ export function App() {
           {/* LEFT COLUMN: Clock -> Vitals -> P - S Gap */}
           <div
             style={{
-              width: 'clamp(260px, 20vw, 330px)',
+              width: 'clamp(260px, 21.5vw, 326px)',
               flexShrink: 0,
               display: 'flex',
               flexDirection: 'column',
@@ -525,7 +528,7 @@ export function App() {
           {/* RIGHT COLUMN: Scenario Tabs -> Top 6 Rank -> Landlord Reason Feed */}
           <div
             style={{
-              width: expandFeed ? 'clamp(380px, 43vw, 720px)' : 'clamp(290px, 23vw, 380px)',
+              width: expandFeed ? 'clamp(380px, 43vw, 680px)' : 'clamp(285px, 24vw, 364px)',
               flexShrink: 0,
               display: 'flex',
               flexDirection: 'column',

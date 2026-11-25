@@ -1,5 +1,6 @@
 import { useMemo, useRef } from 'react';
 import * as THREE from 'three';
+import { useScenePalette } from '@/theme';
 import { useFrame } from '@react-three/fiber';
 
 interface GroundLayerProps {
@@ -22,18 +23,35 @@ const FRAG = /* glsl */ `
   uniform float uShockAge;
   uniform float uAnnounced;
   uniform float uOpened;
+  uniform vec3 uOuter;
+  uniform vec3 uCore;
+  uniform vec3 uCbd;
+  uniform vec3 uEast;
+  uniform vec3 uWave;
   varying vec2 vWorldXZ;
 
   void main() {
-    vec3 col = vec3(0.071, 0.078, 0.094);
-    float rCBD = length(vWorldXZ);
-    col += vec3(0.02) * exp(-rCBD * rCBD / 600.0);
+    // Soft deep slate-blue aerial base matching Shenzhen night-map reference
+    vec2 centerShift = vWorldXZ - vec2(4.0, 0.5);
+    float r = length(centerShift);
+    float coreGlow = exp(-r * r / 480.0);
 
-    // Single thin ring when the announcement fires at M13
-    if (uShockAge > 0.0 && uShockAge < 3.5) {
-      float waveR = uShockAge * 8.0;
-      float band = smoothstep(0.12, 0.0, abs(rCBD - waveR)) * (1.0 - uShockAge / 3.5);
-      col = mix(col, vec3(0.89, 0.34, 0.18), band * 0.6);
+    vec3 col = mix(uOuter, uCore, coreGlow * 0.85);
+
+    // Very subtle atmospheric radial glow over CBD
+    float rCBD = length(vWorldXZ);
+    col += uCbd * exp(-rCBD * rCBD / 38.0) * 0.26;
+
+    // Gentle warm golden aura over Eastern corridor (Z05 & Z11) once announced/opened
+    float rEast = length(vWorldXZ - vec2(16.2, 1.4));
+    col += uEast * exp(-rEast * rEast / 34.0) * (uAnnounced * 0.11 + uOpened * 0.14);
+
+    // Crisp single expanding shockwave ring when announcement fires at M13
+    if (uShockAge > 0.0 && uShockAge < 4.2) {
+      float waveR = uShockAge * 7.8;
+      float band = smoothstep(0.65, 0.0, abs(rCBD - waveR)) * (1.0 - uShockAge / 4.2);
+      float eastBias = smoothstep(-0.2, 0.8, normalize(vWorldXZ + vec2(0.001)).x) * 0.65 + 0.35;
+      col += uWave * band * eastBias * 0.72;
     }
 
     gl_FragColor = vec4(col, 1.0);
@@ -52,9 +70,20 @@ export function GroundLayer({ shockwaveTime, announced, opened }: GroundLayerPro
       uShockAge: { value: -1 },
       uAnnounced: { value: 0 },
       uOpened: { value: 0 },
+      uOuter: { value: new THREE.Vector3() },
+      uCore: { value: new THREE.Vector3() },
+      uCbd: { value: new THREE.Vector3() },
+      uEast: { value: new THREE.Vector3() },
+      uWave: { value: new THREE.Vector3() },
     }),
     []
   );
+  const pal = useScenePalette();
+  uniforms.uOuter.value.set(...pal.ground.outer);
+  uniforms.uCore.value.set(...pal.ground.core);
+  uniforms.uCbd.value.set(...pal.ground.cbd);
+  uniforms.uEast.value.set(...pal.ground.east);
+  uniforms.uWave.value.set(...pal.ground.wave);
 
   useFrame((_, delta) => {
     const mat = matRef.current;

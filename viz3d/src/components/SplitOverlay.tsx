@@ -34,21 +34,21 @@ export function SplitHeaderBar({
       <div
         className="hud-panel"
         style={{
-          padding: '5px 12px',
-          fontSize: 13,
+          padding: '4px 10px',
+          borderColor: 'var(--s)',
+          fontSize: 11,
           fontWeight: 600,
-          color: 'var(--text)',
-          borderLeft: '2px solid var(--s)',
+          color: 'var(--s)',
         }}
       >
         {t.split.leftLabel}
       </div>
 
       <div style={{ display: 'flex', gap: 5, pointerEvents: 'auto' }}>
-        <button type="button" className="btn-hud" style={{ background: "#14171C" }} onClick={onSwitchToDiff}>
+        <button type="button" className="btn-hud amber-active" onClick={onSwitchToDiff}>
           <Sliders size={11} /> {t.split.toDiff}
         </button>
-        <button type="button" className="btn-hud" style={{ background: "#14171C" }} onClick={onExit}>
+        <button type="button" className="btn-hud" onClick={onExit}>
           <X size={11} /> {t.split.exit}
         </button>
       </div>
@@ -56,11 +56,11 @@ export function SplitHeaderBar({
       <div
         className="hud-panel"
         style={{
-          padding: '5px 12px',
-          fontSize: 13,
+          padding: '4px 10px',
+          borderColor: 'var(--p)',
+          fontSize: 11,
           fontWeight: 600,
-          color: 'var(--text)',
-          borderRight: '2px solid var(--p)',
+          color: 'var(--p)',
         }}
       >
         {t.split.rightLabel}
@@ -84,9 +84,9 @@ export function SplitOverlay({ splitRatio, lang, onChangeRatio }: SplitOverlayPr
           top: 0,
           bottom: 0,
           left: pct,
-          width: 1,
-          background: 'var(--text)',
-          opacity: 0.7,
+          width: 2,
+          background: 'var(--announce)',
+          boxShadow: '0 0 14px color-mix(in srgb, var(--announce) 85%, transparent)',
           transform: 'translateX(-1px)',
         }}
       />
@@ -99,15 +99,16 @@ export function SplitOverlay({ splitRatio, lang, onChangeRatio }: SplitOverlayPr
           top: '50%',
           left: pct,
           transform: 'translate(-50%, -50%)',
-          width: 18,
-          height: 40,
-          borderRadius: 2,
-          background: '#14171C',
-          border: '1px solid var(--text)',
+          width: 28,
+          height: 50,
+          borderRadius: 14,
+          background: 'var(--panel-strong)',
+          border: '1.5px solid var(--announce)',
+          boxShadow: '0 0 18px color-mix(in srgb, var(--announce) 50%, transparent)',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          color: 'var(--text)',
+          color: 'var(--announce)',
           cursor: 'ew-resize',
           pointerEvents: 'auto',
         }}
@@ -124,7 +125,7 @@ export function SplitOverlay({ splitRatio, lang, onChangeRatio }: SplitOverlayPr
           draggingRef.current = false;
         }}
       >
-        <GripVertical size={12} />
+        <GripVertical size={15} />
       </div>
     </div>
   );

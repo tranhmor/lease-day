@@ -1,5 +1,6 @@
 import { useMemo, useRef } from 'react';
 import * as THREE from 'three';
+import { useScenePalette } from '@/theme';
 import { useFrame } from '@react-three/fiber';
 import type { ZoneInfo } from '@/types/viz';
 
@@ -30,6 +31,10 @@ const TERRAIN_VERT = /* glsl */ `
 `;
 
 const TERRAIN_FRAG = /* glsl */ `
+  uniform vec3 uNeg;
+  uniform vec3 uMid;
+  uniform vec3 uHot;
+  uniform float uHdr;
   varying float vElev;
   varying vec2 vWorldXZ;
 
@@ -53,18 +58,18 @@ const TERRAIN_FRAG = /* glsl */ `
     float wire = 1.0 - min(min(gDist.x, gDist.y) / 0.9, 1.0);
 
     // Diverging urban economics ramp: cool blue (negative) -> amber -> coral (surging rent peaks)
-    vec3 colNeg = vec3(0.44, 0.62, 0.78);
-    vec3 colMid = vec3(0.85, 0.55, 0.40);
-    vec3 colHot = vec3(0.89, 0.34, 0.18);
+    vec3 colNeg = uNeg;
+    vec3 colMid = uMid;
+    vec3 colHot = uHot;
     vec3 baseCol = pts >= 0.0
       ? mix(colMid, colHot, smoothstep(1.5, 4.5, pts))
       : colNeg;
 
-    float fillAlpha = visibility * 0.10;
-    float lineAlpha = visibility * (contour * 0.55 + wire * 0.05);
+    float fillAlpha = visibility * 0.17 * mix(0.4, 1.0, uHdr);
+    float lineAlpha = visibility * (contour * 0.72 + wire * 0.22);
     float totalAlpha = clamp(fillAlpha + lineAlpha, 0.0, 0.88);
 
-    vec3 finalCol = baseCol * (0.85 + contour * 0.2);
+    vec3 finalCol = baseCol * mix(1.0, 0.95 + contour * 0.85, uHdr);
     gl_FragColor = vec4(finalCol, totalAlpha);
   }
 `;
@@ -157,6 +162,16 @@ export function BidRentTerrainLayer({
     }
   }, [zones, zoneStats, diffZoneStatsS, diffMode, isolateTreated, weights, targetY]);
 
+  const pal = useScenePalette();
+  const uniforms = useMemo(
+    () => ({ uNeg: { value: new THREE.Color() }, uMid: { value: new THREE.Color() }, uHot: { value: new THREE.Color() }, uHdr: { value: 1 } }),
+    []
+  );
+  uniforms.uNeg.value.set(pal.rent.neg);
+  uniforms.uMid.value.set(pal.rent.mid);
+  uniforms.uHot.value.set(pal.rent.max);
+  uniforms.uHdr.value = pal.isLight ? 0 : 1;
+
   useFrame((_, delta) => {
     if (!visible) return;
     const pos = geometry.getAttribute('position') as THREE.BufferAttribute;
@@ -183,6 +198,7 @@ export function BidRentTerrainLayer({
       <shaderMaterial
         vertexShader={TERRAIN_VERT}
         fragmentShader={TERRAIN_FRAG}
+        uniforms={uniforms}
         transparent
         side={THREE.DoubleSide}
         depthWrite={false}

@@ -15,9 +15,9 @@ interface TenantDetailCardProps {
 }
 
 const GROUP_COLORS: Record<IncomeGroup, string> = {
-  low: '#7FA8A0',
-  mid: '#B7A27A',
-  high: '#9C7FB0',
+  low: 'var(--inc-low)',
+  mid: 'var(--inc-mid)',
+  high: 'var(--inc-high)',
 };
 
 export function TenantDetailCard({
@@ -58,8 +58,8 @@ export function TenantDetailCard({
         padding: '13px 15px',
         display: 'flex',
         flexDirection: 'column',
-        background: 'rgba(14, 16, 20, 0.96)',
-        boxShadow: '0 16px 48px rgba(0, 0, 0, 0.7)',
+        background: 'var(--panel-strong)',
+        boxShadow: 'var(--shadow-strong)',
         overflow: 'hidden',
       }}
     >
@@ -83,9 +83,9 @@ export function TenantDetailCard({
           style={{
             padding: '3px 9px',
             borderRadius: 4,
-            background: `${GROUP_COLORS[group]}22`,
+            background: `color-mix(in srgb, ${GROUP_COLORS[group]} 13%, transparent)`,
             color: GROUP_COLORS[group],
-            border: `1px solid ${GROUP_COLORS[group]}66`,
+            border: `1px solid color-mix(in srgb, ${GROUP_COLORS[group]} 40%, transparent)`,
             fontWeight: 600,
           }}
         >
@@ -111,7 +111,7 @@ export function TenantDetailCard({
               key={idx}
               style={{
                 padding: '10px 11px',
-                background: 'rgba(255, 255, 255, 0.035)',
+                background: 'var(--panel-inset)',
                 border: '1px solid var(--line)',
                 borderRadius: 4,
                 fontSize: 12,
@@ -141,7 +141,7 @@ export function TenantDetailCard({
                           onClick={() => c.room_id !== undefined && onSelectRoom(c.room_id)}
                           style={{
                             border: `1px solid ${applied ? 'var(--announce)' : 'var(--line)'}`,
-                            background: applied ? 'rgba(228, 87, 46,0.16)' : '#0D1524',
+                            background: applied ? 'color-mix(in srgb, var(--announce) 16%, transparent)' : 'var(--panel-inset-2)',
                             color: applied ? 'var(--announce)' : 'var(--sub)',
                             borderRadius: 3,
                             padding: '2px 6px',
@@ -159,7 +159,7 @@ export function TenantDetailCard({
                 </div>
               )}
 
-              <div style={{ color: '#DDE6F4', lineHeight: 1.5 }}>“{d.reason}”</div>
+              <div style={{ color: 'var(--text-soft)', lineHeight: 1.5 }}>“{d.reason}”</div>
             </div>
           ))
         )}

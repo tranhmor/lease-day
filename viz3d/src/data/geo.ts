@@ -1,4 +1,5 @@
 import * as THREE from 'three';
+import { SCENE_PALETTES, getTheme } from '@/theme';
 import type { ProjectionMeta } from '@/types/viz';
 
 const EARTH_R = 6378137.0;
@@ -35,13 +36,18 @@ export class LocalProjector {
   }
 }
 
-/** Map rent index delta (-4..+4) to diverging palette: #6F9FC7 -> #8A8F98 -> #D2876A -> #E4572E */
-const C_NEG = new THREE.Color('#6F9FC7');
-const C_ZERO = new THREE.Color('#8A8F98');
-const C_MID_POS = new THREE.Color('#D2876A');
-const C_MAX_POS = new THREE.Color('#E4572E');
+/** Map rent index delta (-4..+4) to diverging palette: #5FB4FF -> #9AA7BD -> #FFB02E -> #FF5A3C */
+const C_NEG = new THREE.Color();
+const C_ZERO = new THREE.Color();
+const C_MID_POS = new THREE.Color();
+const C_MAX_POS = new THREE.Color();
 
 export function rentDeltaToColor(deltaPts: number, target = new THREE.Color()): THREE.Color {
+  const r = SCENE_PALETTES[getTheme()].rent;
+  C_NEG.set(r.neg);
+  C_ZERO.set(r.zero);
+  C_MID_POS.set(r.mid);
+  C_MAX_POS.set(r.max);
   const d = Math.max(-4, Math.min(4, deltaPts));
   if (d <= 0) {
     const t = (d + 4) / 4; // 0 at -4, 1 at 0

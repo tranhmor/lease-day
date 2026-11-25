@@ -1,5 +1,6 @@
 import { useMemo, useRef } from 'react';
 import * as THREE from 'three';
+import { useScenePalette } from '@/theme';
 import { useFrame } from '@react-three/fiber';
 import type { RoomMonthState, RoomStatic } from '@/types/viz';
 
@@ -48,6 +49,9 @@ const PARTICLE_VERT = /* glsl */ `
 const PARTICLE_FRAG = /* glsl */ `
   uniform float uOpacity;
   uniform float uOpened;
+  uniform vec3 uCool;
+  uniform vec3 uAmber;
+  uniform float uHdr;
   varying float vAlpha;
   varying float vTreated;
 
@@ -55,9 +59,11 @@ const PARTICLE_FRAG = /* glsl */ `
     if (vAlpha <= 0.01) discard;
     float d = length(gl_PointCoord - vec2(0.5));
     if (d > 0.5) discard;
-    float core = smoothstep(0.5, 0.3, d);
-    vec3 col = mix(vec3(0.66, 0.68, 0.71), vec3(0.89, 0.34, 0.18), vTreated * uOpened);
-    gl_FragColor = vec4(col, core * vAlpha * uOpacity * 0.55);
+    float core = exp(-d * d * 18.0);
+    vec3 cool = uCool;
+    vec3 amber = uAmber;
+    vec3 col = mix(cool, mix(cool, amber, 0.35 + 0.65 * uOpened), vTreated);
+    gl_FragColor = vec4(col * uHdr, core * vAlpha * uOpacity);
   }
 `;
 
@@ -120,9 +126,16 @@ export function CommuteParticles({ rooms, states, visible, opened, highlighted =
       uOpened: { value: 0 },
       uSize: { value: 6.2 },
       uOpacity: { value: 0.85 },
+      uCool: { value: new THREE.Color() },
+      uAmber: { value: new THREE.Color() },
+      uHdr: { value: 1.65 },
     }),
     []
   );
+  const pal = useScenePalette();
+  uniforms.uCool.value.set(pal.isLight ? '#3D7FC0' : '#B3E6FF');
+  uniforms.uAmber.value.set(pal.isLight ? '#D98A10' : '#FFC74D');
+  uniforms.uHdr.value = pal.isLight ? 1 : 1.65;
 
   useFrame((_, delta) => {
     const m = matRef.current;
@@ -130,7 +143,7 @@ export function CommuteParticles({ rooms, states, visible, opened, highlighted =
     m.uniforms.uTime.value += delta;
     m.uniforms.uOpened.value = THREE.MathUtils.lerp(m.uniforms.uOpened.value, opened ? 1 : 0, Math.min(1, delta * 2.5));
     m.uniforms.uOpacity.value = highlighted ? 1.0 : 0.82;
-    m.uniforms.uSize.value = highlighted ? 4.5 : 3.2;
+    m.uniforms.uSize.value = highlighted ? 8.2 : 6.2;
   });
 
   if (!visible) return null;
@@ -143,7 +156,9 @@ export function CommuteParticles({ rooms, states, visible, opened, highlighted =
         fragmentShader={PARTICLE_FRAG}
         uniforms={uniforms}
         transparent
+        blending={pal.glowBlending}
         depthWrite={false}
+        toneMapped={false}
       />
     </points>
   );

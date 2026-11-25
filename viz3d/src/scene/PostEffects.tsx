@@ -10,9 +10,7 @@ interface PostEffectsProps {
  */
 export function PostEffects({ enabled }: PostEffectsProps) {
   if (!enabled) return null;
-  return null;
 
-  // eslint-disable-next-line no-unreachable
   return (
     <EffectComposer multisampling={0}>
       <Bloom

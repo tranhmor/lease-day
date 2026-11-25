@@ -1,5 +1,6 @@
 import { useMemo, useRef, useState } from 'react';
 import * as THREE from 'three';
+import { useScenePalette } from '@/theme';
 import { useFrame, ThreeEvent } from '@react-three/fiber';
 import type { RoomMonthState, RoomStatic } from '@/types/viz';
 import { rentDeltaToColor } from '@/data/geo';
@@ -18,18 +19,46 @@ interface RoomPillarsLayerProps {
   onHoverRoom?: (roomId: number | null) => void;
 }
 
-const VACANT_COL = new THREE.Color('#2A2E35');
-const VACANT_RING_COL = new THREE.Color('#5E636B');
-const DIM_COL = new THREE.Color('#1A1D22');
-const NEUTRAL_COL = new THREE.Color('#5E636B');
-const ACCENT_COL = new THREE.Color('#E4572E');
-const WHITE_COL = new THREE.Color('#F2EFE9');
+const HALO_VERT = /* glsl */ `
+  varying vec2 vUv;
+  void main() {
+    vUv = uv;
+    #ifdef USE_INSTANCING
+      vec4 mvPos = modelViewMatrix * instanceMatrix * vec4(position, 1.0);
+    #else
+      vec4 mvPos = modelViewMatrix * vec4(position, 1.0);
+    #endif
+    gl_Position = projectionMatrix * mvPos;
+  }
+`;
+
+const HALO_FRAG = /* glsl */ `
+  uniform float uAlpha;
+  varying vec2 vUv;
+  #ifdef USE_INSTANCING_COLOR
+    varying vec3 vInstanceColor;
+  #endif
+  void main() {
+    vec2 p = vUv * 2.0 - 1.0;
+    float r = length(p);
+    if (r > 1.0) discard;
+    float glow = exp(-r * r * 5.0);
+    vec3 col = vec3(0.45, 0.75, 1.0);
+    #ifdef USE_INSTANCING_COLOR
+      col = vInstanceColor;
+    #endif
+    gl_FragColor = vec4(col, glow * uAlpha);
+  }
+`;
+
+
 
 /**
- * 240 room pillars, one per simulated room (positions inside a zone are schematic).
- * - Height = kind-normalized rent (diff mode: |P - S| in index points)
- * - Colour = rent change vs M1 on a diverging ramp (diff mode: sign of P - S)
- * - Vacant room = flat dark stub with a hairline ring
+ * 100% Honest Real-Data Room Layer (ZERO decorative fake dots, ZERO chunky cylinders).
+ * Exactly 240 luminous ground starlight nodes corresponding 1:1 to the 240 simulated rooms.
+ * - Size & halo = kind-normalized rent
+ * - Color = diverging rent delta vs M1 (#5FB4FF -> #E8F3FF -> #FFB02E -> #FF5A3C)
+ * - Hollow hairline ring = vacant room; outer rim = whole apartment
  */
 export function RoomPillarsLayer({
   rooms,
@@ -47,28 +76,55 @@ export function RoomPillarsLayer({
   const [hoveredRoom, setHoveredRoom] = useState<number | null>(null);
 
   const coreRef = useRef<THREE.InstancedMesh>(null);
+  const haloRef = useRef<THREE.InstancedMesh>(null);
   const ringRef = useRef<THREE.InstancedMesh>(null);
 
-  const curScales = useRef<Float32Array>(new Float32Array(240).fill(0.3));
-  const curColors = useRef<THREE.Color[]>(Array.from({ length: 240 }, () => new THREE.Color('#8A8F98')));
+  const curScales = useRef<Float32Array>(new Float32Array(240).fill(0.16));
+  const curColors = useRef<THREE.Color[]>(Array.from({ length: 240 }, () => new THREE.Color('#DCEBFF')));
 
   const dummy = useMemo(() => new THREE.Object3D(), []);
   const tmpColor = useMemo(() => new THREE.Color(), []);
 
-  const { pillarGeo, outlineRingGeo } = useMemo(() => {
-    const pillar = new THREE.BoxGeometry(1, 1, 1);
-    pillar.translate(0, 0.5, 0);
-    const ring = new THREE.RingGeometry(0.9, 1.0, 24);
+  const { discGeo, haloPlaneGeo, outlineRingGeo } = useMemo(() => {
+    const disc = new THREE.CircleGeometry(1, 20);
+    disc.rotateX(-Math.PI / 2);
+    const halo = new THREE.PlaneGeometry(2, 2);
+    halo.rotateX(-Math.PI / 2);
+    const ring = new THREE.RingGeometry(0.82, 1.0, 24);
     ring.rotateX(-Math.PI / 2);
-    return { pillarGeo: pillar, outlineRingGeo: ring };
+    return { discGeo: disc, haloPlaneGeo: halo, outlineRingGeo: ring };
   }, []);
+
+  const haloMaterial = useMemo(
+    () =>
+      new THREE.ShaderMaterial({
+        vertexShader: HALO_VERT,
+        fragmentShader: HALO_FRAG,
+        uniforms: { uAlpha: { value: 0.78 } },
+        transparent: true,
+        blending: THREE.AdditiveBlending,
+        depthWrite: false,
+        toneMapped: false,
+      }),
+    []
+  );
+
+  const pal = useScenePalette();
+  const VACANT_COL = useMemo(() => new THREE.Color(pal.room.vacant), [pal]);
+  const DIM_COL = useMemo(() => new THREE.Color(pal.room.dim), [pal]);
+  const NEUTRAL_COL = useMemo(() => new THREE.Color(pal.rent.neutralLerp), [pal]);
+  const ALERT_COL = useMemo(() => new THREE.Color(pal.room.alert), [pal]);
+  haloMaterial.blending = pal.glowBlending;
+  haloMaterial.uniforms.uAlpha.value = pal.isLight ? 0.38 : 0.78;
 
   useFrame((_, delta) => {
     if (!visible) return;
+    const B = pal.boost;
     const damp = 1 - Math.exp(-delta * 6.5);
     const coreMesh = coreRef.current;
+    const haloMesh = haloRef.current;
     const ringMesh = ringRef.current;
-    if (!coreMesh || !ringMesh) return;
+    if (!coreMesh || !haloMesh || !ringMesh) return;
 
     for (let i = 0; i < rooms.length; i++) {
       const room = rooms[i];
@@ -78,63 +134,91 @@ export function RoomPillarsLayer({
       const isSelected = selectedRoomId === room.id;
       const isHovered = hoveredRoom === room.id;
 
-      let targetH = 0.4;
+      let targetRadius = 0.14;
       let isVac = !st || !st.occupied;
 
       if (diffMode && diffStatesS && diffStatesS[i]) {
         const sRent = diffStatesS[i].rent || room.start_rent;
         const diffPts = room.start_rent > 0 ? ((st.rent - sRent) / room.start_rent) * 100 : 0;
-        targetH = 0.06 + Math.min(2.4, Math.abs(diffPts) * 0.45);
-        if (Math.abs(diffPts) < 0.25) tmpColor.copy(NEUTRAL_COL);
-        else rentDeltaToColor(diffPts > 0 ? 3 : -3, tmpColor);
+        targetRadius = 0.13 + Math.min(0.28, Math.abs(diffPts) * 0.058);
+        rentDeltaToColor(diffPts * 1.15, tmpColor);
+        if (Math.abs(diffPts) > 1.0) tmpColor.multiplyScalar(B(1.45));
         isVac = false;
       } else if (isVac) {
-        targetH = 0.04;
-        tmpColor.copy(highlightVacant ? ACCENT_COL : VACANT_COL);
+        targetRadius = highlightVacant ? 0.22 : 0.12;
+        tmpColor.copy(highlightVacant ? ALERT_COL : VACANT_COL);
       } else {
         const [lo, hi] = room.kind_rent_range;
         const norm = Math.max(0.05, Math.min(1.15, (st.rent - lo) / Math.max(hi - lo, 100)));
         const deltaPts = room.start_rent > 0 ? ((st.rent / room.start_rent) - 1) * 100 : 0;
-        targetH = 0.25 + norm * 1.6;
+        targetRadius = 0.115 + norm * 0.12 + (isTreated ? 0.035 : 0);
+
         rentDeltaToColor(deltaPts, tmpColor);
+        if (Math.abs(deltaPts) < 1.1) {
+          tmpColor.lerp(NEUTRAL_COL, 0.45);
+        }
+        if (deltaPts > 1.5 && !isDimmed) {
+          tmpColor.multiplyScalar(B(1.25 + Math.min(0.45, (deltaPts - 1.5) * 0.12)));
+        } else if (isTreated && !isDimmed) {
+          tmpColor.multiplyScalar(B(1.18));
+        }
       }
 
       if (isDimmed) {
-        tmpColor.lerp(DIM_COL, 0.75);
+        targetRadius *= 0.65;
+        tmpColor.lerp(DIM_COL, 0.8);
       }
       if (isSelected || isHovered) {
-        tmpColor.lerp(WHITE_COL, 0.35);
+        targetRadius *= 1.48;
+        if (pal.isLight) tmpColor.multiplyScalar(0.8);
+        else tmpColor.multiplyScalar(1.55);
       }
 
-      curScales.current[i] += (targetH - curScales.current[i]) * damp;
+      curScales.current[i] += (targetRadius - curScales.current[i]) * damp;
       curColors.current[i].lerp(tmpColor, damp);
 
       const [rx, rz] = room.layout_xy;
-      const h = curScales.current[i];
-      const w = room.kind === '整租' ? 0.2 : 0.15;
+      const rVal = curScales.current[i];
 
-      dummy.position.set(rx, 0, rz);
-      dummy.scale.set(w, h, w);
+      // 1. Crisp core dot
+      dummy.position.set(rx, 0.09, rz);
+      const coreScale = isVac && !highlightVacant ? rVal * 0.4 : rVal;
+      dummy.scale.set(coreScale, 1, coreScale);
       dummy.updateMatrix();
       coreMesh.setMatrixAt(i, dummy.matrix);
       coreMesh.setColorAt(i, curColors.current[i]);
 
-      const showRing = isSelected || isHovered || isVac;
-      dummy.position.set(rx, 0.02, rz);
-      const ringScale = showRing ? (isSelected ? 0.34 : 0.16) : 0.001;
+      // 2. Soft radiant bloom aura (also generous click hitbox)
+      dummy.position.set(rx, 0.072, rz);
+      const haloScale = isVac ? rVal * 1.4 : rVal * (isSelected ? 4.4 : isTreated ? 3.4 : 2.5);
+      dummy.scale.set(haloScale, 1, haloScale);
+      dummy.updateMatrix();
+      haloMesh.setMatrixAt(i, dummy.matrix);
+      haloMesh.setColorAt(i, isVac ? VACANT_COL : curColors.current[i]);
+
+      // 3. Hairline outer reticle (vacant hollow ring, whole-apt rim, or selection reticle)
+      const showRing = isSelected || isHovered || isVac || room.kind === '整租';
+      dummy.position.set(rx, 0.096, rz);
+      const ringScale = showRing ? (isSelected ? rVal * 2.4 : rVal * 1.48) : 0.001;
       dummy.scale.set(ringScale, 1, ringScale);
       dummy.updateMatrix();
       ringMesh.setMatrixAt(i, dummy.matrix);
-      if (isSelected || isHovered) {
-        tmpColor.copy(WHITE_COL);
+      if (isSelected) {
+        tmpColor.set(pal.room.selected).multiplyScalar(B(1.8));
+      } else if (isVac) {
+        if (pal.isLight) tmpColor.set(highlightVacant ? pal.room.alert : isDimmed ? pal.room.dim : pal.room.vacantRing);
+        else tmpColor.set(highlightVacant ? pal.room.alert : pal.room.vacantRing).multiplyScalar(isDimmed ? 0.2 : 0.95);
       } else {
-        tmpColor.copy(highlightVacant ? ACCENT_COL : VACANT_RING_COL).multiplyScalar(isDimmed ? 0.4 : 1);
+        if (pal.isLight) tmpColor.copy(curColors.current[i]).lerp(DIM_COL, isDimmed ? 0.8 : 0);
+        else tmpColor.copy(curColors.current[i]).multiplyScalar(isDimmed ? 0.15 : 0.6);
       }
       ringMesh.setColorAt(i, tmpColor);
     }
 
     coreMesh.instanceMatrix.needsUpdate = true;
     if (coreMesh.instanceColor) coreMesh.instanceColor.needsUpdate = true;
+    haloMesh.instanceMatrix.needsUpdate = true;
+    if (haloMesh.instanceColor) haloMesh.instanceColor.needsUpdate = true;
     ringMesh.instanceMatrix.needsUpdate = true;
     if (ringMesh.instanceColor) ringMesh.instanceColor.needsUpdate = true;
   });
@@ -162,18 +246,25 @@ export function RoomPillarsLayer({
   if (!visible) return null;
 
   return (
-    <group name="L5_room_pillars_240">
+    <group name="L5_room_nodes_240">
+      <instancedMesh
+        ref={haloRef}
+        args={[haloPlaneGeo, haloMaterial, rooms.length]}
+        onClick={handlePointer('click')}
+        onPointerOver={handlePointer('over')}
+        onPointerOut={handlePointer('out')}
+      />
       <instancedMesh
         ref={coreRef}
-        args={[pillarGeo, undefined, rooms.length]}
+        args={[discGeo, undefined, rooms.length]}
         onClick={handlePointer('click')}
         onPointerOver={handlePointer('over')}
         onPointerOut={handlePointer('out')}
       >
-        <meshLambertMaterial />
+        <meshBasicMaterial toneMapped={false} transparent opacity={0.96} depthWrite={false} />
       </instancedMesh>
       <instancedMesh ref={ringRef} args={[outlineRingGeo, undefined, rooms.length]}>
-        <meshBasicMaterial transparent opacity={0.9} side={THREE.DoubleSide} depthWrite={false} />
+        <meshBasicMaterial transparent opacity={0.85} side={THREE.DoubleSide} toneMapped={false} depthWrite={false} />
       </instancedMesh>
     </group>
   );

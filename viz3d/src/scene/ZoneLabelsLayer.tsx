@@ -32,7 +32,8 @@ export function ZoneLabelsLayer({
         const st = zoneStats[z.id];
         const delta = st ? st.rentDeltaPts : 0;
         const sign = delta >= 0 ? '+' : '';
-                const label = lang === 'zh' ? z.name : z.name_en;
+        const arrow = delta > 0.05 ? '↑' : delta < -0.05 ? '↓' : '';
+        const label = lang === 'zh' ? z.name : z.name_en;
         const isCBD = z.id === 'Z00';
 
         return (
@@ -61,27 +62,27 @@ export function ZoneLabelsLayer({
             >
               <span
                 style={{
-                  fontSize: z.treated ? 14 : isCBD ? 13 : 12,
-                  fontWeight: z.treated ? 600 : 400,
-                  color: z.treated ? '#F2EFE9' : '#B9B5AD',
-                  textShadow: '0 0 3px #0E1014, 0 0 6px #0E1014',
-                  fontFamily: z.treated ? 'var(--font-serif)' : 'var(--font-sans)',
+                  fontSize: z.treated ? 13 : isCBD ? 12.5 : 11,
+                  fontWeight: z.treated || isCBD ? 600 : 500,
+                  color: z.treated ? 'var(--zl-treated)' : 'var(--zl-name)',
+                  textShadow: 'var(--zl-shadow)',
+                  letterSpacing: '0.04em',
                 }}
               >
                 {label}
               </span>
               {(z.treated || isCBD || Math.abs(delta) >= 0.8) && (
                 <span
-                  className="num"
+                  className="mono"
                   style={{
-                    fontSize: 11,
-                    color: z.treated && delta > 0.05 ? 'var(--accent)' : '#8F959E',
-                    textShadow: '0 0 3px #0E1014, 0 0 6px #0E1014',
+                    fontSize: 10,
+                    color: delta > 0.05 ? 'var(--zl-up)' : delta < -0.05 ? 'var(--zl-down)' : 'var(--zl-flat)',
+                    textShadow: 'var(--zl-shadow)',
                     marginTop: 1,
                   }}
                 >
                   {sign}
-                  {delta.toFixed(1)}
+                  {delta.toFixed(1)} {arrow}
                 </span>
               )}
             </div>
