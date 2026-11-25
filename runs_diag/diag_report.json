@@ -1,0 +1,115 @@
+{
+  "model": "qwen3.5:9b",
+  "prompt_hashes": {
+    "landlord_answer_counter.txt": "7fb66d38fc4db810",
+    "landlord_pick_applicant.txt": "cb3ed5be23255737",
+    "landlord_price_vacant.txt": "0468c886c9233f03",
+    "landlord_renewal_offer.txt": "6d183b46eca85a2c",
+    "tenant_at_expiry.txt": "c22104c1e9245851",
+    "tenant_search.txt": "fbac8b0245fdcd86"
+  },
+  "samples_per_cell": 24,
+  "total_calls": 3408,
+  "legal_output_rate": 1.0,
+  "pass_legal_98pct": true,
+  "landlord_direction_vac_ok": false,
+  "pass_gate": false,
+  "reported_only": {
+    "landlord_ann_hike_gt_noann_all_wordings": true
+  },
+  "landlord_renewal_hike_pct_by_wording": {
+    "0": {
+      "ann_1": 2.7,
+      "ann_0": 1.87,
+      "vac_hi": 2.45,
+      "vac_lo": 2.12
+    },
+    "1": {
+      "ann_1": 5.99,
+      "ann_0": 5.22,
+      "vac_hi": 5.6,
+      "vac_lo": 5.62
+    },
+    "2": {
+      "ann_1": 4.21,
+      "ann_0": 2.31,
+      "vac_hi": 2.98,
+      "vac_lo": 3.53
+    }
+  },
+  "landlord_renewal_hike_pct_by_factor": {
+    "kind=便宜单间|vac_hi": 4.4,
+    "kind=便宜单间|vac_lo": 4.29,
+    "kind=合租单间|vac_hi": 3.57,
+    "kind=合租单间|vac_lo": 3.76,
+    "kind=整租|vac_hi": 3.06,
+    "kind=整租|vac_lo": 3.22,
+    "ll_kind=个人房东|vac_hi": 3.68,
+    "ll_kind=个人房东|vac_lo": 3.76,
+    "ll_kind=托管机构|vac_hi": 3.68,
+    "ll_kind=托管机构|vac_lo": 3.76,
+    "risk=怕空置|vac_hi": 3.67,
+    "risk=怕空置|vac_lo": 3.71,
+    "risk=愿意等|vac_hi": 3.68,
+    "risk=愿意等|vac_lo": 3.8,
+    "zone=Z05|vac_hi": 3.94,
+    "zone=Z05|vac_lo": 3.95,
+    "zone=Z11|vac_hi": 3.41,
+    "zone=Z11|vac_lo": 3.57
+  },
+  "landlord_counter_accept_rate": {
+    "vac_lo_5pct": 0.917,
+    "vac_lo_10pct": 0.5,
+    "vac_hi_5pct": 0.917,
+    "ann_lo_5pct": 0.708
+  },
+  "landlord_post_opening_hike_pct": {
+    "premium_0pct_no_line": 2.28,
+    "premium_0pct_opened": 3.89,
+    "premium_5pct_no_line": 2.03,
+    "premium_5pct_opened": 3.16,
+    "premium_8pct_no_line": 1.84,
+    "premium_8pct_opened": 2.98
+  },
+  "tenant_move_treated_by_wording": {
+    "0": {
+      "move_treated_ann_pct": 79.2,
+      "move_treated_noann_pct": 43.5
+    },
+    "1": {
+      "move_treated_ann_pct": 7.4,
+      "move_treated_noann_pct": 2.3
+    },
+    "2": {
+      "move_treated_ann_pct": 5.1,
+      "move_treated_noann_pct": 16.7
+    }
+  },
+  "tenant_move_treated_pct_by_cell": {
+    "ann|m_to_open=12|high": 34.7,
+    "ann|m_to_open=12|low": 27.8,
+    "ann|m_to_open=12|mid": 43.1,
+    "ann|m_to_open=1|high": 43.1,
+    "ann|m_to_open=1|low": 8.3,
+    "ann|m_to_open=1|mid": 44.4,
+    "ann|m_to_open=6|high": 33.3,
+    "ann|m_to_open=6|low": 2.8,
+    "ann|m_to_open=6|mid": 37.5,
+    "no_ann|m_to_open=12|high": 27.8,
+    "no_ann|m_to_open=12|low": 0,
+    "no_ann|m_to_open=12|mid": 33.3,
+    "no_ann|m_to_open=1|high": 29.2,
+    "no_ann|m_to_open=1|low": 0,
+    "no_ann|m_to_open=1|mid": 34.7,
+    "no_ann|m_to_open=6|high": 31.9,
+    "no_ann|m_to_open=6|low": 0,
+    "no_ann|m_to_open=6|mid": 30.6
+  },
+  "tenant_reason_says_already_open_pct_pre_opening": 4.0,
+  "prefetch": {
+    "prefetched": 3408,
+    "errors": 0,
+    "minutes": 40.0,
+    "parallel": 4
+  }
+}

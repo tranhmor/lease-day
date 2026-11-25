@@ -1,0 +1,101 @@
+{
+  "group": "R",
+  "n_paired_seeds": 20,
+  "indicator_1_rent_index": {
+    "P_minus_N_M24": "+0.00 ± 0.00",
+    "P_minus_N_M36": "+0.45 ± 0.33",
+    "S_minus_N_M24": "+0.00 ± 0.00",
+    "S_minus_N_M36": "+0.45 ± 0.33",
+    "P_minus_S_M24": "+0.00 ± 0.00",
+    "pre_opening_capitalization_share_P_net": null
+  },
+  "indicator_2_3_moveins_and_renewals_M13_24": {
+    "N": {
+      "move_ins_per_run": 17.65,
+      "move_in_mean_income": 15993.8,
+      "move_in_mean_cash": 47221.5,
+      "move_in_group_share": {
+        "low": 0.144,
+        "mid": 0.439,
+        "high": 0.416
+      },
+      "treated_renewal_rate": 0.757,
+      "treated_renewal_hike_pct": 0.6
+    },
+    "S": {
+      "move_ins_per_run": 17.65,
+      "move_in_mean_income": 15993.8,
+      "move_in_mean_cash": 47221.5,
+      "move_in_group_share": {
+        "low": 0.144,
+        "mid": 0.439,
+        "high": 0.416
+      },
+      "treated_renewal_rate": 0.757,
+      "treated_renewal_hike_pct": 0.6
+    },
+    "P": {
+      "move_ins_per_run": 17.65,
+      "move_in_mean_income": 15993.8,
+      "move_in_mean_cash": 47221.5,
+      "move_in_group_share": {
+        "low": 0.144,
+        "mid": 0.439,
+        "high": 0.416
+      },
+      "treated_renewal_rate": 0.757,
+      "treated_renewal_hike_pct": 0.6
+    }
+  },
+  "indicator_4_m12_cohort_panel": {
+    "N": {
+      "low": {
+        "retention_rate": 0.53,
+        "delta_full_cost_rmb": 2.5
+      },
+      "mid": {
+        "retention_rate": 0.397,
+        "delta_full_cost_rmb": -70.8
+      },
+      "high": {
+        "retention_rate": 0.332,
+        "delta_full_cost_rmb": -97.9
+      }
+    },
+    "S": {
+      "low": {
+        "retention_rate": 0.545,
+        "delta_full_cost_rmb": -113.5
+      },
+      "mid": {
+        "retention_rate": 0.407,
+        "delta_full_cost_rmb": -228.7
+      },
+      "high": {
+        "retention_rate": 0.33,
+        "delta_full_cost_rmb": -390.1
+      }
+    },
+    "P": {
+      "low": {
+        "retention_rate": 0.545,
+        "delta_full_cost_rmb": -113.5
+      },
+      "mid": {
+        "retention_rate": 0.407,
+        "delta_full_cost_rmb": -228.7
+      },
+      "high": {
+        "retention_rate": 0.33,
+        "delta_full_cost_rmb": -390.1
+      }
+    }
+  },
+  "indicator_5_decision_level_offers_P_vs_S": null,
+  "diagnostics": {
+    "fallback_rate_mean": 0.0,
+    "counters_per_run": 95.2,
+    "counter_accept_rate_P": 0.926,
+    "multi_app_rooms_per_run_P": 124.0
+  }
+}

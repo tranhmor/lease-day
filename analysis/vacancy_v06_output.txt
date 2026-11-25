@@ -1,0 +1,6 @@
+east_express: treated zones ['Z05', 'Z11']; 100 seeds; last 12 months
+arm                   vac_in     vac_out      vacant           n      over60  low_over30
+A none, respond       0.0032      0.0729      0.0677   1118.7667      0.2415      0.1965
+A0 none, frozen       0.0012      0.0658      0.0610   1126.8058      0.2406      0.1708
+B line, frozen        0.0011      0.0660      0.0611   1126.6592      0.2391      0.1721
+C line, respond       0.0029      0.0727      0.0675   1118.9925      0.2368      0.1979

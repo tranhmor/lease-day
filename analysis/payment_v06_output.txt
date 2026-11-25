@@ -1,0 +1,4 @@
+all 押一付三       seated  1123 low/mid/high 1.00/0.99/0.96 end n  1110 vac 0.075 commute 48.3 over60 0.24 burden 0.217/0.214/0.231/0.202 low>30 0.18 left 6.0/1.8/0.0 blocked 231/67/3 moves 493
+all 押一付二       seated  1135 low/mid/high 1.00/1.00/0.99 end n  1119 vac 0.067 commute 48.3 over60 0.24 burden 0.220/0.217/0.235/0.205 low>30 0.20 left 6.3/2.5/0.0 blocked 226/59/1 moves 520
+all 押一付一       seated  1135 low/mid/high 1.00/1.00/0.99 end n  1117 vac 0.069 commute 48.3 over60 0.24 burden 0.222/0.220/0.237/0.205 low>30 0.21 left 8.6/2.7/0.1 blocked 217/57/0 moves 510
+by room type   seated  1134 low/mid/high 1.00/1.00/0.99 end n  1118 vac 0.069 commute 48.5 over60 0.24 burden 0.219/0.216/0.233/0.203 low>30 0.20 left 7.0/2.4/0.1 blocked 226/64/1 moves 515

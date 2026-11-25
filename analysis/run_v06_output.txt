@@ -1,0 +1,57 @@
+30 paired seeds; rule agents; values at the end of the run
+
+[no new line, cbd share 1.0] seated 1134 (low 1.00, mid 1.00, high 0.99); end n 1118; vacancy 0.069
+  commute 48.5, over 60 min 0.24; burden all 0.219, low 0.216, mid 0.233, high 0.203; low over 30% 0.20, over 50% 0.00; low within near zones 0.35
+  rent index before line 1.011, end 1.027; whole 0.948, low-cost 1.052; gradient per 10 min -0.081
+  left low/mid/high 7.0/2.4/0.1; blocked arrivals low/mid/high 226.0/64.0/0.8
+  modes low {'骑车接地铁': 0.29, '地铁': 0.19, '公交直达': 0.19, '电动车': 0.14, '私家车': 0.11, '步行': 0.03, '公交换乘': 0.02, '打车': 0.02, '自行车': 0.01}
+  modes mid {'骑车接地铁': 0.22, '私家车': 0.2, '公交直达': 0.19, '地铁': 0.19, '电动车': 0.12, '打车': 0.04, '步行': 0.02, '公交换乘': 0.01, '自行车': 0.0}
+  modes high {'私家车': 0.28, '地铁': 0.19, '公交直达': 0.16, '电动车': 0.11, '骑车接地铁': 0.11, '打车': 0.11, '步行': 0.02, '公交换乘': 0.01, '自行车': 0.0}
+
+[replay, cbd share 1.0] seated 1134 (low 1.00, mid 1.00, high 0.99); end n 1118; vacancy 0.068
+  commute 48.0, over 60 min 0.24; burden all 0.220, low 0.217, mid 0.234, high 0.204; low over 30% 0.20, over 50% 0.00; low within near zones 0.35
+  rent index before line 1.011, end 1.029; whole 0.950, low-cost 1.054; gradient per 10 min -0.080
+  left low/mid/high 6.9/2.2/0.1; blocked arrivals low/mid/high 226.3/65.2/0.7
+  modes low {'骑车接地铁': 0.3, '地铁': 0.19, '公交直达': 0.19, '电动车': 0.14, '私家车': 0.11, '步行': 0.03, '公交换乘': 0.02, '打车': 0.02, '自行车': 0.01}
+  modes mid {'骑车接地铁': 0.22, '私家车': 0.21, '地铁': 0.19, '公交直达': 0.18, '电动车': 0.12, '打车': 0.03, '步行': 0.02, '公交换乘': 0.02, '自行车': 0.0}
+  modes high {'私家车': 0.29, '地铁': 0.19, '公交直达': 0.16, '打车': 0.11, '电动车': 0.11, '骑车接地铁': 0.11, '步行': 0.02, '公交换乘': 0.01, '自行车': 0.0}
+  replay vs none, treated zones rent %  +0.26 +-0.96  Z03 +0.29 +-0.39  Z23 +0.50 +-1.84
+  east express vs none, Z05+Z11 rent %  +1.09 +-0.46  commute -0.9 +-0.2  low commute -1.0 +-0.4  low cash +4 +-19  left +0.0 +-1.3
+  frozen minus responding (east express): commute +0.07 +-0.17, low commute -0.22 +-0.32, low cash -13 +-19, revenue +27 +-11
+
+[no new line, cbd share 0.1] seated 1134 (low 1.00, mid 1.00, high 0.99); end n 1125; vacancy 0.063
+  commute 48.4, over 60 min 0.24; burden all 0.220, low 0.215, mid 0.231, high 0.208; low over 30% 0.17, over 50% 0.00; low within near zones 0.35
+  rent index before line 1.010, end 1.027; whole 0.977, low-cost 1.046; gradient per 10 min -0.078
+  left low/mid/high 3.1/1.7/0.4; blocked arrivals low/mid/high 245.9/80.8/1.6
+  modes low {'骑车接地铁': 0.29, '地铁': 0.19, '公交直达': 0.19, '电动车': 0.14, '私家车': 0.11, '步行': 0.03, '打车': 0.02, '公交换乘': 0.02, '自行车': 0.01}
+  modes mid {'骑车接地铁': 0.23, '私家车': 0.21, '公交直达': 0.19, '地铁': 0.19, '电动车': 0.12, '打车': 0.03, '步行': 0.02, '公交换乘': 0.02, '自行车': 0.0}
+  modes high {'私家车': 0.28, '地铁': 0.18, '公交直达': 0.16, '骑车接地铁': 0.12, '电动车': 0.11, '打车': 0.11, '步行': 0.02, '公交换乘': 0.01, '自行车': 0.0}
+
+[replay, cbd share 0.1] seated 1134 (low 1.00, mid 1.00, high 0.99); end n 1126; vacancy 0.062
+  commute 48.1, over 60 min 0.24; burden all 0.219, low 0.214, mid 0.231, high 0.209; low over 30% 0.17, over 50% 0.00; low within near zones 0.35
+  rent index before line 1.010, end 1.023; whole 0.979, low-cost 1.038; gradient per 10 min -0.077
+  left low/mid/high 2.8/1.7/0.3; blocked arrivals low/mid/high 235.5/78.6/1.4
+  modes low {'骑车接地铁': 0.29, '地铁': 0.19, '公交直达': 0.19, '电动车': 0.14, '私家车': 0.11, '步行': 0.03, '打车': 0.02, '公交换乘': 0.02, '自行车': 0.01}
+  modes mid {'骑车接地铁': 0.23, '私家车': 0.21, '地铁': 0.19, '公交直达': 0.18, '电动车': 0.12, '打车': 0.03, '步行': 0.02, '公交换乘': 0.02, '自行车': 0.01}
+  modes high {'私家车': 0.28, '地铁': 0.19, '公交直达': 0.16, '骑车接地铁': 0.12, '电动车': 0.11, '打车': 0.11, '步行': 0.02, '公交换乘': 0.01, '自行车': 0.0}
+  replay vs none, treated zones rent %  -0.12 +-0.81  Z03 -0.03 +-0.38  Z23 +0.66 +-1.23
+  east express vs none, Z05+Z11 rent %  +0.90 +-0.50  commute -0.9 +-0.1  low commute -1.5 +-0.4  low cash +0 +-21  left +0.2 +-1.0
+  frozen minus responding (east express): commute +0.12 +-0.14, low commute +0.28 +-0.44, low cash -14 +-18, revenue +12 +-12
+
+assumption tests, east express, cbd share 1.0: level, difference from base in brackets for low cash
+variant                seated low seat commute over60 lowBur lowO30   left blockLow blockMid  Z05+Z11 rent% lowNear
+base                     1134     1.00    47.6   0.24  0.217   0.20    9.6    228.7     64.2    +1.09 +-0.46    0.35
+tau 25                   1121     1.00    43.1   0.17  0.222   0.21   11.7    251.2     68.6    +1.56 +-0.60    0.45
+tau 60                   1138     1.00    50.6   0.29  0.211   0.18   10.5    205.3     52.3    +1.19 +-0.52    0.29
+low-cost rooms -30%      1118     0.99    47.7   0.24  0.228   0.26   13.7    249.9     66.6    +0.86 +-0.43    0.32
+low-cost rooms -60%      1082     0.97    47.4   0.24  0.255   0.41   18.3    271.3     52.6    +0.93 +-0.55    0.29
+occupancy 0.99           1167     1.00    47.6   0.24  0.218   0.21   11.3    269.2     92.3    +0.97 +-0.56    0.34
+savings half             1054     1.00    47.6   0.24  0.205   0.14    4.2    256.4    103.3    +1.16 +-0.56    0.36
+saving x2                1134     1.00    46.8   0.24  0.217   0.20    9.7    217.6     65.6    +2.06 +-0.57    0.35
+mid lines 20/30          1101     1.00    47.4   0.24  0.214   0.19   12.7    189.9     76.6    +1.38 +-0.58    0.35
+mid lines 30/55          1137     1.00    47.8   0.24  0.217   0.19    7.7    163.0     21.8    +0.93 +-0.36    0.36
+low lines 15/30          1133     0.99    47.5   0.24  0.188   0.04   14.3    243.2     36.4    +1.28 +-0.47    0.34
+low lines 25/55          1135     1.00    47.7   0.24  0.244   0.31    7.9    194.0     77.6    +0.93 +-0.46    0.37
+outside floor 0.8        1134     1.00    47.8   0.24  0.215   0.19    7.0    184.5     38.0    +0.86 +-0.49    0.35
+outside floor 1.0        1134     1.00    47.7   0.24  0.218   0.20   10.5    257.8     96.8    +0.91 +-0.40    0.35
+seconds 436

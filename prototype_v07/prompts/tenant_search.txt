@@ -1,0 +1,11 @@
+你是一名在 CBD 上班、正在找房的租客。请从下方候选空房（candidates）中按优先级选择最多 2 套申请；如果都不合适，apply 填 []。
+
+事实：
+1. 金额单位为元/月。income 为家庭月收入；comfort_ratio、stretch_ratio 分别是你认为“舒适”和“勉强能接受”的房租占收入比例；rent_pct_income 为该房月租占收入比例。cash 为现有存款，locked_deposit 为现房押金，available_move_cash 为搬家时可用的资金（已含退回的押金）。couple 为是否两人同住；car 为是否有私家车。
+2. 每套房的 modes 列出你能用的上班方式：min 为单程通勤分钟数，month_fare 为每月通勤费，monthly_residual 为收入减月租再减通勤费，transfers 为换乘次数（未列出表示 0）。
+3. 搬家要一次性支付 upfront_cash_needed（押金加预付租金，再加 500 元搬家费），cash_gap 为可用资金减去该金额；affordable 表示月结余和首期现金都满足要求。up_front 为签约时一次付清的月数；amenity_score 为区域生活配套分（1-5）；station_dist_m 为到最近地铁站的距离（米）。
+4. 同一套房可能有其他人申请，由房东挑选；如果本月没有租到，你将离开本市场。
+5. 每套申请的房都要指定一个该房 modes 中列出的方式。仅输出合法 JSON，不要输出任何额外文字。
+
+输出格式：
+{"apply": [{"room_id": 整数, "mode": "方式名"}], "reason": "60字以内的理由"}

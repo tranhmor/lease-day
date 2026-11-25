@@ -1,0 +1,2406 @@
+{
+ "assumed": {
+  "subway_wait_and_entry_min": 5,
+  "cbd_walk_min": 6,
+  "bus_kmh": 15,
+  "bus_wait_min": 8,
+  "bus_home_walk_min": 5,
+  "bus_transfer_min": 10,
+  "bike_kmh": 12,
+  "ebike_kmh": 20,
+  "bike_park_min": 3,
+  "foot_kmh": 4.43,
+  "car_park_walk_min": 5,
+  "fuel_per_km": 0.7,
+  "parking_per_day": 60,
+  "bike_month": 30,
+  "ebike_month": 120,
+  "workdays": 26,
+  "max_option_min": 120,
+  "wage_spread_sigma": 0.5,
+  "wage_trade_estate": 7000,
+  "wage_other": 5000,
+  "gravity_tau_min": 40
+ },
+ "peak_kmh": 26.05,
+ "work": {
+  "name": "CBD",
+  "anchors": [
+   "国贸",
+   "大望路",
+   "金台夕照",
+   "永安里",
+   "呼家楼"
+  ],
+  "centre": [
+   39.912,
+   116.456
+  ],
+  "area_km2": 7,
+  "units_2013": 20229,
+  "jobs_2013_10k": 47.7,
+  "jobs_by_industry_10k": {
+   "租赁和商务服务业": 16.2,
+   "批发和零售业": 8.1,
+   "金融业": 4.2,
+   "房地产业": 3.4,
+   "信息传输、软件和信息技术服务业": 3.0,
+   "其他": 12.7
+  },
+  "income_mix": {
+   "较低 4,000-7,000": 0.571,
+   "中等 7,000-15,000": 0.292,
+   "较高 15,000-35,000": 0.136
+  }
+ },
+ "zones": [
+  {
+   "id": "Z00",
+   "dir": "中心",
+   "ring": "步行圈",
+   "comm": "双井/红庙/东大桥/大望路",
+   "n": 2150,
+   "nw": 2017,
+   "nr": 133,
+   "psm": 122,
+   "t": 8,
+   "sv5": 2,
+   "km": 1.8,
+   "renters_sample": 6972,
+   "shares": {
+    "低价房": 0.11,
+    "便宜单间": 0.242,
+    "合租单间": 0.314,
+    "整租": 0.334
+   },
+   "rents": {
+    "低价房": 710.0,
+    "便宜单间": 1500.0,
+    "合租单间": 3000,
+    "整租": 7200
+   },
+   "room_rent_from_listings": true,
+   "whole_2015": 5700,
+   "whole_2018": 7200,
+   "options": {
+    "地铁": {
+     "min": 19,
+     "transfers": 0,
+     "month": 156,
+     "routes": [
+      {
+       "lines": [
+        "10"
+       ],
+       "ride_min": 3,
+       "transfers": 0,
+       "km": 2.0,
+       "door_min": 19
+      },
+      {
+       "lines": [
+        "7",
+        "14"
+       ],
+       "ride_min": 11,
+       "transfers": 1,
+       "km": 3.4,
+       "door_min": 27
+      }
+     ]
+    },
+    "公交直达": {
+     "min": 29,
+     "transfers": 0,
+     "lines": 47,
+     "month": 52
+    },
+    "电动车": {
+     "min": 10,
+     "transfers": 0,
+     "month": 120
+    },
+    "自行车": {
+     "min": 15,
+     "transfers": 0,
+     "month": 30
+    },
+    "步行": {
+     "min": 32,
+     "transfers": 0,
+     "month": 0
+    },
+    "私家车": {
+     "min": 10,
+     "transfers": 0,
+     "month": 1645
+    },
+    "打车": {
+     "min": 5,
+     "transfers": 0,
+     "month": 874
+    }
+   },
+   "top_stations": [
+    "双井",
+    "大望路",
+    "永安里"
+   ],
+   "stock_share": 0.033,
+   "rooms_rule": 92,
+   "rooms_rule_by_type": {
+    "低价房": 10,
+    "便宜单间": 22,
+    "合租单间": 29,
+    "整租": 31
+   },
+   "rooms_llm": 19,
+   "rooms_llm_by_type": {
+    "低价房": 2,
+    "便宜单间": 5,
+    "合租单间": 6,
+    "整租": 6
+   }
+  },
+  {
+   "id": "Z01",
+   "dir": "东",
+   "ring": "近",
+   "comm": "定福庄/百子湾/常营/管庄",
+   "n": 3081,
+   "nw": 2445,
+   "nr": 636,
+   "psm": 90,
+   "t": 22,
+   "sv5": 4,
+   "km": 6.4,
+   "renters_sample": 10122,
+   "shares": {
+    "低价房": 0.104,
+    "便宜单间": 0.197,
+    "合租单间": 0.244,
+    "整租": 0.455
+   },
+   "rents": {
+    "低价房": 730.0,
+    "便宜单间": 1400.0,
+    "合租单间": 2400,
+    "整租": 5650
+   },
+   "room_rent_from_listings": true,
+   "whole_2015": 3800,
+   "whole_2018": 5650,
+   "options": {
+    "地铁": {
+     "min": 33,
+     "transfers": 0,
+     "month": 156,
+     "routes": [
+      {
+       "lines": [
+        "1"
+       ],
+       "ride_min": 3,
+       "transfers": 0,
+       "km": 1.9,
+       "door_min": 33
+      }
+     ]
+    },
+    "公交直达": {
+     "min": 52,
+     "transfers": 0,
+     "lines": 18,
+     "month": 52
+    },
+    "电动车": {
+     "min": 25,
+     "transfers": 0,
+     "month": 120
+    },
+    "自行车": {
+     "min": 40,
+     "transfers": 0,
+     "month": 30
+    },
+    "私家车": {
+     "min": 22,
+     "transfers": 0,
+     "month": 1829
+    },
+    "打车": {
+     "min": 17,
+     "transfers": 0,
+     "month": 1716
+    }
+   },
+   "top_stations": [
+    "四惠",
+    "青年路",
+    "传媒大学"
+   ],
+   "stock_share": 0.049,
+   "rooms_rule": 95,
+   "rooms_rule_by_type": {
+    "低价房": 10,
+    "便宜单间": 19,
+    "合租单间": 23,
+    "整租": 43
+   },
+   "rooms_llm": 19,
+   "rooms_llm_by_type": {
+    "低价房": 2,
+    "便宜单间": 4,
+    "合租单间": 4,
+    "整租": 9
+   }
+  },
+  {
+   "id": "Z02",
+   "dir": "北",
+   "ring": "近",
+   "comm": "望京/酒仙桥/石佛营/燕莎",
+   "n": 2547,
+   "nw": 2201,
+   "nr": 346,
+   "psm": 114,
+   "t": 21,
+   "sv5": 0,
+   "km": 6.1,
+   "renters_sample": 8554,
+   "shares": {
+    "低价房": 0.109,
+    "便宜单间": 0.286,
+    "合租单间": 0.236,
+    "整租": 0.369
+   },
+   "rents": {
+    "低价房": 730.0,
+    "便宜单间": 1700.0,
+    "合租单间": 3000,
+    "整租": 6700
+   },
+   "room_rent_from_listings": true,
+   "whole_2015": 4800,
+   "whole_2018": 6700,
+   "options": {
+    "地铁": {
+     "min": 32,
+     "transfers": 0,
+     "month": 156,
+     "routes": [
+      {
+       "lines": [
+        "10"
+       ],
+       "ride_min": 9,
+       "transfers": 0,
+       "km": 4.8,
+       "door_min": 32
+      }
+     ]
+    },
+    "公交直达": {
+     "min": 47,
+     "transfers": 0,
+     "lines": 16,
+     "month": 52
+    },
+    "电动车": {
+     "min": 22,
+     "transfers": 0,
+     "month": 120
+    },
+    "自行车": {
+     "min": 35,
+     "transfers": 0,
+     "month": 30
+    },
+    "私家车": {
+     "min": 22,
+     "transfers": 0,
+     "month": 1828
+    },
+    "打车": {
+     "min": 17,
+     "transfers": 0,
+     "month": 1708
+    }
+   },
+   "top_stations": [
+    "三元桥",
+    "十里堡",
+    "太阳宫"
+   ],
+   "stock_share": 0.041,
+   "rooms_rule": 82,
+   "rooms_rule_by_type": {
+    "低价房": 9,
+    "便宜单间": 24,
+    "合租单间": 19,
+    "整租": 30
+   },
+   "rooms_llm": 16,
+   "rooms_llm_by_type": {
+    "低价房": 2,
+    "便宜单间": 4,
+    "合租单间": 4,
+    "整租": 6
+   }
+  },
+  {
+   "id": "Z03",
+   "dir": "南",
+   "ring": "近",
+   "comm": "方庄/广渠门/潘家园/劲松",
+   "n": 3439,
+   "nw": 3023,
+   "nr": 416,
+   "psm": 98,
+   "t": 20,
+   "sv5": 18,
+   "km": 5.4,
+   "renters_sample": 11713,
+   "shares": {
+    "低价房": 0.148,
+    "便宜单间": 0.156,
+    "合租单间": 0.264,
+    "整租": 0.432
+   },
+   "rents": {
+    "低价房": 560.0,
+    "便宜单间": 1400.0,
+    "合租单间": 2500,
+    "整租": 5900
+   },
+   "room_rent_from_listings": true,
+   "whole_2015": 4000,
+   "whole_2018": 5900,
+   "options": {
+    "地铁": {
+     "min": 31,
+     "transfers": 0,
+     "month": 208,
+     "routes": [
+      {
+       "lines": [
+        "14"
+       ],
+       "ride_min": 14,
+       "transfers": 0,
+       "km": 8.0,
+       "door_min": 31
+      }
+     ]
+    },
+    "公交直达": {
+     "min": 50,
+     "transfers": 0,
+     "lines": 14,
+     "month": 52
+    },
+    "电动车": {
+     "min": 24,
+     "transfers": 0,
+     "month": 120
+    },
+    "自行车": {
+     "min": 38,
+     "transfers": 0,
+     "month": 30
+    },
+    "私家车": {
+     "min": 24,
+     "transfers": 0,
+     "month": 1857
+    },
+    "打车": {
+     "min": 19,
+     "transfers": 0,
+     "month": 1855
+    }
+   },
+   "top_stations": [
+    "方庄",
+    "潘家园",
+    "广渠门内"
+   ],
+   "stock_share": 0.056,
+   "rooms_rule": 115,
+   "rooms_rule_by_type": {
+    "低价房": 17,
+    "便宜单间": 18,
+    "合租单间": 30,
+    "整租": 50
+   },
+   "rooms_llm": 23,
+   "rooms_llm_by_type": {
+    "低价房": 3,
+    "便宜单间": 4,
+    "合租单间": 6,
+    "整租": 10
+   }
+  },
+  {
+   "id": "Z04",
+   "dir": "西",
+   "ring": "近",
+   "comm": "金融街/和平里/惠新西街/木樨地",
+   "n": 4195,
+   "nw": 3826,
+   "nr": 369,
+   "psm": 127,
+   "t": 25,
+   "sv5": 0,
+   "km": 8.1,
+   "renters_sample": 11775,
+   "shares": {
+    "低价房": 0.112,
+    "便宜单间": 0.215,
+    "合租单间": 0.272,
+    "整租": 0.401
+   },
+   "rents": {
+    "低价房": 460.0,
+    "便宜单间": 1600.0,
+    "合租单间": 3100,
+    "整租": 7200
+   },
+   "room_rent_from_listings": true,
+   "whole_2015": 5000,
+   "whole_2018": 7200,
+   "options": {
+    "地铁": {
+     "min": 36,
+     "transfers": 0,
+     "month": 208,
+     "routes": [
+      {
+       "lines": [
+        "10"
+       ],
+       "ride_min": 17,
+       "transfers": 0,
+       "km": 9.5,
+       "door_min": 36
+      }
+     ]
+    },
+    "公交直达": {
+     "min": 56,
+     "transfers": 0,
+     "lines": 5,
+     "month": 52
+    },
+    "电动车": {
+     "min": 28,
+     "transfers": 0,
+     "month": 120
+    },
+    "自行车": {
+     "min": 45,
+     "transfers": 0,
+     "month": 30
+    },
+    "私家车": {
+     "min": 27,
+     "transfers": 0,
+     "month": 1912
+    },
+    "打车": {
+     "min": 22,
+     "transfers": 0,
+     "month": 2127
+    }
+   },
+   "top_stations": [
+    "惠新西街南口",
+    "东直门",
+    "车公庄"
+   ],
+   "stock_share": 0.056,
+   "rooms_rule": 102,
+   "rooms_rule_by_type": {
+    "低价房": 11,
+    "便宜单间": 22,
+    "合租单间": 28,
+    "整租": 41
+   },
+   "rooms_llm": 20,
+   "rooms_llm_by_type": {
+    "低价房": 2,
+    "便宜单间": 4,
+    "合租单间": 6,
+    "整租": 8
+   }
+  },
+  {
+   "id": "Z05",
+   "dir": "东",
+   "ring": "中",
+   "comm": "果园/梨园/新华大街/通州北苑",
+   "n": 1577,
+   "nw": 1248,
+   "nr": 329,
+   "psm": 62,
+   "t": 37,
+   "sv5": 0,
+   "km": 16.0,
+   "renters_sample": 8368,
+   "shares": {
+    "低价房": 0.225,
+    "便宜单间": 0.107,
+    "合租单间": 0.233,
+    "整租": 0.435
+   },
+   "rents": {
+    "低价房": 600.0,
+    "便宜单间": 1300.0,
+    "合租单间": 1900,
+    "整租": 4000
+   },
+   "room_rent_from_listings": true,
+   "whole_2015": 2500,
+   "whole_2018": 4000,
+   "options": {
+    "地铁": {
+     "min": 48,
+     "transfers": 0,
+     "month": 260,
+     "routes": [
+      {
+       "lines": [
+        "1"
+       ],
+       "ride_min": 28,
+       "transfers": 0,
+       "km": 17.1,
+       "door_min": 48
+      }
+     ]
+    },
+    "公交直达": {
+     "min": 96,
+     "transfers": 0,
+     "lines": 9,
+     "month": 104
+    },
+    "电动车": {
+     "min": 56,
+     "transfers": 0,
+     "month": 120
+    },
+    "私家车": {
+     "min": 45,
+     "transfers": 0,
+     "month": 2186
+    },
+    "打车": {
+     "min": 40,
+     "transfers": 0,
+     "month": 3630
+    }
+   },
+   "top_stations": [
+    "果园",
+    "通州北苑",
+    "梨园"
+   ],
+   "stock_share": 0.04,
+   "rooms_rule": 54,
+   "rooms_rule_by_type": {
+    "低价房": 12,
+    "便宜单间": 6,
+    "合租单间": 13,
+    "整租": 23
+   },
+   "rooms_llm": 11,
+   "rooms_llm_by_type": {
+    "低价房": 2,
+    "便宜单间": 1,
+    "合租单间": 3,
+    "整租": 5
+   }
+  },
+  {
+   "id": "Z06",
+   "dir": "北",
+   "ring": "中",
+   "comm": "北苑/望京/亚运村小营/立水桥",
+   "n": 2050,
+   "nw": 1606,
+   "nr": 444,
+   "psm": 99,
+   "t": 38,
+   "sv5": 2,
+   "km": 13.4,
+   "renters_sample": 8559,
+   "shares": {
+    "低价房": 0.174,
+    "便宜单间": 0.268,
+    "合租单间": 0.244,
+    "整租": 0.314
+   },
+   "rents": {
+    "低价房": 730.0,
+    "便宜单间": 1500.0,
+    "合租单间": 2700,
+    "整租": 6500
+   },
+   "room_rent_from_listings": true,
+   "whole_2015": 4500,
+   "whole_2018": 6500,
+   "options": {
+    "地铁": {
+     "min": 49,
+     "transfers": 1,
+     "month": 260,
+     "routes": [
+      {
+       "lines": [
+        "13",
+        "10"
+       ],
+       "ride_min": 31,
+       "transfers": 1,
+       "km": 16.1,
+       "door_min": 49
+      }
+     ]
+    },
+    "公交换乘": {
+     "min": 95,
+     "transfers": 1,
+     "lines": 0,
+     "month": 104
+    },
+    "电动车": {
+     "min": 48,
+     "transfers": 0,
+     "month": 120
+    },
+    "自行车": {
+     "min": 78,
+     "transfers": 0,
+     "month": 30
+    },
+    "私家车": {
+     "min": 44,
+     "transfers": 0,
+     "month": 2184
+    },
+    "打车": {
+     "min": 39,
+     "transfers": 0,
+     "month": 3615
+    }
+   },
+   "top_stations": [
+    "北苑",
+    "立水桥",
+    "立水桥南"
+   ],
+   "stock_share": 0.041,
+   "rooms_rule": 54,
+   "rooms_rule_by_type": {
+    "低价房": 9,
+    "便宜单间": 15,
+    "合租单间": 13,
+    "整租": 17
+   },
+   "rooms_llm": 11,
+   "rooms_llm_by_type": {
+    "低价房": 2,
+    "便宜单间": 3,
+    "合租单间": 3,
+    "整租": 3
+   }
+  },
+  {
+   "id": "Z07",
+   "dir": "西北",
+   "ring": "中",
+   "comm": "德胜门/亚运村/小西天/苏州桥",
+   "n": 2816,
+   "nw": 2297,
+   "nr": 519,
+   "psm": 118,
+   "t": 38,
+   "sv5": 0,
+   "km": 10.9,
+   "renters_sample": 12166,
+   "shares": {
+    "低价房": 0.053,
+    "便宜单间": 0.321,
+    "合租单间": 0.264,
+    "整租": 0.363
+   },
+   "rents": {
+    "低价房": 650.0,
+    "便宜单间": 1800.0,
+    "合租单间": 3200,
+    "整租": 6800
+   },
+   "room_rent_from_listings": true,
+   "whole_2015": 5000,
+   "whole_2018": 6800,
+   "options": {
+    "地铁": {
+     "min": 49,
+     "transfers": 1,
+     "month": 208,
+     "routes": [
+      {
+       "lines": [
+        "2",
+        "6"
+       ],
+       "ride_min": 24,
+       "transfers": 1,
+       "km": 10.9,
+       "door_min": 49
+      },
+      {
+       "lines": [
+        "2",
+        "1"
+       ],
+       "ride_min": 25,
+       "transfers": 1,
+       "km": 11.6,
+       "door_min": 50
+      }
+     ]
+    },
+    "公交直达": {
+     "min": 82,
+     "transfers": 0,
+     "lines": 2,
+     "month": 104
+    },
+    "电动车": {
+     "min": 46,
+     "transfers": 0,
+     "month": 120
+    },
+    "自行车": {
+     "min": 74,
+     "transfers": 0,
+     "month": 30
+    },
+    "私家车": {
+     "min": 43,
+     "transfers": 0,
+     "month": 2159
+    },
+    "打车": {
+     "min": 38,
+     "transfers": 0,
+     "month": 3448
+    }
+   },
+   "top_stations": [
+    "积水潭",
+    "健德门",
+    "苏州街"
+   ],
+   "stock_share": 0.058,
+   "rooms_rule": 76,
+   "rooms_rule_by_type": {
+    "低价房": 4,
+    "便宜单间": 24,
+    "合租单间": 20,
+    "整租": 28
+   },
+   "rooms_llm": 15,
+   "rooms_llm_by_type": {
+    "低价房": 1,
+    "便宜单间": 5,
+    "合租单间": 4,
+    "整租": 5
+   }
+  },
+  {
+   "id": "Z08",
+   "dir": "西",
+   "ring": "中",
+   "comm": "广安门/紫竹桥/定慧寺/五棵松",
+   "n": 3333,
+   "nw": 3057,
+   "nr": 276,
+   "psm": 104,
+   "t": 36,
+   "sv5": 0,
+   "km": 12.7,
+   "renters_sample": 13591,
+   "shares": {
+    "低价房": 0.068,
+    "便宜单间": 0.252,
+    "合租单间": 0.262,
+    "整租": 0.418
+   },
+   "rents": {
+    "低价房": 590.0,
+    "便宜单间": 1600.0,
+    "合租单间": 2800,
+    "整租": 6000
+   },
+   "room_rent_from_listings": true,
+   "whole_2015": 4500,
+   "whole_2018": 6000,
+   "options": {
+    "地铁": {
+     "min": 47,
+     "transfers": 1,
+     "month": 260,
+     "routes": [
+      {
+       "lines": [
+        "7",
+        "10"
+       ],
+       "ride_min": 29,
+       "transfers": 1,
+       "km": 13.8,
+       "door_min": 47
+      },
+      {
+       "lines": [
+        "7",
+        "14"
+       ],
+       "ride_min": 32,
+       "transfers": 1,
+       "km": 15.2,
+       "door_min": 50
+      },
+      {
+       "lines": [
+        "7",
+        "5",
+        "1"
+       ],
+       "ride_min": 33,
+       "transfers": 2,
+       "km": 12.5,
+       "door_min": 51
+      }
+     ]
+    },
+    "公交直达": {
+     "min": 77,
+     "transfers": 0,
+     "lines": 4,
+     "month": 78
+    },
+    "电动车": {
+     "min": 43,
+     "transfers": 0,
+     "month": 120
+    },
+    "自行车": {
+     "min": 69,
+     "transfers": 0,
+     "month": 30
+    },
+    "私家车": {
+     "min": 35,
+     "transfers": 0,
+     "month": 2040
+    },
+    "打车": {
+     "min": 30,
+     "transfers": 0,
+     "month": 2771
+    }
+   },
+   "top_stations": [
+    "达官营",
+    "花园桥",
+    "广安门内"
+   ],
+   "stock_share": 0.065,
+   "rooms_rule": 89,
+   "rooms_rule_by_type": {
+    "低价房": 6,
+    "便宜单间": 23,
+    "合租单间": 23,
+    "整租": 37
+   },
+   "rooms_llm": 18,
+   "rooms_llm_by_type": {
+    "低价房": 1,
+    "便宜单间": 5,
+    "合租单间": 5,
+    "整租": 7
+   }
+  },
+  {
+   "id": "Z09",
+   "dir": "西南",
+   "ring": "中",
+   "comm": "马家堡/玉泉营/西罗园/陶然亭",
+   "n": 1883,
+   "nw": 1626,
+   "nr": 257,
+   "psm": 86,
+   "t": 35,
+   "sv5": 5,
+   "km": 10.2,
+   "renters_sample": 7671,
+   "shares": {
+    "低价房": 0.162,
+    "便宜单间": 0.133,
+    "合租单间": 0.278,
+    "整租": 0.428
+   },
+   "rents": {
+    "低价房": 640.0,
+    "便宜单间": 1400.0,
+    "合租单间": 2500,
+    "整租": 5300
+   },
+   "room_rent_from_listings": true,
+   "whole_2015": 3800,
+   "whole_2018": 5300,
+   "options": {
+    "地铁": {
+     "min": 46,
+     "transfers": 0,
+     "month": 260,
+     "routes": [
+      {
+       "lines": [
+        "14"
+       ],
+       "ride_min": 24,
+       "transfers": 0,
+       "km": 14.0,
+       "door_min": 46
+      },
+      {
+       "lines": [
+        "4",
+        "1"
+       ],
+       "ride_min": 28,
+       "transfers": 1,
+       "km": 12.4,
+       "door_min": 50
+      }
+     ]
+    },
+    "公交直达": {
+     "min": 79,
+     "transfers": 0,
+     "lines": 7,
+     "month": 104
+    },
+    "电动车": {
+     "min": 44,
+     "transfers": 0,
+     "month": 120
+    },
+    "自行车": {
+     "min": 72,
+     "transfers": 0,
+     "month": 30
+    },
+    "私家车": {
+     "min": 37,
+     "transfers": 0,
+     "month": 2066
+    },
+    "打车": {
+     "min": 32,
+     "transfers": 0,
+     "month": 2898
+    }
+   },
+   "top_stations": [
+    "北京南站",
+    "角门西",
+    "角门东"
+   ],
+   "stock_share": 0.037,
+   "rooms_rule": 52,
+   "rooms_rule_by_type": {
+    "低价房": 8,
+    "便宜单间": 7,
+    "合租单间": 15,
+    "整租": 22
+   },
+   "rooms_llm": 10,
+   "rooms_llm_by_type": {
+    "低价房": 2,
+    "便宜单间": 1,
+    "合租单间": 3,
+    "整租": 4
+   }
+  },
+  {
+   "id": "Z10",
+   "dir": "南",
+   "ring": "中",
+   "comm": "亦庄/旧宫/豆各庄/十八里店",
+   "n": 707,
+   "nw": 626,
+   "nr": 81,
+   "psm": 72,
+   "t": 48,
+   "sv5": 1,
+   "km": 12.4,
+   "renters_sample": 5467,
+   "shares": {
+    "低价房": 0.268,
+    "便宜单间": 0.12,
+    "合租单间": 0.302,
+    "整租": 0.31
+   },
+   "rents": {
+    "低价房": 620.0,
+    "便宜单间": 1300.0,
+    "合租单间": 2000,
+    "整租": 4600
+   },
+   "room_rent_from_listings": true,
+   "whole_2015": 3000,
+   "whole_2018": 4600,
+   "options": {
+    "地铁": {
+     "min": 59,
+     "transfers": 1,
+     "month": 260,
+     "routes": [
+      {
+       "lines": [
+        "24;L2",
+        "10"
+       ],
+       "ride_min": 33,
+       "transfers": 1,
+       "km": 16.3,
+       "door_min": 59
+      }
+     ]
+    },
+    "骑车接地铁": {
+     "min": 53,
+     "transfers": 1,
+     "month": 290
+    },
+    "公交换乘": {
+     "min": 93,
+     "transfers": 1,
+     "lines": 0,
+     "month": 104
+    },
+    "电动车": {
+     "min": 47,
+     "transfers": 0,
+     "month": 120
+    },
+    "自行车": {
+     "min": 76,
+     "transfers": 0,
+     "month": 30
+    },
+    "私家车": {
+     "min": 42,
+     "transfers": 0,
+     "month": 2150
+    },
+    "打车": {
+     "min": 37,
+     "transfers": 0,
+     "month": 3389
+    }
+   },
+   "top_stations": [
+    "旧宫",
+    "亦庄桥",
+    "亦庄文化园"
+   ],
+   "stock_share": 0.026,
+   "rooms_rule": 27,
+   "rooms_rule_by_type": {
+    "低价房": 7,
+    "便宜单间": 3,
+    "合租单间": 8,
+    "整租": 9
+   },
+   "rooms_llm": 5,
+   "rooms_llm_by_type": {
+    "低价房": 1,
+    "便宜单间": 1,
+    "合租单间": 1,
+    "整租": 2
+   }
+  },
+  {
+   "id": "Z11",
+   "dir": "东",
+   "ring": "远",
+   "comm": "武夷花园/临河里/潞苑/九棵树",
+   "n": 1511,
+   "nw": 1350,
+   "nr": 161,
+   "psm": 55,
+   "t": 51,
+   "sv5": 0,
+   "km": 18.8,
+   "renters_sample": 7889,
+   "shares": {
+    "低价房": 0.231,
+    "便宜单间": 0.07,
+    "合租单间": 0.245,
+    "整租": 0.454
+   },
+   "rents": {
+    "低价房": 590.0,
+    "便宜单间": 1200.0,
+    "合租单间": 1800,
+    "整租": 3800
+   },
+   "room_rent_from_listings": true,
+   "whole_2015": 2300,
+   "whole_2018": 3800,
+   "options": {
+    "地铁": {
+     "min": 62,
+     "transfers": 0,
+     "month": 260,
+     "routes": [
+      {
+       "lines": [
+        "6"
+       ],
+       "ride_min": 34,
+       "transfers": 0,
+       "km": 20.8,
+       "door_min": 62
+      }
+     ]
+    },
+    "骑车接地铁": {
+     "min": 54,
+     "transfers": 0,
+     "month": 290
+    },
+    "公交直达": {
+     "min": 106,
+     "transfers": 0,
+     "lines": 6,
+     "month": 130
+    },
+    "电动车": {
+     "min": 62,
+     "transfers": 0,
+     "month": 120
+    },
+    "私家车": {
+     "min": 50,
+     "transfers": 0,
+     "month": 2277
+    },
+    "打车": {
+     "min": 45,
+     "transfers": 0,
+     "month": 4235
+    }
+   },
+   "top_stations": [
+    "通运门",
+    "土桥",
+    "北运河西"
+   ],
+   "stock_share": 0.038,
+   "rooms_rule": 36,
+   "rooms_rule_by_type": {
+    "低价房": 8,
+    "便宜单间": 3,
+    "合租单间": 9,
+    "整租": 16
+   },
+   "rooms_llm": 7,
+   "rooms_llm_by_type": {
+    "低价房": 2,
+    "便宜单间": 0,
+    "合租单间": 2,
+    "整租": 3
+   }
+  },
+  {
+   "id": "Z12",
+   "dir": "北",
+   "ring": "远",
+   "comm": "天通苑/北苑/立水桥/后沙峪",
+   "n": 1183,
+   "nw": 592,
+   "nr": 591,
+   "psm": 68,
+   "t": 51,
+   "sv5": 0,
+   "km": 18.1,
+   "renters_sample": 12224,
+   "shares": {
+    "低价房": 0.33,
+    "便宜单间": 0.208,
+    "合租单间": 0.284,
+    "整租": 0.179
+   },
+   "rents": {
+    "低价房": 710.0,
+    "便宜单间": 1400.0,
+    "合租单间": 2300,
+    "整租": 5500
+   },
+   "room_rent_from_listings": true,
+   "whole_2015": 3500,
+   "whole_2018": 5500,
+   "options": {
+    "地铁": {
+     "min": 62,
+     "transfers": 1,
+     "month": 260,
+     "routes": [
+      {
+       "lines": [
+        "5",
+        "10"
+       ],
+       "ride_min": 42,
+       "transfers": 1,
+       "km": 21.8,
+       "door_min": 62
+      },
+      {
+       "lines": [
+        "5",
+        "6"
+       ],
+       "ride_min": 46,
+       "transfers": 1,
+       "km": 23.2,
+       "door_min": 66
+      },
+      {
+       "lines": [
+        "5",
+        "1"
+       ],
+       "ride_min": 47,
+       "transfers": 1,
+       "km": 23.8,
+       "door_min": 67
+      }
+     ]
+    },
+    "骑车接地铁": {
+     "min": 56,
+     "transfers": 1,
+     "month": 290
+    },
+    "电动车": {
+     "min": 65,
+     "transfers": 0,
+     "month": 120
+    },
+    "私家车": {
+     "min": 59,
+     "transfers": 0,
+     "month": 2412
+    },
+    "打车": {
+     "min": 54,
+     "transfers": 0,
+     "month": 5129
+    }
+   },
+   "top_stations": [
+    "天通苑",
+    "天通苑南",
+    "北苑"
+   ],
+   "stock_share": 0.059,
+   "rooms_rule": 55,
+   "rooms_rule_by_type": {
+    "低价房": 18,
+    "便宜单间": 11,
+    "合租单间": 16,
+    "整租": 10
+   },
+   "rooms_llm": 11,
+   "rooms_llm_by_type": {
+    "低价房": 4,
+    "便宜单间": 2,
+    "合租单间": 3,
+    "整租": 2
+   }
+  },
+  {
+   "id": "Z13",
+   "dir": "西北",
+   "ring": "远",
+   "comm": "回龙观/清河/西三旗/霍营",
+   "n": 2286,
+   "nw": 1587,
+   "nr": 699,
+   "psm": 95,
+   "t": 52,
+   "sv5": 0,
+   "km": 18.1,
+   "renters_sample": 15359,
+   "shares": {
+    "低价房": 0.18,
+    "便宜单间": 0.247,
+    "合租单间": 0.298,
+    "整租": 0.275
+   },
+   "rents": {
+    "低价房": 730.0,
+    "便宜单间": 1400.0,
+    "合租单间": 2400,
+    "整租": 6200
+   },
+   "room_rent_from_listings": true,
+   "whole_2015": 4300,
+   "whole_2018": 6200,
+   "options": {
+    "地铁": {
+     "min": 63,
+     "transfers": 1,
+     "month": 312,
+     "routes": [
+      {
+       "lines": [
+        "13",
+        "10"
+       ],
+       "ride_min": 43,
+       "transfers": 1,
+       "km": 24.0,
+       "door_min": 63
+      }
+     ]
+    },
+    "骑车接地铁": {
+     "min": 59,
+     "transfers": 1,
+     "month": 342
+    },
+    "电动车": {
+     "min": 66,
+     "transfers": 0,
+     "month": 120
+    },
+    "私家车": {
+     "min": 59,
+     "transfers": 0,
+     "month": 2408
+    },
+    "打车": {
+     "min": 54,
+     "transfers": 0,
+     "month": 5105
+    }
+   },
+   "top_stations": [
+    "霍营",
+    "龙泽",
+    "永泰庄"
+   ],
+   "stock_share": 0.074,
+   "rooms_rule": 68,
+   "rooms_rule_by_type": {
+    "低价房": 12,
+    "便宜单间": 17,
+    "合租单间": 20,
+    "整租": 19
+   },
+   "rooms_llm": 14,
+   "rooms_llm_by_type": {
+    "低价房": 3,
+    "便宜单间": 3,
+    "合租单间": 4,
+    "整租": 4
+   }
+  },
+  {
+   "id": "Z14",
+   "dir": "西",
+   "ring": "远",
+   "comm": "鲁谷/青塔/古城/苹果园",
+   "n": 1806,
+   "nw": 1559,
+   "nr": 247,
+   "psm": 86,
+   "t": 51,
+   "sv5": 0,
+   "km": 17.8,
+   "renters_sample": 7693,
+   "shares": {
+    "低价房": 0.097,
+    "便宜单间": 0.123,
+    "合租单间": 0.318,
+    "整租": 0.462
+   },
+   "rents": {
+    "低价房": 680.0,
+    "便宜单间": 1300.0,
+    "合租单间": 2300,
+    "整租": 5200
+   },
+   "room_rent_from_listings": true,
+   "whole_2015": 3500,
+   "whole_2018": 5200,
+   "options": {
+    "地铁": {
+     "min": 62,
+     "transfers": 0,
+     "month": 260,
+     "routes": [
+      {
+       "lines": [
+        "1"
+       ],
+       "ride_min": 36,
+       "transfers": 0,
+       "km": 20.5,
+       "door_min": 62
+      }
+     ]
+    },
+    "骑车接地铁": {
+     "min": 56,
+     "transfers": 0,
+     "month": 290
+    },
+    "公交直达": {
+     "min": 103,
+     "transfers": 0,
+     "lines": 3,
+     "month": 130
+    },
+    "电动车": {
+     "min": 61,
+     "transfers": 0,
+     "month": 120
+    },
+    "私家车": {
+     "min": 49,
+     "transfers": 0,
+     "month": 2252
+    },
+    "打车": {
+     "min": 44,
+     "transfers": 0,
+     "month": 4065
+    }
+   },
+   "top_stations": [
+    "八宝山",
+    "古城",
+    "五棵松"
+   ],
+   "stock_share": 0.037,
+   "rooms_rule": 35,
+   "rooms_rule_by_type": {
+    "低价房": 4,
+    "便宜单间": 4,
+    "合租单间": 11,
+    "整租": 16
+   },
+   "rooms_llm": 7,
+   "rooms_llm_by_type": {
+    "低价房": 1,
+    "便宜单间": 1,
+    "合租单间": 2,
+    "整租": 3
+   }
+  },
+  {
+   "id": "Z15",
+   "dir": "西南",
+   "ring": "远",
+   "comm": "看丹桥/科技园区/枣园/玉泉营",
+   "n": 1357,
+   "nw": 1195,
+   "nr": 162,
+   "psm": 73,
+   "t": 52,
+   "sv5": 0,
+   "km": 16.8,
+   "renters_sample": 7859,
+   "shares": {
+    "低价房": 0.225,
+    "便宜单间": 0.137,
+    "合租单间": 0.287,
+    "整租": 0.35
+   },
+   "rents": {
+    "低价房": 630.0,
+    "便宜单间": 1400.0,
+    "合租单间": 2300,
+    "整租": 4800
+   },
+   "room_rent_from_listings": true,
+   "whole_2015": 3500,
+   "whole_2018": 4800,
+   "options": {
+    "地铁": {
+     "min": 63,
+     "transfers": 1,
+     "month": 260,
+     "routes": [
+      {
+       "lines": [
+        "9",
+        "1"
+       ],
+       "ride_min": 43,
+       "transfers": 1,
+       "km": 21.3,
+       "door_min": 63
+      },
+      {
+       "lines": [
+        "9",
+        "6"
+       ],
+       "ride_min": 50,
+       "transfers": 1,
+       "km": 26.0,
+       "door_min": 70
+      }
+     ]
+    },
+    "公交直达": {
+     "min": 114,
+     "transfers": 0,
+     "lines": 1,
+     "month": 130
+    },
+    "电动车": {
+     "min": 68,
+     "transfers": 0,
+     "month": 120
+    },
+    "私家车": {
+     "min": 57,
+     "transfers": 0,
+     "month": 2375
+    },
+    "打车": {
+     "min": 52,
+     "transfers": 0,
+     "month": 4887
+    }
+   },
+   "top_stations": [
+    "丰台南路",
+    "枣园",
+    "高米店北"
+   ],
+   "stock_share": 0.038,
+   "rooms_rule": 35,
+   "rooms_rule_by_type": {
+    "低价房": 8,
+    "便宜单间": 5,
+    "合租单间": 10,
+    "整租": 12
+   },
+   "rooms_llm": 7,
+   "rooms_llm_by_type": {
+    "低价房": 2,
+    "便宜单间": 1,
+    "合租单间": 2,
+    "整租": 2
+   }
+  },
+  {
+   "id": "Z16",
+   "dir": "北",
+   "ring": "很远",
+   "comm": "后沙峪/天通苑/霍营/北七家",
+   "n": 849,
+   "nw": 603,
+   "nr": 246,
+   "psm": 66,
+   "t": 66,
+   "sv5": 0,
+   "km": 20.5,
+   "renters_sample": 11924,
+   "shares": {
+    "低价房": 0.463,
+    "便宜单间": 0.135,
+    "合租单间": 0.238,
+    "整租": 0.164
+   },
+   "rents": {
+    "低价房": 650.0,
+    "便宜单间": 1300.0,
+    "合租单间": 2000,
+    "整租": 5000
+   },
+   "room_rent_from_listings": true,
+   "whole_2015": 2800,
+   "whole_2018": 5000,
+   "options": {
+    "地铁": {
+     "min": 77,
+     "transfers": 1,
+     "month": 312,
+     "routes": [
+      {
+       "lines": [
+        "15",
+        "14"
+       ],
+       "ride_min": 56,
+       "transfers": 1,
+       "km": 30.8,
+       "door_min": 77
+      },
+      {
+       "lines": [
+        "15",
+        "13",
+        "10"
+       ],
+       "ride_min": 60,
+       "transfers": 2,
+       "km": 30.4,
+       "door_min": 81
+      }
+     ]
+    },
+    "骑车接地铁": {
+     "min": 65,
+     "transfers": 1,
+     "month": 342
+    },
+    "电动车": {
+     "min": 80,
+     "transfers": 0,
+     "month": 120
+    },
+    "私家车": {
+     "min": 73,
+     "transfers": 0,
+     "month": 2627
+    },
+    "打车": {
+     "min": 68,
+     "transfers": 0,
+     "month": 6561
+    }
+   },
+   "top_stations": [
+    "后沙峪",
+    "天通苑南",
+    "北苑"
+   ],
+   "stock_share": 0.057,
+   "rooms_rule": 37,
+   "rooms_rule_by_type": {
+    "低价房": 17,
+    "便宜单间": 5,
+    "合租单间": 9,
+    "整租": 6
+   },
+   "rooms_llm": 7,
+   "rooms_llm_by_type": {
+    "低价房": 3,
+    "便宜单间": 1,
+    "合租单间": 2,
+    "整租": 1
+   }
+  },
+  {
+   "id": "Z17",
+   "dir": "西北",
+   "ring": "很远",
+   "comm": "回龙观/西三旗/马连洼/安宁庄",
+   "n": 922,
+   "nw": 579,
+   "nr": 343,
+   "psm": 84,
+   "t": 64,
+   "sv5": 11,
+   "km": 21.4,
+   "renters_sample": 7605,
+   "shares": {
+    "低价房": 0.235,
+    "便宜单间": 0.224,
+    "合租单间": 0.282,
+    "整租": 0.258
+   },
+   "rents": {
+    "低价房": 730.0,
+    "便宜单间": 1400.0,
+    "合租单间": 2300,
+    "整租": 5350
+   },
+   "room_rent_from_listings": true,
+   "whole_2015": 3700,
+   "whole_2018": 5350,
+   "options": {
+    "地铁": {
+     "min": 75,
+     "transfers": 1,
+     "month": 312,
+     "routes": [
+      {
+       "lines": [
+        "13",
+        "10"
+       ],
+       "ride_min": 49,
+       "transfers": 1,
+       "km": 27.9,
+       "door_min": 75
+      }
+     ]
+    },
+    "骑车接地铁": {
+     "min": 68,
+     "transfers": 1,
+     "month": 342
+    },
+    "电动车": {
+     "min": 78,
+     "transfers": 0,
+     "month": 120
+    },
+    "私家车": {
+     "min": 67,
+     "transfers": 0,
+     "month": 2546
+    },
+    "打车": {
+     "min": 62,
+     "transfers": 0,
+     "month": 6024
+    }
+   },
+   "top_stations": [
+    "龙泽",
+    "回龙观",
+    "平西府"
+   ],
+   "stock_share": 0.036,
+   "rooms_rule": 25,
+   "rooms_rule_by_type": {
+    "低价房": 6,
+    "便宜单间": 6,
+    "合租单间": 7,
+    "整租": 6
+   },
+   "rooms_llm": 5,
+   "rooms_llm_by_type": {
+    "低价房": 1,
+    "便宜单间": 1,
+    "合租单间": 2,
+    "整租": 1
+   }
+  },
+  {
+   "id": "Z18",
+   "dir": "西",
+   "ring": "很远",
+   "comm": "苹果园/杨庄/八角/岳各庄",
+   "n": 640,
+   "nw": 567,
+   "nr": 73,
+   "psm": 68,
+   "t": 65,
+   "sv5": 0,
+   "km": 22.1,
+   "renters_sample": 2406,
+   "shares": {
+    "低价房": 0.136,
+    "便宜单间": 0.083,
+    "合租单间": 0.268,
+    "整租": 0.513
+   },
+   "rents": {
+    "低价房": 690.0,
+    "便宜单间": 1300.0,
+    "合租单间": 2300,
+    "整租": 4500
+   },
+   "room_rent_from_listings": true,
+   "whole_2015": 3100,
+   "whole_2018": 4500,
+   "options": {
+    "地铁": {
+     "min": 76,
+     "transfers": 0,
+     "month": 312,
+     "routes": [
+      {
+       "lines": [
+        "1"
+       ],
+       "ride_min": 47,
+       "transfers": 0,
+       "km": 27.4,
+       "door_min": 76
+      }
+     ]
+    },
+    "骑车接地铁": {
+     "min": 65,
+     "transfers": 0,
+     "month": 342
+    },
+    "公交直达": {
+     "min": 120,
+     "transfers": 0,
+     "lines": 3,
+     "month": 156
+    },
+    "电动车": {
+     "min": 72,
+     "transfers": 0,
+     "month": 120
+    },
+    "私家车": {
+     "min": 62,
+     "transfers": 0,
+     "month": 2466
+    },
+    "打车": {
+     "min": 57,
+     "transfers": 0,
+     "month": 5492
+    }
+   },
+   "top_stations": [
+    "苹果园",
+    "八宝山",
+    "古城"
+   ],
+   "stock_share": 0.012,
+   "rooms_rule": 8,
+   "rooms_rule_by_type": {
+    "低价房": 1,
+    "便宜单间": 1,
+    "合租单间": 2,
+    "整租": 4
+   },
+   "rooms_llm": 2,
+   "rooms_llm_by_type": {
+    "低价房": 0,
+    "便宜单间": 0,
+    "合租单间": 1,
+    "整租": 1
+   }
+  },
+  {
+   "id": "Z19",
+   "dir": "西南",
+   "ring": "很远",
+   "comm": "黄村中/枣园/西红门/花乡",
+   "n": 887,
+   "nw": 815,
+   "nr": 72,
+   "psm": 59,
+   "t": 65,
+   "sv5": 0,
+   "km": 20.7,
+   "renters_sample": 6956,
+   "shares": {
+    "低价房": 0.266,
+    "便宜单间": 0.077,
+    "合租单间": 0.284,
+    "整租": 0.373
+   },
+   "rents": {
+    "低价房": 620.0,
+    "便宜单间": 1200.0,
+    "合租单间": 1900,
+    "整租": 4100
+   },
+   "room_rent_from_listings": true,
+   "whole_2015": 2600,
+   "whole_2018": 4100,
+   "options": {
+    "地铁": {
+     "min": 76,
+     "transfers": 1,
+     "month": 260,
+     "routes": [
+      {
+       "lines": [
+        "4",
+        "1"
+       ],
+       "ride_min": 39,
+       "transfers": 1,
+       "km": 19.1,
+       "door_min": 76
+      },
+      {
+       "lines": [
+        "4",
+        "10"
+       ],
+       "ride_min": 39,
+       "transfers": 1,
+       "km": 19.7,
+       "door_min": 76
+      },
+      {
+       "lines": [
+        "4",
+        "14"
+       ],
+       "ride_min": 40,
+       "transfers": 1,
+       "km": 20.7,
+       "door_min": 77
+      }
+     ]
+    },
+    "骑车接地铁": {
+     "min": 69,
+     "transfers": 1,
+     "month": 290
+    },
+    "电动车": {
+     "min": 77,
+     "transfers": 0,
+     "month": 120
+    },
+    "私家车": {
+     "min": 62,
+     "transfers": 0,
+     "month": 2463
+    },
+    "打车": {
+     "min": 57,
+     "transfers": 0,
+     "month": 5468
+    }
+   },
+   "top_stations": [
+    "新宫",
+    "枣园",
+    "黄村西大街"
+   ],
+   "stock_share": 0.033,
+   "rooms_rule": 22,
+   "rooms_rule_by_type": {
+    "低价房": 6,
+    "便宜单间": 2,
+    "合租单间": 6,
+    "整租": 8
+   },
+   "rooms_llm": 4,
+   "rooms_llm_by_type": {
+    "低价房": 1,
+    "便宜单间": 0,
+    "合租单间": 1,
+    "整租": 2
+   }
+  },
+  {
+   "id": "Z20",
+   "dir": "南",
+   "ring": "很远",
+   "comm": "马驹桥/亦庄/旧宫",
+   "n": 288,
+   "nw": 276,
+   "nr": 12,
+   "psm": 54,
+   "t": 71,
+   "sv5": 0,
+   "km": 16.7,
+   "renters_sample": 2416,
+   "shares": {
+    "低价房": 0.275,
+    "便宜单间": 0.121,
+    "合租单间": 0.299,
+    "整租": 0.305
+   },
+   "rents": {
+    "低价房": 610.0,
+    "便宜单间": 1300.0,
+    "合租单间": 2025,
+    "整租": 4500
+   },
+   "room_rent_from_listings": false,
+   "whole_2015": 2600,
+   "whole_2018": 4500,
+   "options": {
+    "地铁": {
+     "min": 82,
+     "transfers": 1,
+     "month": 312,
+     "routes": [
+      {
+       "lines": [
+        "24;L2",
+        "10"
+       ],
+       "ride_min": 49,
+       "transfers": 1,
+       "km": 25.9,
+       "door_min": 82
+      }
+     ]
+    },
+    "骑车接地铁": {
+     "min": 68,
+     "transfers": 1,
+     "month": 342
+    },
+    "公交换乘": {
+     "min": 106,
+     "transfers": 1,
+     "lines": 0,
+     "month": 104
+    },
+    "电动车": {
+     "min": 56,
+     "transfers": 0,
+     "month": 120
+    },
+    "自行车": {
+     "min": 90,
+     "transfers": 0,
+     "month": 30
+    },
+    "私家车": {
+     "min": 49,
+     "transfers": 0,
+     "month": 2263
+    },
+    "打车": {
+     "min": 44,
+     "transfers": 0,
+     "month": 4138
+    }
+   },
+   "top_stations": [
+    "同济南路",
+    "荣昌东街",
+    "旧宫"
+   ],
+   "stock_share": 0.012,
+   "rooms_rule": 7,
+   "rooms_rule_by_type": {
+    "低价房": 2,
+    "便宜单间": 1,
+    "合租单间": 2,
+    "整租": 2
+   },
+   "rooms_llm": 1,
+   "rooms_llm_by_type": {
+    "低价房": 0,
+    "便宜单间": 0,
+    "合租单间": 0,
+    "整租": 1
+   }
+  },
+  {
+   "id": "Z21",
+   "dir": "东北",
+   "ring": "很远",
+   "comm": "顺义城/天竺",
+   "n": 424,
+   "nw": 413,
+   "nr": 11,
+   "psm": 51,
+   "t": 80,
+   "sv5": 0,
+   "km": 28.9,
+   "renters_sample": 8166,
+   "shares": {
+    "低价房": 0.585,
+    "便宜单间": 0.04,
+    "合租单间": 0.161,
+    "整租": 0.215
+   },
+   "rents": {
+    "低价房": 620.0,
+    "便宜单间": 1100.0,
+    "合租单间": 1575,
+    "整租": 3500
+   },
+   "room_rent_from_listings": false,
+   "whole_2015": 2200,
+   "whole_2018": 3500,
+   "options": {
+    "地铁": {
+     "min": 91,
+     "transfers": 1,
+     "month": 364,
+     "routes": [
+      {
+       "lines": [
+        "15",
+        "14"
+       ],
+       "ride_min": 70,
+       "transfers": 1,
+       "km": 40.0,
+       "door_min": 91
+      },
+      {
+       "lines": [
+        "15",
+        "13",
+        "10"
+       ],
+       "ride_min": 74,
+       "transfers": 2,
+       "km": 39.6,
+       "door_min": 95
+      }
+     ]
+    },
+    "骑车接地铁": {
+     "min": 86,
+     "transfers": 1,
+     "month": 394
+    },
+    "私家车": {
+     "min": 88,
+     "transfers": 0,
+     "month": 2874
+    },
+    "打车": {
+     "min": 83,
+     "transfers": 0,
+     "month": 8199
+    }
+   },
+   "top_stations": [
+    "顺义",
+    "石门",
+    "俸伯"
+   ],
+   "stock_share": 0.039,
+   "rooms_rule": 18,
+   "rooms_rule_by_type": {
+    "低价房": 10,
+    "便宜单间": 1,
+    "合租单间": 3,
+    "整租": 4
+   },
+   "rooms_llm": 4,
+   "rooms_llm_by_type": {
+    "低价房": 2,
+    "便宜单间": 0,
+    "合租单间": 1,
+    "整租": 1
+   }
+  },
+  {
+   "id": "Z22",
+   "dir": "西南",
+   "ring": "外",
+   "comm": "长阳/良乡/阎村/房山城关",
+   "n": 1134,
+   "nw": 1101,
+   "nr": 33,
+   "psm": 40,
+   "t": 101,
+   "sv5": 28,
+   "km": 32.2,
+   "renters_sample": 10052,
+   "shares": {
+    "低价房": 0.239,
+    "便宜单间": 0.098,
+    "合租单间": 0.305,
+    "整租": 0.357
+   },
+   "rents": {
+    "低价房": 690.0,
+    "便宜单间": 1200.0,
+    "合租单间": 1700,
+    "整租": 3000
+   },
+   "room_rent_from_listings": true,
+   "whole_2015": 2400,
+   "whole_2018": 3000,
+   "options": {
+    "地铁": {
+     "min": 112,
+     "transfers": 2,
+     "month": 364,
+     "routes": [
+      {
+       "lines": [
+        "25N",
+        "9",
+        "1"
+       ],
+       "ride_min": 76,
+       "transfers": 2,
+       "km": 39.3,
+       "door_min": 112
+      },
+      {
+       "lines": [
+        "25N",
+        "9",
+        "6"
+       ],
+       "ride_min": 84,
+       "transfers": 2,
+       "km": 44.0,
+       "door_min": 120
+      }
+     ]
+    },
+    "骑车接地铁": {
+     "min": 106,
+     "transfers": 2,
+     "month": 394
+    },
+    "私家车": {
+     "min": 101,
+     "transfers": 0,
+     "month": 3071
+    },
+    "打车": {
+     "min": 96,
+     "transfers": 0,
+     "month": 9505
+    }
+   },
+   "top_stations": [
+    "篱笆房",
+    "长阳",
+    "阎村"
+   ],
+   "stock_share": 0.048,
+   "rooms_rule": 13,
+   "rooms_rule_by_type": {
+    "低价房": 3,
+    "便宜单间": 1,
+    "合租单间": 4,
+    "整租": 5
+   },
+   "rooms_llm": 3,
+   "rooms_llm_by_type": {
+    "低价房": 1,
+    "便宜单间": 0,
+    "合租单间": 1,
+    "整租": 1
+   }
+  },
+  {
+   "id": "Z23",
+   "dir": "西北",
+   "ring": "外",
+   "comm": "昌平鼓楼大街/东关/西关/沙河",
+   "n": 287,
+   "nw": 287,
+   "nr": 0,
+   "psm": 53,
+   "t": 107,
+   "sv5": 75,
+   "km": 38.2,
+   "renters_sample": 3043,
+   "shares": {
+    "低价房": 0.308,
+    "便宜单间": 0.082,
+    "合租单间": 0.295,
+    "整租": 0.315
+   },
+   "rents": {
+    "低价房": 730.0,
+    "便宜单间": 1100.0,
+    "合租单间": 1575,
+    "整租": 3500
+   },
+   "room_rent_from_listings": false,
+   "whole_2015": 2300,
+   "whole_2018": 3500,
+   "options": {
+    "地铁": {
+     "min": 118,
+     "transfers": 3,
+     "month": 364,
+     "routes": [
+      {
+       "lines": [
+        "27",
+        "8",
+        "13",
+        "10"
+       ],
+       "ride_min": 96,
+       "transfers": 3,
+       "km": 51.6,
+       "door_min": 118
+      },
+      {
+       "lines": [
+        "27",
+        "8",
+        "6"
+       ],
+       "ride_min": 98,
+       "transfers": 2,
+       "km": 53.4,
+       "door_min": 120
+      },
+      {
+       "lines": [
+        "27",
+        "13",
+        "2",
+        "1"
+       ],
+       "ride_min": 104,
+       "transfers": 3,
+       "km": 55.4,
+       "door_min": 126
+      }
+     ]
+    },
+    "骑车接地铁": {
+     "min": 112,
+     "transfers": 3,
+     "month": 394
+    },
+    "私家车": {
+     "min": 110,
+     "transfers": 0,
+     "month": 3216
+    },
+    "打车": {
+     "min": 105,
+     "transfers": 0,
+     "month": 10472
+    }
+   },
+   "top_stations": [
+    "昌平",
+    "昌平东关",
+    "沙河高教园"
+   ],
+   "stock_share": 0.015,
+   "rooms_rule": 3,
+   "rooms_rule_by_type": {
+    "低价房": 1,
+    "便宜单间": 0,
+    "合租单间": 1,
+    "整租": 1
+   },
+   "rooms_llm": 1,
+   "rooms_llm_by_type": {
+    "低价房": 0,
+    "便宜单间": 0,
+    "合租单间": 0,
+    "整租": 1
+   }
+  }
+ ]
+}

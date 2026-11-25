@@ -1,0 +1,6 @@
+base, no trend                         end n  1118 vac 0.069 commute 48.5 over60 0.24 burden all/low/mid/high 0.219 0.216 0.233 0.203 low>30 0.20 left   7.0/  2.4/ 0.1 blocked   226/  64/  1 moves  515 premium +1.09 +-0.46
+wages back to 2018 level               end n  1082 vac 0.098 commute 49.1 over60 0.25 burden all/low/mid/high 0.228 0.225 0.243 0.210 low>30 0.24 left   6.9/  4.1/ 0.0 blocked   262/  76/  1 moves  492 premium +0.84 +-0.49
+rent +5%, wage +5%                     end n  1114 vac 0.072 commute 47.6 over60 0.23 burden all/low/mid/high 0.213 0.207 0.228 0.198 low>30 0.16 left   7.3/  2.5/ 0.2 blocked   216/  61/  0 moves  484 premium +1.13 +-0.62
+rent +5%, wage 0                       end n  1070 vac 0.108 commute 48.4 over60 0.24 burden all/low/mid/high 0.236 0.239 0.250 0.218 low>30 0.30 left  29.2/ 16.3/ 1.1 blocked   302/ 107/  2 moves  637 premium +1.07 +-0.46
+rent +13%, wage +8.8% (2015-18)        end n  1082 vac 0.099 commute 47.2 over60 0.22 burden all/low/mid/high 0.220 0.217 0.233 0.207 low>30 0.21 left  23.1/ 13.4/ 1.1 blocked   275/  95/  1 moves  582 premium +1.42 +-0.57
+rent +13%, wage +8.8%, low-cost -30%   end n  1045 vac 0.129 commute 47.1 over60 0.22 burden all/low/mid/high 0.227 0.223 0.247 0.205 low>30 0.24 left  28.6/ 17.8/ 0.6 blocked   293/  97/  1 moves  620 premium +0.98 +-0.73

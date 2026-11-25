@@ -1,0 +1,26 @@
+# Secrets: never commit
+.env
+.env.*
+*.key
+
+# LLM response caches (large, regenerable)
+*.sqlite
+*.sqlite-shm
+*.sqlite-wal
+
+# Runs still in progress (added after they finish)
+runs_d/
+runs_d_hy4/
+runs_l/
+runs_pilot/
+runs_*/stderr*.txt
+runs_*/stdout*.txt
+
+# Nested legacy output folder (only caches)
+rental_game/
+
+# Python / OS
+__pycache__/
+*.pyc
+.DS_Store
+.ipynb_checkpoints/

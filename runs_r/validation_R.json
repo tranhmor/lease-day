@@ -1,0 +1,186 @@
+{
+  "group": "R",
+  "seeds": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19
+  ],
+  "checks": {
+    "V1.1_no_shock_stability": {
+      "level": 1,
+      "rule": "N: |rent_index_all M36 - M12| <= 3.0 and mean vacancy M13-36 in [3%, 12%]",
+      "source": "internal tolerance",
+      "value": {
+        "rent_index_drift_M12_to_end": "-0.51 ± 0.35",
+        "vacancy_M13_end": 0.0598
+      },
+      "verdict": "PASS"
+    },
+    "V1.2_burden_gradient": {
+      "level": 1,
+      "rule": "N tail, formal market (excl. 低价房), pooled tenant-months: rent/income low > mid > high in >= 80% of seeds; AND within every room kind, groups with >= 30 tenant-months (pooled over seeds) are strictly decreasing",
+      "source": "stylized fact (lower-income renters bear higher burden); scope rationale in Lease_Day_v0.7_理论与实证依据.md §3-4",
+      "value": {
+        "formal_market_mean_burden": {
+          "low": 0.244,
+          "mid": 0.213,
+          "high": 0.173
+        },
+        "formal_market_seeds_holding": "18/20",
+        "within_kind_pooled [burden, tenant-months]": {
+          "低价房": {
+            "low": [
+              0.124,
+              7958
+            ],
+            "mid": [
+              0.065,
+              1197
+            ],
+            "high": [
+              0.043,
+              126
+            ],
+            "decreasing": true
+          },
+          "便宜单间": {
+            "low": [
+              0.233,
+              2925
+            ],
+            "mid": [
+              0.156,
+              6494
+            ],
+            "high": [
+              0.081,
+              1059
+            ],
+            "decreasing": true
+          },
+          "合租单间": {
+            "low": [
+              0.332,
+              362
+            ],
+            "mid": [
+              0.218,
+              9664
+            ],
+            "high": [
+              0.132,
+              5362
+            ],
+            "decreasing": true
+          },
+          "整租": {
+            "low": [
+              null,
+              0
+            ],
+            "mid": [
+              0.344,
+              2493
+            ],
+            "high": [
+              0.192,
+              16757
+            ],
+            "decreasing": true
+          }
+        },
+        "all_kinds_mean_burden (original rule, not gated)": {
+          "low": 0.158,
+          "mid": 0.204,
+          "high": 0.172
+        },
+        "all_kinds_seeds_holding (original rule)": "0/20",
+        "blocked_M13_end_per_run": {
+          "low": 75.7,
+          "mid": 43.4,
+          "high": 5.8
+        }
+      },
+      "verdict": "PASS"
+    },
+    "V1.3_rent_commute_tradeoff": {
+      "level": 1,
+      "rule": "N tail: Spearman(zone whole-unit rent, subway minutes) < 0",
+      "source": "bid-rent theory; partly an input property of the board, so this checks it is preserved",
+      "value": {
+        "spearman_mean": -0.751
+      },
+      "verdict": "PASS"
+    },
+    "V1.4_opening_premium_sign": {
+      "level": 1,
+      "rule": "S - N treated rent index at M36 > 0 (seed mean)",
+      "source": "line_rent_results.md point estimates are positive for Lines 14/16",
+      "value": "+0.45 ± 0.33 index pts",
+      "verdict": "PASS"
+    },
+    "V1.5_announcement_effect_sign": {
+      "level": 1,
+      "rule": "P - S treated rent index at M24 > 0 (seed mean)",
+      "source": "literature on anticipation (e.g., McMillen & McDonald 2004; Knaap et al. 2001) - direction only",
+      "value": "+0.00 ± 0.00",
+      "verdict": "N/A (rule agents ignore the announcement by design)"
+    },
+    "V2.1_opening_premium_magnitude": {
+      "level": 2,
+      "rule": "S vs N treated premium (%) at M36 inside Line 14 95% CI [-1.5, 6.7]",
+      "source": "line_rent_results.md",
+      "value": {
+        "model_S_vs_N_pct": "+0.45 ± 0.32",
+        "empirical": {
+          "line14_middle": "+2.3% (-1.5, 6.7)",
+          "line16_north": "+5.8% (-4.8, 13.7)"
+        },
+        "caveats": "model = 12 months after opening, all rooms (contract + asking); data = 1.5-2.5 years after opening, asking rents of 30-150 m2 listings; shock size differs"
+      },
+      "verdict": "CONSISTENT"
+    },
+    "V2.2_commute_level": {
+      "level": 2,
+      "rule": "N mean one-way commute within 48 min +/-10% [43.2, 52.8] (weakly independent: not a calibration target, but TAU may have been chosen with it in mind); share >60 min reported vs 28-31%, not gated",
+      "source": "CAUPD/Baidu Maps 2022 Annual China Major Cities Commuting Monitoring Report (Beijing 2021: 48 min, >60 min 30%); see analysis/v22_commute_target.md",
+      "value": {
+        "model_N_mean_commute_min": "48.56 ± 0.25",
+        "target_min": 48.0,
+        "band": [
+          43.2,
+          52.8
+        ],
+        "model_share_over60": 0.2368,
+        "empirical_share_over60": "0.28-0.31 (reported only)",
+        "caveats": "weakly independent; population = CBD renters vs all central-city commuters; model has no peak congestion"
+      },
+      "verdict": "CONSISTENT"
+    },
+    "V3_micro_behaviour": {
+      "level": 3,
+      "rule": "not testable: no individual landlord/tenant rental panel",
+      "source": "-",
+      "value": null,
+      "verdict": "NOT TESTABLE"
+    }
+  },
+  "level_reached": "Level 1 met; Level 2 partial (V2.1 CONSISTENT, V2.2 CONSISTENT); Level 3 not testable"
+}

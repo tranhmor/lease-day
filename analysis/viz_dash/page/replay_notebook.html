@@ -1,0 +1,337 @@
+<style>
+#__UID__ { all: initial; display: block; font-family: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans CJK SC", system-ui, sans-serif; font-size: 13px; line-height: 1.5; color: #1b1f24; background: #ffffff; padding: 12px; border: 1px solid #dfe2e6; border-radius: 6px; }
+#__UID__ * { box-sizing: border-box; font-family: inherit; }
+#__UID__ .row { display: flex; flex-wrap: wrap; gap: 8px 18px; align-items: center; margin-bottom: 10px; }
+#__UID__ .group { display: flex; flex-wrap: wrap; gap: 4px; align-items: center; }
+#__UID__ .name { color: #6b6f76; font-size: 12px; margin-right: 4px; }
+#__UID__ button { font-size: 12px; color: #1b1f24; background: #ffffff; border: 1px solid #c9cdd2; border-radius: 4px; padding: 4px 9px; cursor: pointer; }
+#__UID__ button[aria-pressed="true"] { background: #1b1f24; color: #ffffff; border-color: #1b1f24; }
+#__UID__ .slider { flex: 1 1 200px; display: flex; gap: 8px; align-items: center; min-width: 200px; }
+#__UID__ input[type=range] { flex: 1; accent-color: #1b1f24; }
+#__UID__ .stage { display: flex; flex-wrap: wrap; gap: 16px; align-items: flex-start; }
+#__UID__ .map { flex: 3 1 420px; min-width: 0; position: relative; }
+#__UID__ canvas { display: block; width: 100%; }
+#__UID__ .side { flex: 1 1 260px; min-width: 0; }
+#__UID__ .month { font-size: 22px; margin-bottom: 2px; }
+#__UID__ .chips { color: #6b6f76; font-size: 12px; margin-bottom: 10px; }
+#__UID__ .stats { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 2px 14px; margin: 0 0 12px; font-size: 12px; }
+#__UID__ .k { color: #6b6f76; }
+#__UID__ .v { text-align: right; font-variant-numeric: tabular-nums; }
+#__UID__ h4 { font-size: 13px; font-weight: 600; margin: 0 0 4px; }
+#__UID__ ul { list-style: none; margin: 0; padding: 0; font-size: 12px; }
+#__UID__ li { border-top: 1px solid #e6e8eb; padding: 4px 0; }
+#__UID__ .legend { display: flex; flex-wrap: wrap; gap: 4px 14px; color: #6b6f76; font-size: 12px; margin-top: 8px; align-items: center; }
+#__UID__ .legend span { display: inline-flex; gap: 5px; align-items: center; }
+#__UID__ .dot { width: 9px; height: 9px; border-radius: 50%; display: inline-block; }
+#__UID__ .ramp { width: 72px; height: 9px; border-radius: 2px; display: inline-block; }
+#__UID__ .tip { position: absolute; pointer-events: none; opacity: 0; background: #ffffff; border: 1px solid #c9cdd2; border-radius: 4px; padding: 4px 8px; font-size: 12px; white-space: nowrap; box-shadow: 0 2px 8px rgba(0,0,0,.12); }
+</style>
+<div id="__UID__">
+  <p class="fallback">如果这里没有出现地图，请从上到下运行一次 notebook。</p>
+  <div class="ready" hidden>
+    <div class="row">
+      <div class="group"><span class="name">实验组</span>
+        <button data-arm="A" aria-pressed="false">A 没有新线</button><button data-arm="A0" aria-pressed="false">A0 冻结</button><button data-arm="B" aria-pressed="false">B 新线，冻结</button><button data-arm="C" aria-pressed="true">C 新线，变化</button>
+      </div>
+      <div class="group"><span class="name">颜色</span>
+        <button data-mode="commute" aria-pressed="true">通勤时间</button><button data-mode="rent" aria-pressed="false">房租变化</button><button data-mode="income" aria-pressed="false">收入组</button><button data-mode="way" aria-pressed="false">上班方式</button>
+      </div>
+      <div class="slider"><button class="play">播放</button><input class="range" type="range" min="0" max="60" step="1" value="25" aria-label="月份"></div>
+    </div>
+    <div class="stage">
+      <div class="map"><canvas role="img" aria-label="北京地图上的房间点阵回放，每个点是一间房"></canvas><div class="tip"></div><div class="legend"></div></div>
+      <div class="side">
+        <div class="month">第 <span class="m"></span> 个月</div>
+        <div class="chips"></div>
+        <div class="stats">
+          <span class="k">受益区平均通勤（分钟）</span><span class="v" data-stat="commute_in"></span>
+          <span class="k">其他区域平均通勤（分钟）</span><span class="v" data-stat="commute_out"></span>
+          <span class="k">受益区房租，起始价 = 100</span><span class="v" data-stat="rent_in"></span>
+          <span class="k">其他区域房租，起始价 = 100</span><span class="v" data-stat="rent_out"></span>
+          <span class="k">受益区空房</span><span class="v" data-stat="vacant_in"></span>
+          <span class="k">其他区域空房</span><span class="v" data-stat="vacant_out"></span>
+          <span class="k">本月到期</span><span class="v" data-stat="renewals"></span>
+          <span class="k">本月搬家</span><span class="v" data-stat="moves"></span>
+          <span class="k">本月离开（付不起）</span><span class="v" data-stat="left"></span>
+          <span class="k">本月新来者进不来</span><span class="v" data-stat="blocked"></span>
+        </div>
+        <h4>这个月发生了什么</h4>
+        <ul class="feed"></ul>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+(function () {
+  const root = document.getElementById('__UID__');
+  if (!root) return;
+  const D = __DATA__;
+  const $ = (s) => root.querySelector(s);
+  const $$ = (s) => [...root.querySelectorAll(s)];
+  $('.fallback').hidden = true;
+  $('.ready').hidden = false;
+  const MODE_NAMES = ['地铁', '骑车接地铁', '公交', '公交换乘', '电动车', '自行车', '步行', '私家车', '打车'];
+  const MODE_CLASS = ['subway', 'subway', 'bus', 'bus', 'bike', 'bike', 'bike', 'car', 'car'];
+  const GROUPS = ['较低收入', '中等收入', '较高收入'];
+  const GROUP_COLOURS = ['#2a78d6', '#d95926', '#1baf7a'];
+  const WAY_COLOURS = {subway: '#2a78d6', bus: '#1baf7a', bike: '#d95926', car: '#9a9ea4'};
+  const INK = '#1b1f24', MUTED = '#6b6f76', LINE = '#c9cdd2', DISC = '#f5f6f7', ORANGE = '#d95926', BAD = '#d03b3b';
+  const COMMUTE = [20, 110], RENT = 0.1, STEP = 850;
+  const hex = (h) => [1, 3, 5].map((i) => parseInt(h.slice(i, i + 2), 16));
+  const mix = (a, b, t) => { const x = hex(a), y = hex(b); return `rgb(${x.map((v, i) => Math.round(v + (y[i] - v) * t)).join(',')})`; };
+  const n = (v) => Number(v).toLocaleString('en-US');
+  const zoneOf = new Map(D.zones.map((z) => [z.id, z]));
+  const rooms = D.rooms.map((r) => ({zone: zoneOf.get(r.zone), start: r.start, x: r.x, y: r.y}));
+  const S = {arm: 'C', frame: 25, mode: 'commute', playing: false, frames: {}, anim: null, raf: 0, hover: null, W: 0, H: 0};
+  const canvas = $('canvas'), ctx = canvas.getContext('2d'), tip = $('.tip');
+  const base = document.createElement('canvas');
+  const dpr = Math.min(window.devicePixelRatio || 1, 2);
+
+  function framesOf(arm) {
+    if (S.frames[arm]) return S.frames[arm];
+    const count = rooms.length;
+    const who = new Int16Array(count).fill(-1), rent = new Int32Array(count), mode = new Int8Array(count).fill(-1), mins = new Int16Array(count);
+    S.frames[arm] = D.arms[arm].rows.map((row) => {
+      row.rooms.forEach(([i, t, money, way, minutes]) => { who[i] = t; rent[i] = money; mode[i] = way; mins[i] = minutes; });
+      return {who: who.slice(), rent: rent.slice(), mode: mode.slice(), mins: mins.slice(), events: row.events, renew: row.renew};
+    });
+    return S.frames[arm];
+  }
+
+  function colourOf(f, i) {
+    if (f.who[i] < 0) return MUTED;
+    if (S.mode === 'commute') return mix('#b7d3f6', '#0d366b', Math.max(0, Math.min(1, (f.mins[i] - COMMUTE[0]) / (COMMUTE[1] - COMMUTE[0]))));
+    if (S.mode === 'rent') {
+      const change = f.rent[i] / rooms[i].start - 1;
+      const t = Math.min(1, Math.abs(change) / RENT);
+      return mix('#d9d8d2', change < 0 ? '#2a78d6' : '#e34948', t);
+    }
+    if (S.mode === 'income') { const p = D.arms[S.arm].people[f.who[i]]; return GROUP_COLOURS[p ? p[0] : 0]; }
+    return WAY_COLOURS[MODE_CLASS[f.mode[i]]];
+  }
+
+  function drawBase() {
+    const k = S.W / D.width, c = base.getContext('2d');
+    c.setTransform(dpr, 0, 0, dpr, 0, 0);
+    c.clearRect(0, 0, S.W, S.H);
+    c.strokeStyle = LINE; c.lineWidth = 1; c.lineJoin = 'round';
+    D.metro.forEach((pts) => { c.beginPath(); pts.forEach(([x, y], i) => (i ? c.lineTo(x * k, y * k) : c.moveTo(x * k, y * k))); c.stroke(); });
+    D.zones.forEach((z) => {
+      c.beginPath(); c.arc(z.x * k, z.y * k, z.r * k, 0, Math.PI * 2);
+      c.fillStyle = DISC; c.fill();
+      c.lineWidth = z.treated ? 2 : 1; c.strokeStyle = z.treated ? ORANGE : '#e1e3e6'; c.stroke();
+    });
+    c.textAlign = 'center'; c.textBaseline = 'middle';
+    const family = getComputedStyle(root).fontFamily;
+    D.zones.forEach((z) => {
+      if (S.W < 560 && !z.major) return;
+      c.font = `${z.treated ? '600 ' : ''}12px ${family}`;
+      c.fillStyle = z.treated ? INK : MUTED;
+      c.fillText(z.name, z.lx * k, z.ly * k);
+    });
+  }
+
+  function paint(t) {
+    const k = S.W / D.width, f = framesOf(S.arm)[S.frame], anim = S.anim, r = Math.max(1.3, 3.5 * k);
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    ctx.clearRect(0, 0, S.W, S.H);
+    ctx.drawImage(base, 0, 0, S.W, S.H);
+    if ((S.arm === 'B' || S.arm === 'C') && S.frame >= D.opens) {
+      const a = zoneOf.get('Z05'), b = zoneOf.get('Z11');
+      ctx.save(); ctx.setLineDash([7, 5]); ctx.lineWidth = 2; ctx.strokeStyle = ORANGE;
+      ctx.beginPath(); ctx.moveTo(D.cbd[0] * k, D.cbd[1] * k); ctx.lineTo(a.x * k, a.y * k); ctx.lineTo(b.x * k, b.y * k); ctx.stroke(); ctx.restore();
+    }
+    const waiting = anim && t < 0.9 ? anim.landing : null;
+    rooms.forEach((room, i) => {
+      ctx.beginPath(); ctx.arc(room.x * k, room.y * k, r, 0, Math.PI * 2);
+      if (f.who[i] < 0 || (waiting && waiting.has(i))) { ctx.lineWidth = 1; ctx.strokeStyle = MUTED; ctx.stroke(); }
+      else { ctx.fillStyle = colourOf(f, i); ctx.fill(); }
+    });
+    if (anim) anim.movers.forEach((m) => {
+      const e = t < 0.5 ? 2 * t * t : 1 - 2 * (1 - t) * (1 - t);
+      ctx.globalAlpha = m.fade === 'out' ? 1 - t : m.fade === 'in' ? Math.min(1, t * 2.5) : 1;
+      ctx.beginPath();
+      ctx.arc((m.x0 + (m.x1 - m.x0) * e) * k, (m.y0 + (m.y1 - m.y0) * e - Math.sin(e * Math.PI) * m.lift) * k, r + 0.8, 0, Math.PI * 2);
+      ctx.fillStyle = m.colour; ctx.fill(); ctx.globalAlpha = 1;
+    });
+    const cx = D.cbd[0] * k, cy = D.cbd[1] * k, s = Math.max(4, 7 * k);
+    ctx.beginPath(); ctx.moveTo(cx, cy - s); ctx.lineTo(cx + s, cy); ctx.lineTo(cx, cy + s); ctx.lineTo(cx - s, cy); ctx.closePath();
+    ctx.fillStyle = INK; ctx.fill();
+    if (S.W >= 560) { ctx.font = `600 11px ${getComputedStyle(root).fontFamily}`; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText('CBD', cx, cy + s + 9); }
+  }
+
+  function makeAnim(from, to) {
+    const frames = framesOf(S.arm), before = frames[from], after = frames[to], movers = [], landing = new Set();
+    if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      const outward = (room, d) => {
+        const dx = room.x - D.cbd[0], dy = room.y - D.cbd[1], len = Math.hypot(dx, dy) || 1;
+        return [room.x + (dx / len) * d, room.y + (dy / len) * d];
+      };
+      after.events.forEach((e) => {
+        if (e[0] === 'move') {
+          const a = rooms[e[2]], b = rooms[e[3]];
+          movers.push({x0: a.x, y0: a.y, x1: b.x, y1: b.y, lift: Math.min(60, Math.hypot(b.x - a.x, b.y - a.y) * 0.2), colour: colourOf(after, e[3])});
+          landing.add(e[3]);
+        } else if (e[0] === 'arrive') {
+          const room = rooms[e[2]], [x0, y0] = outward(room, 70);
+          movers.push({x0, y0, x1: room.x, y1: room.y, lift: 0, fade: 'in', colour: colourOf(after, e[2])});
+          landing.add(e[2]);
+        } else if (e[0] === 'exits' || e[0] === 'left') {
+          const room = rooms[e[2]], [x1, y1] = outward(room, e[0] === 'left' ? 110 : 70);
+          movers.push({x0: room.x, y0: room.y, x1, y1, lift: 0, fade: 'out', colour: e[0] === 'left' ? BAD : colourOf(before, e[2])});
+        }
+      });
+    }
+    return {movers, landing, start: performance.now(), dur: STEP};
+  }
+
+  function tick(now) {
+    S.raf = 0;
+    if (S.anim) {
+      const t = Math.min(1, Math.max(0, (now - S.anim.start) / S.anim.dur));
+      paint(t);
+      if (t >= 1) {
+        S.anim = null;
+        if (S.playing) { if (S.frame < D.last) step(); else setPlaying(false); }
+      }
+    }
+    if (S.anim && !S.raf) S.raf = requestAnimationFrame(tick);
+  }
+
+  function step() {
+    const from = S.frame;
+    S.frame = from + 1;
+    S.anim = makeAnim(from, S.frame);
+    refresh();
+    if (!S.raf) S.raf = requestAnimationFrame(tick);
+  }
+
+  function setPlaying(on) {
+    S.playing = on;
+    if (on) {
+      if (S.frame >= D.last) S.frame = 0;
+      if (!S.anim) step();
+    }
+    refresh();
+  }
+
+  function stats() {
+    const f = framesOf(S.arm)[S.frame];
+    const part = (wanted) => {
+      let count = 0, vacant = 0, mins = 0, rent = 0;
+      rooms.forEach((room, i) => {
+        if (room.zone.treated !== wanted) return;
+        count += 1; rent += f.rent[i] / room.start;
+        if (f.who[i] < 0) vacant += 1; else mins += f.mins[i];
+      });
+      return {count, vacant, mins: mins / Math.max(1, count - vacant), rent: (100 * rent) / Math.max(1, count)};
+    };
+    const a = part(true), b = part(false), tally = {move: 0, left: 0, blocked: 0};
+    f.events.forEach((e) => { if (e[0] in tally) tally[e[0]] += 1; });
+    return {commute_in: a.mins.toFixed(1), commute_out: b.mins.toFixed(1), rent_in: a.rent.toFixed(1), rent_out: b.rent.toFixed(1), vacant_in: `${a.vacant} / ${a.count}`, vacant_out: `${b.vacant} / ${b.count}`,
+      renewals: S.frame ? f.renew[0] : '—', moves: S.frame ? tally.move : '—', left: S.frame ? tally.left : '—', blocked: S.frame ? tally.blocked : '—'};
+  }
+
+  function eventText(e) {
+    const people = D.arms[S.arm].people;
+    const who = (v) => { const p = people[v]; return p ? `${GROUPS[p[0]]}，月入 ${n(p[1])}` : ''; };
+    if (e[0] === 'move') {
+      const from = rooms[e[2]].zone.name, to = rooms[e[3]].zone.name;
+      return `${who(e[1])}：续租报价 ${n(e[5])}（现租 ${n(e[4])}），${from === to ? `在${from}换了一间` : `从${from}搬到${to}`}，房租 ${n(e[6])}，${MODE_NAMES[e[9]]} ${e[10]} 分钟`;
+    }
+    if (e[0] === 'left') return `${who(e[1])}：续租报价 ${n(e[4])}（现租 ${n(e[3])}），找不到负担得起的房间，离开${rooms[e[2]].zone.name}`;
+    if (e[0] === 'blocked') return `新来者（${GROUPS[e[1]]}，月入 ${n(e[2])}）看房 3 次，没有负担得起的房间`;
+    if (e[0] === 'arrive') return `新租客（${who(e[1])}）住进${rooms[e[2]].zone.name}，房租 ${n(e[3])}，${MODE_NAMES[e[4]]} ${e[5]} 分钟`;
+    return '';
+  }
+
+  function feed() {
+    if (!S.frame) return ['起始状态：所有租客入住，房东还没有调价。'];
+    const ev = framesOf(S.arm)[S.frame].events;
+    const touches = (e) => e[0] === 'move' && (rooms[e[2]].zone.treated || rooms[e[3]].zone.treated);
+    const pick = [...ev.filter((e) => e[0] === 'left'), ...ev.filter(touches), ...ev.filter((e) => e[0] === 'move' && !touches(e)).slice(0, 3), ...ev.filter((e) => e[0] === 'blocked').slice(0, 1),
+      ...ev.filter((e) => e[0] === 'arrive' && rooms[e[2]].zone.treated).slice(0, 1), ...ev.filter((e) => e[0] === 'arrive').slice(0, 1)];
+    return [...new Set(pick)].slice(0, 6).map(eventText);
+  }
+
+  function legend() {
+    const box = $('.legend');
+    box.replaceChildren();
+    const add = (style, cls, text) => {
+      const item = document.createElement('span');
+      const mark = document.createElement('i');
+      mark.className = cls;
+      Object.assign(mark.style, style);
+      item.append(mark, document.createTextNode(text));
+      box.append(item);
+    };
+    if (S.mode === 'commute') add({background: 'linear-gradient(90deg,#b7d3f6,#0d366b)'}, 'ramp', `单程通勤 ${COMMUTE[0]} 到 ${COMMUTE[1]} 分钟及以上`);
+    if (S.mode === 'rent') add({background: 'linear-gradient(90deg,#2a78d6,#d9d8d2,#e34948)'}, 'ramp', `房租比起始价低 ${RENT * 100}% 到高 ${RENT * 100}%`);
+    if (S.mode === 'income') GROUPS.forEach((g, i) => add({background: GROUP_COLOURS[i]}, 'dot', g));
+    if (S.mode === 'way') [['subway', '地铁（含骑车接地铁）'], ['bus', '公交'], ['bike', '电动车、自行车、步行'], ['car', '私家车、打车']].forEach(([k, t]) => add({background: WAY_COLOURS[k]}, 'dot', t));
+    add({border: `1px solid ${MUTED}`}, 'dot', '空房');
+    add({border: `2px solid ${ORANGE}`}, 'dot', '受益区');
+    if (S.arm === 'B' || S.arm === 'C') add({height: '0', width: '26px', borderTop: `2px dashed ${ORANGE}`, borderRadius: '0'}, 'ramp', '假想东向快线（开通后）');
+  }
+
+  function showZone(z) {
+    const f = framesOf(S.arm)[S.frame];
+    let lived = 0, rent = 0, mins = 0;
+    rooms.forEach((room, i) => {
+      if (room.zone !== z || f.who[i] < 0) return;
+      lived += 1; rent += f.rent[i]; mins += f.mins[i];
+    });
+    tip.textContent = `${z.name}${z.treated ? '（受益区）' : ''}：有人住 ${lived} / ${z.rooms} 间，平均房租 ${n(Math.round(rent / Math.max(1, lived)))} 元，平均通勤 ${(mins / Math.max(1, lived)).toFixed(1)} 分钟`;
+    tip.style.opacity = 1;
+    const k = S.W / D.width;
+    tip.style.left = `${Math.max(0, Math.min(S.W - tip.offsetWidth, z.x * k - tip.offsetWidth / 2))}px`;
+    tip.style.top = `${Math.max(0, (z.y - z.r) * k - tip.offsetHeight - 4)}px`;
+  }
+
+  function refresh() {
+    $$('[data-arm]').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.arm === S.arm)));
+    $$('[data-mode]').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.mode === S.mode)));
+    $('.play').textContent = S.playing ? '暂停' : '播放';
+    $('.range').value = String(S.frame);
+    $('.m').textContent = S.frame;
+    const hasLine = S.arm === 'B' || S.arm === 'C', opened = S.frame >= D.opens;
+    const tags = [hasLine ? (opened ? '新线已开通' : '新线未开通') : '本组没有新线'];
+    if ((S.arm === 'A0' || S.arm === 'B') && opened) tags.push('租金已冻结');
+    $('.chips').textContent = tags.join(' · ');
+    const v = stats();
+    $$('[data-stat]').forEach((el) => { el.textContent = v[el.dataset.stat]; });
+    $('.feed').replaceChildren(...feed().map((t) => { const li = document.createElement('li'); li.textContent = t; return li; }));
+    legend();
+    if (S.hover) showZone(S.hover);
+  }
+
+  function fit() {
+    const W = Math.round($('.map').clientWidth || 600), H = Math.round((W * D.height) / D.width);
+    if (W === S.W && H === S.H) return;
+    S.W = W; S.H = H;
+    canvas.width = W * dpr; canvas.height = H * dpr; canvas.style.height = `${H}px`;
+    base.width = W * dpr; base.height = H * dpr;
+    drawBase();
+    if (!S.anim) paint(1);
+  }
+
+  $$('[data-arm]').forEach((b) => b.addEventListener('click', () => {
+    S.arm = b.dataset.arm; S.anim = null; refresh(); paint(1);
+    if (S.playing) step();
+  }));
+  $$('[data-mode]').forEach((b) => b.addEventListener('click', () => { S.mode = b.dataset.mode; refresh(); if (!S.anim) paint(1); }));
+  $('.play').addEventListener('click', () => setPlaying(!S.playing));
+  $('.range').addEventListener('input', (e) => { S.frame = Number(e.target.value); S.anim = null; S.playing = false; refresh(); paint(1); });
+  canvas.addEventListener('pointermove', (event) => {
+    const rect = canvas.getBoundingClientRect(), k = S.W / D.width;
+    const x = (event.clientX - rect.left) / k, y = (event.clientY - rect.top) / k;
+    S.hover = D.zones.find((z) => Math.hypot(z.x - x, z.y - y) <= z.r) || null;
+    if (S.hover) showZone(S.hover); else tip.style.opacity = 0;
+  });
+  canvas.addEventListener('pointerleave', () => { S.hover = null; tip.style.opacity = 0; });
+  if (window.ResizeObserver) new ResizeObserver(fit).observe($('.map'));
+  fit();
+  refresh();
+  paint(1);
+})();
+</script>
