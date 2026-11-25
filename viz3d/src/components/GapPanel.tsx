@@ -73,19 +73,20 @@ export function GapPanel({ monthlyCI, month, announceMonth, openMonth, lang, onC
       </div>
 
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 10 }}>
-        <div>
+        <div style={{ minWidth: 0, flex: '1 1 auto' }}>
           <div
             className="serif num"
             style={{
               fontSize: 38,
               fontWeight: 400,
               lineHeight: 1.05,
+              whiteSpace: 'nowrap',
               color: meanVal > 0.05 ? 'var(--accent)' : 'var(--text)',
             }}
           >
             {meanVal >= 0 ? '+' : ''}
             {meanVal.toFixed(2)}
-            <small className="num" style={{ fontSize: 12, color: 'var(--sub)', marginLeft: 4 }}>{t.gap.unitPt}</small>
+            <small className="num" style={{ fontSize: 12, color: 'var(--sub)', marginLeft: 4, whiteSpace: 'nowrap' }}>{t.gap.unitPt}</small>
           </div>
           {halfCi > 0 && (
             <div className="num" style={{ fontSize: 11, color: 'var(--sub)', marginTop: 4 }}>
@@ -95,7 +96,7 @@ export function GapPanel({ monthlyCI, month, announceMonth, openMonth, lang, onC
           <div style={{ fontSize: 12, color: 'var(--text-soft)', marginTop: 6, lineHeight: 1.45 }}>{note}</div>
         </div>
 
-        <svg width={154} height={70} style={{ flexShrink: 0 }}>
+        <svg viewBox="0 0 154 70" style={{ flex: '0 1 154px', minWidth: 90, height: 'auto', overflow: 'visible' }}>
           {/* Zero baseline */}
           <line x1={4} x2={150} y1={yZero} y2={yZero} stroke="var(--tick)" strokeWidth={0.8} />
           {/* M13 & M25 guide lines */}

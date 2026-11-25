@@ -3,7 +3,7 @@
   /* Dark "night" theme: original v1 palette */
   --bg: #182334;
   --bg-radial: #22324A;
-  --panel: rgba(15, 22, 34, 0.82);
+  --panel: rgba(15, 22, 34, 0.86);
   --panel-solid: #111A28;
   --panel-strong: rgba(13, 19, 30, 0.96);
   --line: #2C3E57;
@@ -28,6 +28,8 @@
   --rent-zero: #9AA7BD;
   --rent-max: #FF5A3C;
   --track: #1C2A3F;
+  --btn-bg: rgba(17, 26, 43, 0.9);
+  --btn-hover-bg: rgba(27, 42, 68, 0.95);
   --tick: #3B5277;
   --hover: #4A6488;
   --inset: rgba(255, 255, 255, 0.035);
@@ -38,9 +40,13 @@
   --veil: rgba(17, 26, 40, 0.94);
   --veil-mid: rgba(17, 26, 40, 0.8);
   --veil-0: rgba(17, 26, 40, 0.15);
+  --clock-veil: rgba(11, 17, 28, 0.82);
+  --clock-veil-0: rgba(11, 17, 28, 0);
+  --clock-shadow: 0 4px 24px rgba(11, 17, 28, 0.92);
+  --story: #9EB0CC;
   --font-serif: "Songti SC", "STSong", "New York", "Iowan Old Style", Georgia, "Noto Serif CJK SC", serif;
   --font-sans: "PingFang SC", "Hiragino Sans GB", -apple-system, BlinkMacSystemFont, "Helvetica Neue", "Microsoft YaHei", sans-serif;
-  --font-mono: "SF Mono", Menlo, "JetBrains Mono", Consolas, monospace;
+  --font-mono: "JetBrains Mono", "Barlow", "DIN Alternate", "SF Mono", Menlo, Consolas, monospace;
 }
 
 /* Light "paper" theme: tokens.json light palette */
@@ -72,6 +78,8 @@
   --rent-zero: #8A96A8;
   --rent-max: #D9432A;
   --track: #E3E8EF;
+  --btn-bg: rgba(255, 255, 255, 0.95);
+  --btn-hover-bg: #EEF2F7;
   --tick: #A9B4C4;
   --hover: #9FB0C6;
   --inset: rgba(24, 33, 50, 0.03);
@@ -82,6 +90,10 @@
   --veil: rgba(244, 246, 249, 0.95);
   --veil-mid: rgba(244, 246, 249, 0.82);
   --veil-0: rgba(244, 246, 249, 0.15);
+  --clock-veil: rgba(246, 248, 250, 0.88);
+  --clock-veil-0: rgba(246, 248, 250, 0);
+  --clock-shadow: 0 2px 14px rgba(255, 255, 255, 0.9);
+  --story: #4A566B;
 }
 
 * {
@@ -121,6 +133,8 @@ html, body, #root {
   background: var(--panel);
   border: 1px solid var(--line);
   border-radius: 2px;
+  backdrop-filter: blur(8px) saturate(1.1);
+  -webkit-backdrop-filter: blur(8px) saturate(1.1);
   position: relative;
   pointer-events: auto;
 }
@@ -201,30 +215,39 @@ html, body, #root {
   align-items: center;
   gap: 5px;
   border: 1px solid var(--line);
-  background: transparent;
-  color: var(--sub);
-  border-radius: 2px;
-  padding: 4px 9px;
-  font-size: 12px;
+  background: var(--btn-bg);
+  color: var(--text);
+  border-radius: 4px;
+  padding: 5px 10px;
+  font-size: 11.5px;
   font-family: var(--font-sans);
+  line-height: 1.2;
+  white-space: nowrap;
   cursor: pointer;
-  transition: border-color 0.15s, color 0.15s;
+  transition: border-color 0.15s, background 0.15s, color 0.15s;
   pointer-events: auto;
 }
 
 .btn-hud:hover {
   border-color: var(--hover);
-  color: var(--text);
+  background: var(--btn-hover-bg);
 }
 
 .btn-hud.active {
-  border-color: var(--hover);
-  color: var(--text);
+  border-color: var(--cool);
+  background: color-mix(in srgb, var(--cool) 16%, transparent);
+  color: var(--text-strong);
 }
 
 .btn-hud.amber-active {
-  border-color: var(--text);
-  color: var(--text);
+  border-color: var(--announce);
+  background: color-mix(in srgb, var(--announce) 18%, transparent);
+  color: var(--announce);
+}
+
+.btn-hud.ghost {
+  border-color: transparent;
+  background: transparent;
 }
 
 .hud-scroll {

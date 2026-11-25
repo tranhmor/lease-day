@@ -104,7 +104,7 @@ export function ChapterBar({ mode, chapterIndex, lang, onSelectChapter, onExitPr
           <ChevronLeft size={13} />
         </button>
 
-        <div style={{ display: 'flex', gap: 4, flex: 1, justifyContent: 'center', flexWrap: 'wrap' }}>
+        <div style={{ display: 'flex', gap: 2, flex: 1, justifyContent: 'center', flexWrap: 'nowrap', minWidth: 0 }}>
           {CHAPTERS.map((c) => {
             const on = c.id === chapterIndex;
             return (
@@ -141,9 +141,9 @@ export function ChapterBar({ mode, chapterIndex, lang, onSelectChapter, onExitPr
         </button>
       </div>
 
-      <div style={{ display: 'flex', alignItems: 'baseline', gap: 10 }}>
-        <span className="serif" style={{ fontSize: 15, fontWeight: 600, color: 'var(--text)', whiteSpace: 'nowrap' }}>{ch.title}</span>
-        <span className="serif" style={{ fontSize: 14, color: 'var(--text-soft)', lineHeight: 1.55 }}>{ch.narration}</span>
+      <div style={{ display: 'flex', alignItems: 'baseline', columnGap: 10, rowGap: 2, flexWrap: 'wrap' }}>
+        <span className="serif" style={{ fontSize: 15, fontWeight: 600, color: 'var(--text)' }}>{ch.title}</span>
+        <span className="serif" style={{ fontSize: 14, color: 'var(--text-soft)', lineHeight: 1.55, flex: '1 1 260px', minWidth: 0 }}>{ch.narration}</span>
       </div>
     </div>
   );

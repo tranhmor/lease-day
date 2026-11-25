@@ -128,10 +128,10 @@ export function TimelineBar({
         <button type="button" className="btn-hud num" onClick={onCycleSpeed}>
           {speed}×
         </button>
-        <span className="serif" style={{ fontSize: 13.5, color: 'var(--text)', marginLeft: 6, overflow: 'hidden', textOverflow: 'ellipsis' }}>
+        <span className="serif" style={{ fontSize: 13.5, color: 'var(--text)', marginLeft: 6, overflow: 'hidden', textOverflow: 'ellipsis', minWidth: 0, flex: '0 1 auto' }}>
           {lang === 'zh' ? '受益区租金指数，三个世界' : 'Treated-zone rent index, three worlds'}
         </span>
-        <span style={{ display: 'inline-flex', gap: 12, marginLeft: 'auto', fontSize: 11.5 }}>
+        <span style={{ display: 'inline-flex', gap: 12, marginLeft: 'auto', fontSize: 11.5, minWidth: 0, overflow: 'hidden', flex: '0 1 auto' }}>
           {(['P', 'S', 'N'] as Scenario[]).map((sc) => (
             <span key={sc} style={{ display: 'inline-flex', alignItems: 'center', gap: 5 }}>
               <svg width={16} height={6}>

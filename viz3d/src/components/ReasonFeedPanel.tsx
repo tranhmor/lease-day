@@ -195,7 +195,7 @@ export function ReasonFeedPanel({
           <div
             style={{
               display: 'grid',
-              gridTemplateColumns: expanded ? 'repeat(2, minmax(0, 1fr))' : '1fr',
+              gridTemplateColumns: expanded ? 'repeat(auto-fill, minmax(300px, 1fr))' : '1fr',
               columnGap: expanded ? 24 : 0,
             }}
           >

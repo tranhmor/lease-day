@@ -534,7 +534,7 @@ export function App() {
           {/* RIGHT COLUMN: Scenario Tabs -> Top 6 Rank -> Landlord Reason Feed */}
           <div
             style={{
-              width: expandFeed ? 'clamp(380px, 43vw, 720px)' : 'clamp(290px, 23vw, 380px)',
+              width: expandFeed ? 'clamp(320px, 38vw, 680px)' : 'clamp(290px, 23vw, 380px)',
               flexShrink: 0,
               display: 'flex',
               flexDirection: 'column',

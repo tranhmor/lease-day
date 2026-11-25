@@ -1,7 +1,7 @@
 {
   "appTitle": "Lease Day v0.7 · 36-Month Beijing Rental Market 3D Replay",
   "cityTag": "BEIJING",
-  "subtitle": "Lease Day · rental market simulation",
+  "subtitle": "Lease Day · 240 Rooms · 36 Months",
   "introSubtitle": "240 Rooms · 40 LLM Landlords · 36-Month Rental Market Simulation",
   "introHint": "Press → for next chapter · Esc for Explore mode",
   "scenarios": {
@@ -30,8 +30,8 @@
     "diff": "Diff P − S"
   },
   "styles": {
-    "constellation": "Landlord network",
-    "terrain": "Rent terrain"
+    "constellation": "Constellation · Mind",
+    "terrain": "Bid-Rent Contour"
   },
   "layers": {
     "rooms": "Rooms",
@@ -265,7 +265,7 @@
   },
   "shapes": {
     "disc": "Discs",
-    "bar": "Rent bars",
+    "bar": "Bars",
     "hint": "Room glyph: discs (colour only) / bars (height = rent level)"
   },
   "theme": {

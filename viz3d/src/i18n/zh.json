@@ -1,7 +1,7 @@
 {
   "appTitle": "到期日 · 租赁市场 36 个月三维回放",
   "cityTag": "BEIJING",
-  "subtitle": "到期日 · 租赁市场模拟",
+  "subtitle": "到期日 · 240 间房 · 36 个月",
   "introSubtitle": "240 间房 · 40 名 LLM 房东 · 36 个月租赁市场模拟",
   "introHint": "按 → 进入下一章 · Esc 切换自由探索",
   "scenarios": {
@@ -30,8 +30,8 @@
     "diff": "差值 P − S"
   },
   "styles": {
-    "constellation": "房东网络",
-    "terrain": "租金地形"
+    "constellation": "房东星座 × 思维云",
+    "terrain": "竞租等高曲面"
   },
   "layers": {
     "rooms": "房源",
@@ -265,7 +265,7 @@
   },
   "shapes": {
     "disc": "圆盘",
-    "bar": "房源柱高",
+    "bar": "柱高",
     "hint": "房源形态：圆盘（只看颜色）/ 柱高（高度=租金水平）"
   },
   "theme": {
