@@ -1,0 +1,96 @@
+{
+  "version": "0.7",
+  "generated_at": "2026-11-25T19:38:47",
+  "group": "L",
+  "scenarios": [
+    "N",
+    "S",
+    "P"
+  ],
+  "seeds": [
+    0
+  ],
+  "all_aggregate_seeds": [
+    0,
+    1,
+    2
+  ],
+  "default_seed": 0,
+  "default_seed_rule": "median_m24_p_minus_s",
+  "months": 36,
+  "n_rooms": 240,
+  "n_landlords": 40,
+  "event_months": {
+    "announce": 13,
+    "open": 25
+  },
+  "treated_zones": [
+    "Z05",
+    "Z11"
+  ],
+  "source_label": "runs_x_qwen (L, 3 paired seeds, qwen3.5:9b)",
+  "is_illustrative": false,
+  "has_room_states": true,
+  "mention_keywords": [
+    "快线",
+    "开通",
+    "通车",
+    "通勤改善",
+    "通勤利好",
+    "交通便利",
+    "交通将改善",
+    "未来利好",
+    "溢价",
+    "将受益"
+  ],
+  "feed_sample_seed": 20261125,
+  "projection": {
+    "type": "local_web_mercator_km",
+    "origin_zone": "Z00",
+    "origin_lat": 39.9099,
+    "origin_lon": 116.458,
+    "cos_lat0": 0.7670543058240208,
+    "meters_per_unit": 1000.0
+  },
+  "room_states_schema": {
+    "bytes_per_record": 16,
+    "endian": "little",
+    "fields": [
+      {
+        "name": "rent",
+        "type": "float32",
+        "offset": 0
+      },
+      {
+        "name": "tenant_id",
+        "type": "int32",
+        "offset": 4
+      },
+      {
+        "name": "occupied",
+        "type": "uint8",
+        "offset": 8
+      },
+      {
+        "name": "vacant_for",
+        "type": "uint8",
+        "offset": 9
+      },
+      {
+        "name": "group_code",
+        "type": "uint8",
+        "offset": 10
+      },
+      {
+        "name": "commute_min",
+        "type": "uint8",
+        "offset": 11
+      },
+      {
+        "name": "income",
+        "type": "float32",
+        "offset": 12
+      }
+    ]
+  }
+}

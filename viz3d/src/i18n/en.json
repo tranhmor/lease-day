@@ -1,0 +1,250 @@
+{
+  "appTitle": "Lease Day v0.7 · 36-Month Beijing Rental Market 3D Replay",
+  "cityTag": "BEIJING",
+  "subtitle": "Lease Day · 240 Rooms · 36 Months",
+  "introSubtitle": "240 Rooms · 40 LLM Landlords · 36-Month Rental Market Simulation",
+  "introHint": "Press → for next chapter · Esc for Explore mode",
+  "scenarios": {
+    "N": { "label": "N", "short": "No Line", "desc": "Control world: new line never arrives" },
+    "S": { "label": "S", "short": "Sudden Open", "desc": "Opens at M25 with no prior notice" },
+    "P": { "label": "P", "short": "Pre-Announced", "desc": "Announced M13, opens M25" }
+  },
+  "modes": {
+    "presentation": "Present",
+    "explore": "Explore",
+    "export": "Export",
+    "single": "Single View",
+    "split": "Split S | P",
+    "diff": "Diff P − S"
+  },
+  "styles": {
+    "constellation": "Constellation · Mind",
+    "terrain": "Bid-Rent Contour"
+  },
+  "layers": {
+    "rooms": "240 Real Rooms",
+    "metro": "Metro Veins",
+    "newline": "East Express (Hyp.)",
+    "pulse": "LLM Pulses",
+    "commute": "Real Tenant Flow",
+    "arcs": "Move Arcs",
+    "mindTags": "Mind Callouts",
+    "isochrone": "Isochrones"
+  },
+  "phases": {
+    "warmup": "Warm-up / Baseline",
+    "announce_P": "Announcement Window",
+    "announce_S": "Pre-Opening (Uninformed S)",
+    "announce_N": "Control World",
+    "open_P": "Post-Opening",
+    "open_S": "Sudden Opening",
+    "open_N": "Control World",
+    "conclude": "M36 Verdict"
+  },
+  "stories": {
+    "warmup": "All three worlds are identical: same tenants, same landlords, same exogenous shocks.",
+    "announce_P": "📢 Only P landlords & tenants learn that the East Express Line will open in Month 25.",
+    "announce_S": "S receives no announcement—landlords price as usual. P − S isolates the value of knowing early.",
+    "announce_N": "N world: the line never arrives, controlling for baseline market drift.",
+    "open_P": "🚇 East Express opens: CBD commute drops ~12 min in Guoyuan (Z05) and ~15 min in Wuyi (Z11).",
+    "open_S": "🚇 East Express opens abruptly in S with the exact same 12–15 min commute savings.",
+    "open_N": "N world: the line never arrives, controlling for baseline market drift."
+  },
+  "vitals": {
+    "title": "Market Vitals",
+    "scope": "Treated Z05 + Z11",
+    "rentIndex": "Rent Index",
+    "vacancy": "Vacancy Rate",
+    "commute": "Mean Commute",
+    "moveIns": "Monthly Move-ins",
+    "llmCalls": "LLM Calls (Mo)",
+    "unitMin": "min",
+    "unitHouse": "hh",
+    "unitCalls": "calls",
+    "hoverTip": "Hover any metric to highlight its 3D layer"
+  },
+  "gap": {
+    "title": "P − S: Anticipation Gap",
+    "subtitle": "Treated Rent Index Diff · 95% CI",
+    "unitPt": "pts",
+    "preAnnounce": "Identical before announcement",
+    "announceWindow": "Only P knows: anticipation gap opens",
+    "postOpen": "Both open: does the gap converge?",
+    "clickToSplit": "Click for S | P synchronized split-screen"
+  },
+  "rank": {
+    "title": "Top 6 Rising Zones",
+    "subtitle": "Change vs Month 1",
+    "treatedTag": "Treated",
+    "clearFilter": "Clear",
+    "clickTip": "Click zone to fly camera & filter reasons"
+  },
+  "feed": {
+    "title": "Landlord Reasoning Stream",
+    "disclaimer": "LLM self-reported rationale for illustration only, not causal proof.",
+    "mentionLabel": "All pricing decisions citing new line",
+    "mentionTreated": "Treated",
+    "mentionAll": "Citywide",
+    "sampledNote": "Stratified fixed-seed random sample (treated / other; never cherry-picked)",
+    "empty": "No landlord quote decisions match this filter in this month",
+    "renewal": "Renewal Offer",
+    "vacant": "Vacant Pricing",
+    "counter": "Counter Reply",
+    "pick": "Pick Applicant",
+    "vacMonths": "Vacant {n}m",
+    "expand": "Expand",
+    "collapse": "Restore"
+  },
+  "timeline": {
+    "play": "Play",
+    "pause": "Pause",
+    "caption": "36 MONTHS · 60 SEC",
+    "dragHint": "Scrub · Space Play/Pause",
+    "ticks": {
+      "m1": "Warm-up",
+      "m7": "Obs.",
+      "m13": "📢 Ann.",
+      "m19": "Wait",
+      "m25": "🚇 Open",
+      "m31": "Post",
+      "m36": "M36"
+    },
+    "ciNote": "Shaded bands = cross-seed 95% CI"
+  },
+  "roomCard": {
+    "room": "Room",
+    "landlord": "Landlord",
+    "manages": "{n} rooms",
+    "rentChartTitle": "36-Month Rent Trajectory (P solid / S dashed)",
+    "tenantBarTitle": "Tenant Occupancy Ribbon (by income group; click for Tenant Card)",
+    "vacant": "Vacant",
+    "vacantFor": "Vacant {n} mo",
+    "showInputs": "Inspect full LLM prompt inputs (JSON)",
+    "hideInputs": "Hide full inputs",
+    "prevDec": "Prev Decision",
+    "nextDec": "Next Decision",
+    "noDecisions": "No LLM landlord pricing decisions recorded for this room",
+    "stationDist": "{m}m to metro"
+  },
+  "tenantCard": {
+    "title": "Tenant Card",
+    "income": "Monthly Income",
+    "group": "Income Group",
+    "groups": { "low": "Low Income", "mid": "Mid Income", "high": "High Income" },
+    "decisionsTitle": "Search & Expiry Decision History",
+    "candidates": "Candidate Rooms",
+    "applied": "Applied",
+    "action": "Action",
+    "noDecisions": "No LLM decisions logged for this tenant (initial seating or rule-based)",
+    "backToRoom": "Back to Room"
+  },
+  "chapters": [
+    {
+      "title": "0 · Opening",
+      "narration": "240 rooms, 40 LLM landlords, 36 months—tracking how an announced subway line reshapes Beijing's rental market."
+    },
+    {
+      "title": "1 · City & Market",
+      "narration": "Baseline dynamics before any news: pillar height shows kind-normalized rent; particles flow along subways to CBD."
+    },
+    {
+      "title": "2 · Parallel Worlds",
+      "narration": "Same people, same random shocks—only one announcement differs. Left (S) and Right (P) are identical at Month 12."
+    },
+    {
+      "title": "3 · Announcement (M13)",
+      "narration": "Only World P receives notice: East Express Line (CBD → Dingfuzhuang → Guoyuan → Wuyi Garden) opens in Month 25."
+    },
+    {
+      "title": "4 · Inside Landlord Minds (M13–M24)",
+      "narration": "Months before opening, treated-zone landlords cite upcoming transit gains in their rationales and nudge quotes up."
+    },
+    {
+      "title": "5 · Line Opens (M25)",
+      "narration": "East Express opens simultaneously in S and P, cutting commute by 12–15 min. How much extra rent did early knowledge capture?"
+    },
+    {
+      "title": "6 · Who Moves In & Who Pays (M25–M36)",
+      "narration": "Income-colored moving arcs reveal who moved early into treated zones (H2) alongside spatial rent burdens."
+    },
+    {
+      "title": "7 · Pre-Registered Verdicts (M36)",
+      "narration": "Formal H1–H3 verdicts sourced directly from analyze_v07.py (PREREG_L), with clustered 95% confidence intervals."
+    }
+  ],
+  "moverProfile": {
+    "title": "Early Mover Profile (H2 · M13–M24 Treated)",
+    "low": "Low",
+    "mid": "Mid",
+    "high": "High",
+    "meanIncome": "Mean Income",
+    "meanCash": "Pre-Move Cash",
+    "totalMoves": "Move-ins"
+  },
+  "verdicts": {
+    "title": "Pre-Registered Verdicts (PREREG_L)",
+    "subtitle": "Directly read from analyze_v07.py verdicts.json; no frontend significance recomputation",
+    "h1Title": "H1 · Pre-Opening Rent Anticipation",
+    "h1Desc": "Treated M13–M24 quote change OLS (vacancy-controlled, seed-clustered 95% CI)",
+    "h2Title": "H2 · Affluent Early Selection",
+    "h2Desc": "Treated M13–M24 mover income & liquid cash P − S (seed bootstrap 95% CI)",
+    "h3Title": "H3 · Landlord Over-Concession",
+    "h3Desc": "N scenario vs Rule baseline R: tight-market no-hike share & counter accept rate",
+    "biasTitle": "Bias B · No-Shock Baseline Drift",
+    "qualityTitle": "Run Quality Gate (Fallback < 2%)",
+    "supported": "SUPPORTED",
+    "directional": "DIRECTIONAL (CI includes 0)",
+    "notSupported": "NOT SUPPORTED",
+    "overConcessive": "OVER-CONCESSIVE",
+    "notOverConcessive": "NOT OVER-CONCESSIVE",
+    "pass": "PASS",
+    "caveat": "CAVEAT REQUIRED"
+  },
+  "legend": {
+    "title": "Legend & Visual Encoding",
+    "shapes": "Zero decorative dots: 240 ground nodes = 240 real rooms; 40 floating prisms = 40 LLM landlords; each moving particle = 1 real seated tenant",
+    "oversample": "Note: Z05 (24) & Z11 (16) are oversampled for statistical power; visual density does not reflect real stock.",
+    "schematic": "Intra-zone room positions use phyllotaxis layout (schematic, not exact addresses).",
+    "hypothetical": "East Express Line is a hypothetical transit corridor.",
+    "rentScale": "Rent Δ vs M1 (index pts)"
+  },
+  "footer": {
+    "illustrative": "ILLUSTRATIVE DATA · NOT FINAL EXPERIMENT",
+    "schematic": "Intra-zone positions schematic",
+    "hypothetical": "East Express = hypothetical line",
+    "medianSeed": "Median Seed #{seed} (M24 P−S = {val})",
+    "source": "Source: {src}",
+    "shortcuts": "Keys: Space Play · ←→ Step · 1/2/3 N/S/P · D Split · H Hide UI · F Fullscreen"
+  },
+  "export": {
+    "png4k": "Export 4K PNG",
+    "pngScreen": "Snapshot",
+    "record": "Record Video",
+    "stopRecord": "Stop Rec",
+    "recording": "Recording…",
+    "quality0": "Quality: Full 3D + Bloom",
+    "quality1": "Quality: Light 3D (Tier 1)",
+    "quality2": "Quality: 2D Top-Down (Tier 2)",
+    "autoDegraded": "FPS dropped below 30; auto-downgraded for smoothness (click to restore)"
+  },
+  "split": {
+    "leftLabel": "S · Sudden Open (Uninformed)",
+    "rightLabel": "P · Pre-Announced (M13 Notice)",
+    "dragTip": "Drag divider to compare",
+    "exit": "Exit Split",
+    "toDiff": "Switch to Diff (P − S)",
+    "toSplit": "Switch to Curtain (S | P)"
+  },
+  "roomKinds": {
+    "低价房": "Low-Cost",
+    "便宜单间": "Budget Room",
+    "合租单间": "Shared Room",
+    "整租": "Whole Apt"
+  },
+  "landlordKinds": {
+    "个人房东": "Individual",
+    "托管机构": "Agency",
+    "怕空置": "Vacancy-Averse",
+    "愿意等": "Patient"
+  }
+}

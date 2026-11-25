@@ -133,6 +133,7 @@ class Config:
     initial_fill_max_draws: float = 4.0  # cap on applicants drawn, as a multiple of the occupancy target
     log_dir: Optional[str] = None        # Directory to write decisions.jsonl & monthly.jsonl
     record_decisions: bool = True        # Record decision records (in memory or jsonl)
+    dump_room_states: bool = False       # Write room_states.jsonl (read-only viz snapshot, zero sim impact)
 
 
 class Room:
@@ -318,20 +319,22 @@ class GameV07:
 
         # Per-month event accumulators
         self._m_events: Dict[str, Any] = {}
+        self.room_state_records: List[Dict[str, Any]] = []
         self._initialized = False
         self._dec_fp = None
         self._mon_fp = None
+        self._room_fp = None
 
     # ---- Snapshot / Fork Support (Shared M1-M12 Warm-Up) ----
 
     def export_snapshot(self) -> "GameV07":
         """Return a detached deep copy of simulation state (call right after warm-up before forking N/S/P)."""
-        fp_d, fp_m = self._dec_fp, self._mon_fp
+        fp_d, fp_m, fp_r = self._dec_fp, self._mon_fp, self._room_fp
         lp, tp = self.landlord_policy, self.tenant_policy
-        self._dec_fp = self._mon_fp = None
+        self._dec_fp = self._mon_fp = self._room_fp = None
         self.landlord_policy = self.tenant_policy = None
         snap = copy.deepcopy(self)
-        self._dec_fp, self._mon_fp = fp_d, fp_m
+        self._dec_fp, self._mon_fp, self._room_fp = fp_d, fp_m, fp_r
         self.landlord_policy, self.tenant_policy = lp, tp
         return snap
 
@@ -1004,6 +1007,7 @@ class GameV07:
             "counter_accepts": 0,
             "multi_app_rooms": 0,
             "zone_apps": {z["id"]: 0 for z in ZONES},
+            "viz_events": [],
         }
         self._m_events = ev
 
@@ -1036,6 +1040,17 @@ class GameV07:
         )
         for t in leavers:
             room = self.rooms_by_id[t.room_id]
+            if self.cfg.dump_room_states:
+                ev["viz_events"].append({
+                    "type": "move_out",
+                    "reason": "churn",
+                    "tenant_id": t.tenant_id,
+                    "from_room": room.room_id,
+                    "to_room": None,
+                    "income_group": t.group,
+                    "income": t.income,
+                    "rent": round(room.rent, 2),
+                })
             del self.tenants[t.tenant_id]
             if room.zone in self.cfg.treated_zones:
                 ev["tr_vacates"] += 1
@@ -1135,12 +1150,34 @@ class GameV07:
                 c_ctx["initial_offer"] = quote
                 c_ctx["counter_rent"] = t_res["rent"]
                 ans = self._call_landlord("answer_counter", c_ctx, validate_answer_counter, rule_ll.answer_counter)
+                if self.cfg.dump_room_states:
+                    ev["viz_events"].append({
+                        "type": "counter",
+                        "tenant_id": t.tenant_id,
+                        "from_room": cur_room.room_id,
+                        "to_room": cur_room.room_id,
+                        "income_group": t.group,
+                        "income": t.income,
+                        "rent": round(ans["rent"], 2),
+                        "accepted": bool(ans["accept"]),
+                    })
                 if ans["accept"]:
                     ev["counter_accepts"] += 1
                     agreed = ans["rent"]
                     if in_treated:
                         ev["tr_renewals"] += 1
                         ev["tr_renewal_hikes"].append((agreed - cur_room.rent) / cur_room.rent)
+                    if self.cfg.dump_room_states:
+                        ev["viz_events"].append({
+                            "type": "renew",
+                            "tenant_id": t.tenant_id,
+                            "from_room": cur_room.room_id,
+                            "to_room": cur_room.room_id,
+                            "income_group": t.group,
+                            "income": t.income,
+                            "rent": round(agreed, 2),
+                            "rent_before": round(cur_room.rent, 2),
+                        })
                     cur_room.rent = agreed
                     t.expires = self.month + LEASE_MONTHS
                     t.mode = t_res["mode"]
@@ -1158,10 +1195,32 @@ class GameV07:
                 if in_treated:
                     ev["tr_renewals"] += 1
                     ev["tr_renewal_hikes"].append((quote - cur_room.rent) / cur_room.rent)
+                if self.cfg.dump_room_states:
+                    ev["viz_events"].append({
+                        "type": "renew",
+                        "tenant_id": t.tenant_id,
+                        "from_room": cur_room.room_id,
+                        "to_room": cur_room.room_id,
+                        "income_group": t.group,
+                        "income": t.income,
+                        "rent": round(quote, 2),
+                        "rent_before": round(cur_room.rent, 2),
+                    })
                 cur_room.rent = quote
                 t.expires = self.month + LEASE_MONTHS
                 t.mode = t_res["mode"]
             elif act == "leave":
+                if self.cfg.dump_room_states:
+                    ev["viz_events"].append({
+                        "type": "move_out",
+                        "reason": "expiry_leave",
+                        "tenant_id": t.tenant_id,
+                        "from_room": cur_room.room_id,
+                        "to_room": None,
+                        "income_group": t.group,
+                        "income": t.income,
+                        "rent": round(cur_room.rent, 2),
+                    })
                 del self.tenants[t.tenant_id]
                 if in_treated:
                     ev["tr_vacates"] += 1
@@ -1240,6 +1299,17 @@ class GameV07:
                 # Liquid funds before paying move cost / new deposit (H2 compares pre-move wealth)
                 pre_move_cash = t.cash + t.locked_deposit
                 self._place(t, room, self.month, mode=win_mode, charge_move=True)
+                if self.cfg.dump_room_states:
+                    ev["viz_events"].append({
+                        "type": "move_in",
+                        "tenant_id": t.tenant_id,
+                        "from_room": old_room.room_id if old_room is not None else None,
+                        "to_room": room.room_id,
+                        "income_group": t.group,
+                        "income": t.income,
+                        "rent": round(room.rent, 2),
+                        "mode": win_mode,
+                    })
                 if room.zone in self.cfg.treated_zones:
                     ev["tr_move_ins"] += 1
                     ev["tr_move_in_incomes"].append(t.income)
@@ -1261,10 +1331,32 @@ class GameV07:
                     if old_room.zone in self.cfg.treated_zones:
                         ev["tr_renewals"] += 1
                         ev["tr_renewal_hikes"].append((app["fallback_renew_rent"] - old_room.rent) / old_room.rent)
+                    if self.cfg.dump_room_states:
+                        ev["viz_events"].append({
+                            "type": "renew",
+                            "tenant_id": t.tenant_id,
+                            "from_room": old_room.room_id,
+                            "to_room": old_room.room_id,
+                            "income_group": t.group,
+                            "income": t.income,
+                            "rent": round(app["fallback_renew_rent"], 2),
+                            "rent_before": round(old_room.rent, 2),
+                        })
                     old_room.rent = app["fallback_renew_rent"]
                     t.expires = self.month + LEASE_MONTHS
                     t.mode = app["fallback_mode"]
                 else:
+                    if self.cfg.dump_room_states:
+                        ev["viz_events"].append({
+                            "type": "move_out",
+                            "reason": "unmatched_exit",
+                            "tenant_id": t.tenant_id,
+                            "from_room": old_room.room_id,
+                            "to_room": None,
+                            "income_group": t.group,
+                            "income": t.income,
+                            "rent": round(old_room.rent, 2),
+                        })
                     del self.tenants[t.tenant_id]
                     if old_room.zone in self.cfg.treated_zones:
                         ev["tr_vacates"] += 1
@@ -1368,6 +1460,48 @@ class GameV07:
         if self._mon_fp is not None:
             self._mon_fp.write(json.dumps(rec, ensure_ascii=False) + "\n")
 
+        if self.cfg.dump_room_states:
+            by_room_info = {r.room_id: (t, way) for t, r, way in info}
+            r_list = []
+            for r in self.rooms:
+                entry: Dict[str, Any] = {
+                    "id": r.room_id,
+                    "rent": round(r.rent, 2),
+                    "occ": 1 if r.tenant_id is not None else 0,
+                    "tid": r.tenant_id if r.tenant_id is not None else -1,
+                    "vac": r.vacant_for,
+                }
+                if r.room_id in by_room_info:
+                    t, way = by_room_info[r.room_id]
+                    entry["grp"] = t.group
+                    entry["inc"] = t.income
+                    entry["mode"] = t.mode or way[1]
+                    entry["comm"] = way[2]
+                    entry["cash"] = round(t.cash, 1)
+                    entry["cpl"] = 1 if t.couple else 0
+                    entry["ten"] = t.tenure_months
+                r_list.append(entry)
+            rs_rec: Dict[str, Any] = {
+                "month": self.month + 1,
+                "rooms": r_list,
+                "events": list(ev.get("viz_events", [])),
+            }
+            if self.month == 0:
+                rs_rec["rooms_meta"] = [
+                    {
+                        "id": r.room_id,
+                        "zone": r.zone,
+                        "kind": r.kind,
+                        "landlord_id": r.landlord_id,
+                        "start": round(r.start, 2),
+                        "station_dist_m": r.station_dist_m,
+                    }
+                    for r in self.rooms
+                ]
+            self.room_state_records.append(rs_rec)
+            if self._room_fp is not None:
+                self._room_fp.write(json.dumps(rs_rec, ensure_ascii=False) + "\n")
+
         # Accumulate v0.6-compatible tail metrics over final 12 months
         if self.month >= self.cfg.months - 12:
             self.tail["commute"].append(comm_all)
@@ -1441,6 +1575,10 @@ class GameV07:
                 if first_open:
                     (p / "decisions.jsonl").unlink(missing_ok=True)
             self._mon_fp = (p / "monthly.jsonl").open(mode, encoding="utf-8")
+            if self.cfg.dump_room_states:
+                self._room_fp = (p / "room_states.jsonl").open(mode, encoding="utf-8")
+            else:
+                self._room_fp = None
             self._log_dir_written = str(p)
             if first_open:
                 for rec in self.monthly_records:
@@ -1448,6 +1586,9 @@ class GameV07:
                 if self._dec_fp is not None:
                     for rec in self.decision_records:
                         self._dec_fp.write(json.dumps(rec, ensure_ascii=False) + "\n")
+                if self._room_fp is not None:
+                    for rec in self.room_state_records:
+                        self._room_fp.write(json.dumps(rec, ensure_ascii=False) + "\n")
 
     def _close_logs(self) -> None:
         if self._dec_fp is not None:
@@ -1456,6 +1597,9 @@ class GameV07:
         if self._mon_fp is not None:
             self._mon_fp.close()
             self._mon_fp = None
+        if self._room_fp is not None:
+            self._room_fp.close()
+            self._room_fp = None
 
     # ---- Run Controls ----
 

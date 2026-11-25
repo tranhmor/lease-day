@@ -1,0 +1,250 @@
+{
+  "appTitle": "到期日 · 租赁市场 36 个月三维回放",
+  "cityTag": "BEIJING",
+  "subtitle": "到期日 · 240 间房 · 36 个月",
+  "introSubtitle": "240 间房 · 40 名 LLM 房东 · 36 个月租赁市场模拟",
+  "introHint": "按 → 进入下一章 · Esc 切换自由探索",
+  "scenarios": {
+    "N": { "label": "N", "short": "无新线", "desc": "对照世界：新线永远不会来" },
+    "S": { "label": "S", "short": "突然开通", "desc": "第 25 月无预警开通" },
+    "P": { "label": "P", "short": "提前公告", "desc": "第 13 月公告，第 25 月开通" }
+  },
+  "modes": {
+    "presentation": "演示模式",
+    "explore": "探索模式",
+    "export": "导出模式",
+    "single": "单视口",
+    "split": "分屏对比 S | P",
+    "diff": "差值 P − S"
+  },
+  "styles": {
+    "constellation": "房东星座 × 思维云",
+    "terrain": "竞租等高曲面"
+  },
+  "layers": {
+    "rooms": "240 间真实房源",
+    "metro": "地铁脉络",
+    "newline": "东向快线（假想）",
+    "pulse": "LLM 决策脉冲",
+    "commute": "真实租客通勤流",
+    "arcs": "搬家弧线",
+    "mindTags": "空间思维浮标",
+    "isochrone": "通勤等时圈"
+  },
+  "phases": {
+    "warmup": "热身 / 观察期",
+    "announce_P": "公告期",
+    "announce_S": "公告期（S 不知情）",
+    "announce_N": "对照世界",
+    "open_P": "开通后",
+    "open_S": "突然开通后",
+    "open_N": "对照世界",
+    "conclude": "M36 结论"
+  },
+  "stories": {
+    "warmup": "三个世界此时完全一样：同一批租客、同一批房东、同样的随机事件。",
+    "announce_P": "📢 只有 P 世界的房东和租客收到“东向快线将于第 25 月开通”。",
+    "announce_S": "S 世界没有任何公告，房东照常定价。与 P 的差，就是“提前知道”的价值。",
+    "announce_N": "N 世界：新线永远不会来，用来扣除市场本身的波动。",
+    "open_P": "🚇 新线开通，果园、武夷花园到 CBD 分别缩短约 12、15 分钟。",
+    "open_S": "🚇 新线突然开通，同样缩短约 12、15 分钟。",
+    "open_N": "N 世界：新线永远不会来，用来扣除市场本身的波动。"
+  },
+  "vitals": {
+    "title": "市场体征",
+    "scope": "受益区 Z05 + Z11",
+    "rentIndex": "租金指数",
+    "vacancy": "空置率",
+    "commute": "平均通勤",
+    "moveIns": "本月搬入",
+    "llmCalls": "本月 LLM 调用",
+    "unitMin": "分钟",
+    "unitHouse": "户",
+    "unitCalls": "次",
+    "hoverTip": "悬停指标可高亮地图对应图层"
+  },
+  "gap": {
+    "title": "P − S：“提前知道”值多少",
+    "subtitle": "受益区租金指数差 · 95% CI",
+    "unitPt": "点",
+    "preAnnounce": "公告前两世界完全相同",
+    "announceWindow": "只有 P 知道：预期差值正在拉开",
+    "postOpen": "两边均已开通：观察差值是否收敛",
+    "clickToSplit": "点击进入 S | P 分屏卷帘对比"
+  },
+  "rank": {
+    "title": "涨幅排行 Top 6",
+    "subtitle": "较第 1 月租金变化",
+    "treatedTag": "受益区",
+    "clearFilter": "清除筛选",
+    "clickTip": "点击区名定位并筛选理由"
+  },
+  "feed": {
+    "title": "房东在想什么",
+    "disclaimer": "LLM 自述理由，用于说明行为，不作为因果证据。",
+    "mentionLabel": "本月全部定价决策中提到新线",
+    "mentionTreated": "受益区",
+    "mentionAll": "全市",
+    "sampledNote": "按受益区/其他区分层固定种子随机抽样（不挑选）",
+    "empty": "本月该筛选条件下无房东报价记录",
+    "renewal": "续租报价",
+    "vacant": "空房挂牌",
+    "counter": "回应还价",
+    "pick": "挑选租客",
+    "vacMonths": "空置 {n} 月",
+    "expand": "放大面板",
+    "collapse": "恢复大小"
+  },
+  "timeline": {
+    "play": "播放",
+    "pause": "暂停",
+    "caption": "36 MONTHS · 60 SEC",
+    "dragHint": "拖动跳转 · Space 播放/暂停",
+    "ticks": {
+      "m1": "热身",
+      "m7": "观察",
+      "m13": "📢 公告",
+      "m19": "等待",
+      "m25": "🚇 开通",
+      "m31": "开通后",
+      "m36": "M36"
+    },
+    "ciNote": "阴影为跨种子 95% CI"
+  },
+  "roomCard": {
+    "room": "房间",
+    "landlord": "房东",
+    "manages": "管 {n} 间",
+    "rentChartTitle": "36 个月租金轨迹（P 实线 / S 虚线）",
+    "tenantBarTitle": "租客占用条带（按收入组着色，点击查看租客卡片）",
+    "vacant": "空置",
+    "vacantFor": "已空置 {n} 个月",
+    "showInputs": "查看房东看到的完整输入（JSON）",
+    "hideInputs": "收起完整输入",
+    "prevDec": "上一条决策",
+    "nextDec": "下一条决策",
+    "noDecisions": "该房间在当前情景下暂无 LLM 定价决策记录",
+    "stationDist": "距地铁 {m}m"
+  },
+  "tenantCard": {
+    "title": "租客卡片",
+    "income": "月收入",
+    "group": "收入组",
+    "groups": { "low": "低收入", "mid": "中等收入", "high": "高收入" },
+    "decisionsTitle": "申请与搬迁决策记录",
+    "candidates": "评估候选房",
+    "applied": "提交申请",
+    "action": "动作",
+    "noDecisions": "该租客暂无 LLM 决策记录（可能为初始入住或规则分配）",
+    "backToRoom": "返回房间"
+  },
+  "chapters": [
+    {
+      "title": "0 · 片头",
+      "narration": "240 间房，40 个 LLM 房东，36 个月——观察一条尚未开通的新地铁线如何改写北京租赁市场。"
+    },
+    {
+      "title": "1 · 城市与市场",
+      "narration": "先看没有任何消息时市场怎么运转：光柱高度代表同房型归一化租金，粒子沿地铁流向 CBD。"
+    },
+    {
+      "title": "2 · 三个世界",
+      "narration": "同一批人、同一套随机事件，只差一条公告。左屏 S（突然开通）与右屏 P（提前公告）在第 12 月完全一致。"
+    },
+    {
+      "title": "3 · 公告（M13）",
+      "narration": "只有 P 世界收到消息：第 25 个月将开通东向快线（CBD → 定福庄 → 果园 → 武夷花园）。"
+    },
+    {
+      "title": "4 · 房东在想什么（M13–M24）",
+      "narration": "在开通前 12 个月，受益区房东开始在理由中提到“快线将开通、通勤改善”，并尝试上调报价。"
+    },
+    {
+      "title": "5 · 开通（M25）",
+      "narration": "S 与 P 两个世界同时通车：果园、武夷花园通勤缩短 12–15 分钟，对比先知道的一方多赚了多少。"
+    },
+    {
+      "title": "6 · 谁受益、谁付出（M25–M36）",
+      "narration": "按收入组着色的迁入弧线展示提前搬入受益区的人群画像（H2），观察租金负担分布。"
+    },
+    {
+      "title": "7 · 结论（M36）",
+      "narration": "基于预先登记标准（PREREG_L）的 H1–H3 正式判定结果，全部引用统计脚本输出。"
+    }
+  ],
+  "moverProfile": {
+    "title": "迁入者画像（H2 · M13–M24 受益区）",
+    "low": "低收入",
+    "mid": "中等收入",
+    "high": "高收入",
+    "meanIncome": "平均月收入",
+    "meanCash": "迁入前存款",
+    "totalMoves": "迁入户数"
+  },
+  "verdicts": {
+    "title": "预先登记假设判定（PREREG_L）",
+    "subtitle": "直接读取 analyze_v07.py 输出 verdicts.json，前端不做二次检验",
+    "h1Title": "H1 · 公告期房东提前涨价",
+    "h1Desc": "受益区 M13–M24 报价涨幅 OLS（控制空置率，种子聚类 95% CI）",
+    "h2Title": "H2 · 高收入/高存款租客提前迁入",
+    "h2Desc": "受益区 M13–M24 迁入者月收入与迁入前存款 P − S（种子自助法 95% CI）",
+    "h3Title": "H3 · LLM 房东是否过度让步",
+    "h3Desc": "N 情景对比规则基线 R：紧俏期不涨价比例 & 还价接受率",
+    "biasTitle": "偏差 B · 无冲击基线偏移",
+    "qualityTitle": "运行质量门槛（Fallback < 2%）",
+    "supported": "通过（SUPPORTED）",
+    "directional": "方向一致（CI 含 0）",
+    "notSupported": "未通过（NOT SUPPORTED）",
+    "overConcessive": "过度让步（OVER-CONCESSIVE）",
+    "notOverConcessive": "未过度让步",
+    "pass": "通过",
+    "caveat": "需加注偏差说明"
+  },
+  "legend": {
+    "title": "图例与编码说明",
+    "shapes": "零装饰点：240 颗地面光点 = 240 间真实房源（外环整租 / 空心空置）；40 颗悬浮棱晶 = 40 名 LLM 房东；每颗移动光点 = 1 位真实在租户",
+    "oversample": "注：受益区 Z05（24间）/ Z11（16间）为提高统计功效而过度抽样，视觉更密不代表现实房源更多。",
+    "schematic": "区内房间位置为向日葵示意排布，非真实小区坐标。",
+    "hypothetical": "东向快线为研究假想线路（规划/开通）。",
+    "rentScale": "租金较 M1 变化（指数点）"
+  },
+  "footer": {
+    "illustrative": "示意数据，非正式实验结果",
+    "schematic": "区内位置为示意",
+    "hypothetical": "东向快线为假想线路",
+    "medianSeed": "中位种子 #{seed}（M24 P−S = {val}）",
+    "source": "数据源：{src}",
+    "shortcuts": "快捷键：Space 播放 · ←→ 切章/月 · 1/2/3 N/S/P · D 分屏 · H 隐藏界面 · F 全屏"
+  },
+  "export": {
+    "png4k": "导出 4K PNG",
+    "pngScreen": "当前截屏",
+    "record": "录制视频",
+    "stopRecord": "停止录制",
+    "recording": "录制中…",
+    "quality0": "画质：全特效 3D",
+    "quality1": "画质：轻量 3D（降级档 1）",
+    "quality2": "画质：2D 俯视（降级档 2）",
+    "autoDegraded": "检测到帧率低于 30 fps，已自动降级以保持流畅（点击可切回）"
+  },
+  "split": {
+    "leftLabel": "S · 突然开通（无公告）",
+    "rightLabel": "P · 提前公告（M13 知情）",
+    "dragTip": "拖动中间分隔线对比",
+    "exit": "退出分屏",
+    "toDiff": "切换差值视图 (P − S)",
+    "toSplit": "切换卷帘对比 (S | P)"
+  },
+  "roomKinds": {
+    "低价房": "低价房",
+    "便宜单间": "便宜单间",
+    "合租单间": "合租单间",
+    "整租": "整租"
+  },
+  "landlordKinds": {
+    "个人房东": "个人房东",
+    "托管机构": "托管机构",
+    "怕空置": "怕空置",
+    "愿意等": "愿意等"
+  }
+}

@@ -1,0 +1,272 @@
+/* Self-contained offline urban cockpit stylesheet (zero external CDN requests) */
+:root {
+  --bg: #182334;
+  --bg-radial: #243449;
+  --panel: rgba(15, 22, 34, 0.74);
+  --panel-solid: #101826;
+  --line: #2C3E57;
+  --text: #E6ECF5;
+  --sub: #7D8AA3;
+  --cool: #5FB4FF;
+  --announce: #FFB02E;
+  --p: #FF6B57;
+  --s: #4EA8FF;
+  --n: #8A94A8;
+  --up: #FF8A6B;
+  --down: #6BD3A0;
+  --inc-low: #2DD4BF;
+  --inc-mid: #A78BFA;
+  --inc-high: #F472B6;
+  --font-sans: "Source Han Sans SC", "Noto Sans CJK SC", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-mono: "JetBrains Mono", "Barlow", "DIN Alternate", "SF Mono", Menlo, Consolas, monospace;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body, #root {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: radial-gradient(ellipse at 54% 52%, var(--bg-radial) 0%, var(--bg) 68%);
+  color: var(--text);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  user-select: none;
+}
+
+.mono {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+}
+
+/* HUD Glass Panel */
+.hud-panel {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  border-radius: 4px;
+  position: relative;
+  pointer-events: auto;
+  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.35);
+}
+
+.hud-panel::before {
+  content: "";
+  position: absolute;
+  left: -1px;
+  top: -1px;
+  width: 28px;
+  height: 2px;
+  background: var(--cool);
+  box-shadow: 0 0 8px rgba(95, 180, 255, 0.6);
+}
+
+.hud-panel.amber::before {
+  background: var(--announce);
+  box-shadow: 0 0 8px rgba(255, 176, 46, 0.6);
+}
+
+.panel-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  margin-bottom: 10px;
+}
+
+.panel-header small {
+  font-size: 10px;
+  color: var(--sub);
+  font-weight: 400;
+}
+
+/* Pill buttons */
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  white-space: nowrap;
+  border: 1px solid var(--line);
+  background: rgba(16, 24, 38, 0.84);
+  backdrop-filter: blur(6px);
+  border-radius: 16px;
+  padding: 5px 12px;
+  font-size: 12px;
+  cursor: pointer;
+  color: var(--sub);
+  transition: all 0.2s ease;
+  pointer-events: auto;
+}
+
+.chip:hover {
+  border-color: #3d5680;
+  color: var(--text);
+}
+
+.chip .dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--sub);
+  transition: all 0.2s ease;
+}
+
+.chip.on {
+  color: var(--text);
+  border-color: #3b5277;
+}
+
+.chip.on .dot {
+  background: var(--cool);
+  box-shadow: 0 0 6px var(--cool);
+}
+
+.chip.on.amber .dot {
+  background: var(--announce);
+  box-shadow: 0 0 6px var(--announce);
+}
+
+/* Action buttons */
+.btn-hud {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  border: 1px solid var(--line);
+  background: rgba(17, 26, 43, 0.9);
+  color: var(--text);
+  border-radius: 4px;
+  padding: 4px 10px;
+  font-size: 11px;
+  cursor: pointer;
+  transition: border-color 0.15s, background 0.15s;
+  pointer-events: auto;
+}
+
+.btn-hud:hover {
+  border-color: #496794;
+  background: rgba(27, 42, 68, 0.95);
+}
+
+.btn-hud.active {
+  border-color: var(--cool);
+  background: rgba(95, 180, 255, 0.16);
+  color: #fff;
+}
+
+.btn-hud.amber-active {
+  border-color: var(--announce);
+  background: rgba(255, 176, 46, 0.18);
+  color: var(--announce);
+}
+
+/* Scrollbar styling for reason feed & cards */
+.hud-scroll {
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: #2b3f60 transparent;
+}
+
+.hud-scroll::-webkit-scrollbar {
+  width: 4px;
+}
+
+.hud-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.hud-scroll::-webkit-scrollbar-thumb {
+  background: #2b3f60;
+  border-radius: 2px;
+}
+
+/* Keyword highlight in landlord reasons */
+.kw-mark {
+  background: rgba(255, 176, 46, 0.12);
+  color: var(--announce);
+  border-bottom: 1px solid var(--announce);
+  padding: 0 2px;
+  border-radius: 2px;
+}
+
+/* Feed card entry animation */
+@keyframes slideInFeed {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.feed-item {
+  animation: slideInFeed 0.35s ease both;
+}
+
+/* Export mode hides cursor */
+body.export-mode {
+  cursor: none !important;
+}
+
+/* 3D Zone Labels */
+.zone-label-3d {
+  pointer-events: auto;
+  cursor: pointer;
+  white-space: nowrap;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transform: translate(-50%, -100%);
+  transition: opacity 0.25s ease;
+}
+
+.zone-label-3d .z-name {
+  font-size: 11px;
+  font-weight: 600;
+  color: #d0dcf0;
+  text-shadow: 0 1px 4px #0b111c, 0 0 8px #0b111c;
+  letter-spacing: 0.03em;
+}
+
+.zone-label-3d.treated .z-name {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--announce);
+  text-shadow: 0 0 10px rgba(255, 176, 46, 0.45), 0 1px 4px #0b111c;
+}
+
+.zone-label-3d .z-val {
+  font-size: 10px;
+  font-family: var(--font-mono);
+  color: #9ab0cf;
+  background: rgba(11, 17, 28, 0.72);
+  border: 1px solid rgba(36, 50, 74, 0.75);
+  border-radius: 3px;
+  padding: 1px 5px;
+  margin-top: 2px;
+}
+
+.zone-label-3d.treated .z-val {
+  color: #ffd588;
+  border-color: rgba(255, 176, 46, 0.45);
+}
+
+.zone-label-3d .z-pin {
+  width: 1px;
+  height: 10px;
+  background: linear-gradient(to bottom, rgba(95, 180, 255, 0.55), transparent);
+}
+
+.zone-label-3d.treated .z-pin {
+  height: 14px;
+  background: linear-gradient(to bottom, rgba(255, 176, 46, 0.85), transparent);
+}

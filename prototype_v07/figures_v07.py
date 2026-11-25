@@ -20,7 +20,20 @@ from typing import Dict, List, Optional
 
 from .analyze_v07 import PAIRED_ROWS, _load_monthly, _paired_seeds, ci95
 
-SC_STYLE = {"N": ("#7f7f7f", "N 无新线"), "S": ("#1f77b4", "S 突然开通"), "P": ("#d62728", "P 提前公告")}
+TOKENS_PATH = Path(__file__).resolve().parent.parent / "tokens.json"
+
+
+def load_tokens(theme: str = "light") -> Dict:
+    data = json.loads(TOKENS_PATH.read_text(encoding="utf-8"))
+    return data[theme]
+
+
+TOKENS_LIGHT = load_tokens("light")
+SC_STYLE = {
+    "N": (TOKENS_LIGHT["scenarios"]["N"], "N 无新线"),
+    "S": (TOKENS_LIGHT["scenarios"]["S"], "S 突然开通"),
+    "P": (TOKENS_LIGHT["scenarios"]["P"], "P 提前公告"),
+}
 ANNOUNCE_M, OPEN_M = 13, 25
 
 
@@ -29,21 +42,29 @@ def _plt():
     matplotlib.use("Agg")
     import matplotlib.pyplot as plt
     from matplotlib import font_manager
-    for name in ("PingFang SC", "Heiti SC", "STHeiti", "Songti SC", "Noto Sans CJK SC", "SimHei", "Microsoft YaHei"):
+    for name in ("Source Han Sans SC", "Noto Sans CJK SC", "PingFang SC", "Heiti SC", "STHeiti", "Songti SC", "SimHei", "Microsoft YaHei"):
         if any(name in f.name for f in font_manager.fontManager.ttflist):
             plt.rcParams["font.sans-serif"] = [name, "DejaVu Sans"]
             break
     plt.rcParams["axes.unicode_minus"] = False
     plt.rcParams["figure.dpi"] = 150
+    plt.rcParams["figure.facecolor"] = TOKENS_LIGHT["bg"]
+    plt.rcParams["axes.facecolor"] = TOKENS_LIGHT["bg"]
+    plt.rcParams["axes.edgecolor"] = TOKENS_LIGHT["line"]
+    plt.rcParams["axes.labelcolor"] = TOKENS_LIGHT["text"]
+    plt.rcParams["xtick.color"] = TOKENS_LIGHT["sub"]
+    plt.rcParams["ytick.color"] = TOKENS_LIGHT["sub"]
+    plt.rcParams["text.color"] = TOKENS_LIGHT["text"]
     return plt
 
 
 def _marks(ax) -> None:
-    ax.axvline(ANNOUNCE_M - 0.5, color="#d62728", ls=":", lw=1)
-    ax.axvline(OPEN_M - 0.5, color="black", ls="--", lw=1)
+    ann_c = TOKENS_LIGHT["announce"]
+    ax.axvline(ANNOUNCE_M - 0.5, color=ann_c, ls=":", lw=1.2)
+    ax.axvline(OPEN_M - 0.5, color=TOKENS_LIGHT["text"], ls="--", lw=1)
     tr = ax.get_xaxis_transform()  # x in data, y in axes fraction: labels sit just above the plot area
-    ax.text(ANNOUNCE_M - 0.5, 1.01, "公告（仅 P）", transform=tr, ha="center", va="bottom", fontsize=8, color="#d62728")
-    ax.text(OPEN_M - 0.5, 1.01, "开通（S、P）", transform=tr, ha="center", va="bottom", fontsize=8)
+    ax.text(ANNOUNCE_M - 0.5, 1.01, "公告（仅 P）", transform=tr, ha="center", va="bottom", fontsize=8, color=ann_c)
+    ax.text(OPEN_M - 0.5, 1.01, "开通（S、P）", transform=tr, ha="center", va="bottom", fontsize=8, color=TOKENS_LIGHT["text"])
 
 
 def _band(plt, mon, seeds, key, scale, ylabel, title, path, group) -> None:
@@ -73,7 +94,7 @@ def _band(plt, mon, seeds, key, scale, ylabel, title, path, group) -> None:
 def _paired_forest(plt, mon, summ, seeds, path, group) -> None:
     fig, ax = plt.subplots(figsize=(7.5, 0.55 * len(PAIRED_ROWS) + 1.2))
     offs = {"S-N": -0.22, "P-N": 0.0, "P-S": 0.22}
-    cols = {"S-N": "#1f77b4", "P-N": "#9467bd", "P-S": "#d62728"}
+    cols = TOKENS_LIGHT["diffs"]
     labels = []
     for i, (label, kind, key, months, scale) in enumerate(PAIRED_ROWS):
         labels.append(label)
@@ -121,8 +142,8 @@ def _quotes(plt, runs: Path, group: str, seeds: List[int], path) -> bool:
         h = [ci95(by[sc][m])[1] for m in ms]
         c, lab = SC_STYLE[sc]
         ax.errorbar(ms, mean, yerr=h, fmt="o-", ms=3, lw=1, capsize=2, color=c, label=lab)
-    ax.axhline(0, color="black", lw=0.6)
-    ax.axvspan(ANNOUNCE_M - 0.5, OPEN_M - 0.5, color="#d62728", alpha=0.06)
+    ax.axhline(0, color=TOKENS_LIGHT["text"], lw=0.6)
+    ax.axvspan(ANNOUNCE_M - 0.5, OPEN_M - 0.5, color=TOKENS_LIGHT["announce"], alpha=0.09)
     ax.set_xlabel("月份（阴影 = H1 检验窗口，第 13–24 月）")
     ax.set_ylabel("报价变动（%）")
     ax.set_title(f"受益区房东报价变动，P 对 S（{group} 组；误差线为报价层面 95% CI，未聚类）", fontsize=9, pad=16)
@@ -176,7 +197,7 @@ def _burden(plt, summ, seeds, path, group) -> bool:
             if n >= 30:
                 xs.append(i + (j - 1) * w)
                 ys.append(sv / n * 100)
-        ax.bar(xs, ys, width=w, label=gl, color=("#d62728", "#ff7f0e", "#2ca02c")[j], alpha=0.8)
+        ax.bar(xs, ys, width=w, label=gl, color=TOKENS_LIGHT["incomeGroups"][g], alpha=0.85)
     ax.set_xticks(range(len(kinds)))
     ax.set_xticklabels(kinds)
     ax.set_ylabel("租金 / 收入（%）")

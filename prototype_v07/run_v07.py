@@ -16,7 +16,7 @@ from pathlib import Path
 import time
 from typing import Dict, List, Tuple
 
-from .agents.llm import DiskCache, LLMLandlord, LLMTenant, MockLLMBackend, OpenAICompatBackend
+from .agents.llm import CacheOnlyBackend, DiskCache, LLMLandlord, LLMTenant, MockLLMBackend, OpenAICompatBackend
 from .agents.rule import RuleLandlord, RuleTenant
 from .lease_day_v07 import Config, GameV07
 
@@ -26,7 +26,12 @@ def _make_policies(group: str, backend_kind: str, cache_path: str):
     backend = None
     if group in ("L", "M"):
         cache = DiskCache(cache_path)
-        backend = MockLLMBackend() if backend_kind == "mock" else OpenAICompatBackend()
+        if backend_kind == "mock":
+            backend = MockLLMBackend()
+        elif backend_kind == "cache_only":
+            backend = CacheOnlyBackend(cache_path)
+        else:
+            backend = OpenAICompatBackend()
     if group == "R":
         return RuleLandlord(), RuleTenant(), None
     if group == "M":
@@ -48,8 +53,8 @@ def _run_branch(snap, group: str, sc: str, seed: int, out_dir: str, backend_kind
             cache.close()
 
 
-def run_seed_bundle(args: Tuple[str, int, List[str], str, str, str, bool, bool, int, bool]) -> List[Dict]:
-    group, seed, scenarios, out_dir, backend_kind, cache_path, shared_warmup, log_decisions, months, par_branches = args
+def run_seed_bundle(args: Tuple[str, int, List[str], str, str, str, bool, bool, int, bool, bool]) -> List[Dict]:
+    group, seed, scenarios, out_dir, backend_kind, cache_path, shared_warmup, log_decisions, months, par_branches, dump_room_states = args
     ll_pol, t_pol, cache = _make_policies(group, backend_kind, cache_path)
     results = []
     try:
@@ -57,7 +62,8 @@ def run_seed_bundle(args: Tuple[str, int, List[str], str, str, str, bool, bool, 
             # Non-deterministic backends: S must replay N's cached answers for months 13-24 (identical prompts), so S
             # starts only after N has finished. P's prompts carry the announcement from month 13 and never collide
             # with N's, so N and P run concurrently. Pre-opening S == N then holds by construction via the cache.
-            warm_cfg = Config(scenario="N", seed=seed, months=months, log_dir=None, record_decisions=log_decisions)
+            warm_cfg = Config(scenario="N", seed=seed, months=months, log_dir=None, record_decisions=log_decisions,
+                              dump_room_states=dump_room_states)
             warm_game = GameV07(warm_cfg, landlord_policy=ll_pol, tenant_policy=t_pol)
             warm_game.run_until(warm_cfg.announce_month)
             snap = warm_game.export_snapshot()
@@ -79,6 +85,7 @@ def run_seed_bundle(args: Tuple[str, int, List[str], str, str, str, bool, bool, 
                 months=months,
                 log_dir=None,
                 record_decisions=log_decisions,
+                dump_room_states=dump_room_states,
             )
             warm_game = GameV07(warm_cfg, landlord_policy=ll_pol, tenant_policy=t_pol)
             warm_game.run_until(warm_cfg.announce_month)
@@ -97,6 +104,7 @@ def run_seed_bundle(args: Tuple[str, int, List[str], str, str, str, bool, bool, 
                     months=months,
                     log_dir=run_dir,
                     record_decisions=log_decisions,
+                    dump_room_states=dump_room_states,
                 )
                 g = GameV07(cfg, landlord_policy=ll_pol, tenant_policy=t_pol)
                 results.append(g.run())
@@ -111,26 +119,29 @@ def main() -> None:
     ap.add_argument("--group", choices=["R", "L", "M"], default="R")
     ap.add_argument("--scenarios", nargs="+", default=["N", "S", "P"], choices=["N", "S", "P"])
     ap.add_argument("--seeds", type=int, default=5, help="Number of paired seeds (0..seeds-1)")
+    ap.add_argument("--seed-list", type=int, nargs="+", default=None, help="Explicit seeds (overrides --seeds)")
     ap.add_argument("--months", type=int, default=36)
     ap.add_argument("--workers", type=int, default=None, help="Parallel seed processes (default: 1 for --live L/M, else 4)")
     ap.add_argument("--mock", action="store_true", help="Use offline MockLLMBackend for L/M")
     ap.add_argument("--live", action="store_true", help="Use live OpenAI-compatible API from .env")
+    ap.add_argument("--cache-only", action="store_true", help="Replay strictly from SQLite cache (0 API calls)")
     ap.add_argument("--no-shared-warmup", action="store_true", help="Disable shared M1-M12 snapshot fork")
     ap.add_argument("--no-decision-log", action="store_true", help="Skip decisions.jsonl to save disk on 100-seed R runs")
+    ap.add_argument("--dump-room-states", action="store_true", help="Write per-month room_states.jsonl (read-only viz snapshot)")
     ap.add_argument("--parallel-branches", action="store_true",
                     help="After the shared warm-up run N and P concurrently, then S (S replays N's cache up to opening)")
     ap.add_argument("--out", type=str, default="rental_game/runs")
     ap.add_argument("--cache", type=str, default="rental_game/runs/llm_cache.sqlite")
     args = ap.parse_args()
 
-    backend_kind = "live" if args.live else "mock"
+    backend_kind = "cache_only" if args.cache_only else ("live" if args.live else "mock")
     shared = not args.no_shared_warmup
     log_dec = not args.no_decision_log
     t0 = time.time()
 
     jobs = [
-        (args.group, s, args.scenarios, args.out, backend_kind, args.cache, shared, log_dec, args.months, args.parallel_branches)
-        for s in range(args.seeds)
+        (args.group, s, args.scenarios, args.out, backend_kind, args.cache, shared, log_dec, args.months, args.parallel_branches, args.dump_room_states)
+        for s in (args.seed_list if args.seed_list else range(args.seeds))
     ]
 
     if args.group in ("L", "M"):
@@ -147,7 +158,7 @@ def main() -> None:
         nested = [run_seed_bundle(j) for j in jobs]
 
     flat = [r for sub in nested for r in sub]
-    print(f"Completed {len(flat)} runs (group={args.group}, scenarios={args.scenarios}, seeds=0..{args.seeds - 1}) in {time.time() - t0:.1f}s")
+    print(f"Completed {len(flat)} runs (group={args.group}, scenarios={args.scenarios}, seeds={[j[1] for j in jobs]}) in {time.time() - t0:.1f}s")
     for sc in args.scenarios:
         sub = [r for r in flat if r["scenario"] == sc]
         avg_m24 = sum(r["rent_tr_m24"] for r in sub) / len(sub)

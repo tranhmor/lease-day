@@ -1,0 +1,148 @@
+{
+  "group": "L",
+  "seeds": [
+    0,
+    1,
+    2
+  ],
+  "criteria": {
+    "H1": "Treated-zone landlord quotes (renewal_offer + price_vacant), M13-M24, y = (new-cur)/cur on [1, is_P, zone_vacancy_smooth]; seed-clustered SE (CR1), CI uses t(G-1). SUPPORTED if b_P > 0 and the 95% CI excludes 0. Also reported: per-seed b_P signs (k of G > 0) and P-S treated rent index at M24 (auxiliary, paired over seeds).",
+    "H2": "Treated-zone move-ins M13-M24: P-S difference in mean income and in mean pre-move cash, seed bootstrap (resample seeds, 2,000 draws, fixed RNG). SUPPORTED if both differences > 0 with CIs excluding 0; DIRECTIONAL if both point estimates > 0 only. Low power (~90 move-ins per scenario over 5 seeds) is stated.",
+    "H3": "N scenario, L vs R baseline: (a) share of renewal quotes with no hike (<= +0.05%) when zone vacancy < 4%; (b) counter-offer accept rate. OVER-CONCESSIVE if (a) or (b) exceeds R by > 20 pp, or (b) > 98%. Either result is reported.",
+    "quality": "Each run: fallback rate < 2%, otherwise the run is void and must be rerun before analysis.",
+    "B": "L-N minus R-N, month 36, same seeds: rent_index_all, rent_index_treated, vacancy_all, commute_all. If |mean rent-index gap| > 3 points, every P-S conclusion carries a bias caveat.",
+    "crosscheck": "One paired seed run with a cloud model: H1 b_P sign vs the local model on the SAME seed. ROBUST if same sign, MODEL-DEPENDENT if opposite (reported as such); pooled local b_P also shown."
+  },
+  "results": {
+    "quality": {
+      "max_fallback_rate": 0.0,
+      "void_runs": {},
+      "verdict": "PASS"
+    },
+    "H1": {
+      "n_offers": 345,
+      "per_seed_b_P_pct": {
+        "0": 0.992,
+        "1": 0.833,
+        "2": 1.529
+      },
+      "seeds_positive": "3/3",
+      "b_P_pct": 1.075,
+      "ci95_pct": [
+        0.246,
+        1.903
+      ],
+      "b_vacancy": -0.0889,
+      "clusters": 3,
+      "aux_P_minus_S_rent_index_M24": "+1.42 ± 0.62",
+      "verdict": "SUPPORTED"
+    },
+    "H2": {
+      "income": {
+        "P_minus_S": -637.1,
+        "ci95": [
+          -3856.7,
+          4402.8
+        ]
+      },
+      "cash": {
+        "P_minus_S": -4196.1,
+        "ci95": [
+          -21507.0,
+          15653.6
+        ]
+      },
+      "n_move_ins": {
+        "P": 44,
+        "S": 48
+      },
+      "verdict": "NOT SUPPORTED"
+    },
+    "B": {
+      "diff_mean_ci95": {
+        "rent_index_all": [
+          3.446,
+          1.098
+        ],
+        "rent_index_treated": [
+          -0.039,
+          1.254
+        ],
+        "vacancy_all": [
+          -0.008,
+          0.012
+        ],
+        "commute_all": [
+          1.323,
+          0.694
+        ]
+      },
+      "verdict": "CAVEAT REQUIRED (rent gap > 3 pts)"
+    },
+    "H3": {
+      "L_no_hike_when_tight": 0.322,
+      "L_counter_accept": 0.812,
+      "n_tight_quotes": 677,
+      "n_counters": 32,
+      "R_no_hike_when_tight": 0.401,
+      "R_counter_accept": 0.951,
+      "baseline_seeds": [
+        0,
+        1,
+        2
+      ],
+      "verdict": "NOT OVER-CONCESSIVE"
+    },
+    "exploratory_persona": {
+      "label": "EXPLORATORY (not pre-registered)",
+      "persona_mix_by_seed": {
+        "0": {
+          "treated_n": 7,
+          "treated_risk_怕空置": 1,
+          "treated_kind_托管机构": 3,
+          "all_risk_怕空置": 21,
+          "all_kind_托管机构": 8,
+          "all_n": 40
+        },
+        "1": {
+          "treated_n": 7,
+          "treated_risk_怕空置": 5,
+          "treated_kind_托管机构": 1,
+          "all_risk_怕空置": 23,
+          "all_kind_托管机构": 15,
+          "all_n": 40
+        },
+        "2": {
+          "treated_n": 7,
+          "treated_risk_怕空置": 4,
+          "treated_kind_托管机构": 1,
+          "all_risk_怕空置": 18,
+          "all_kind_托管机构": 12,
+          "all_n": 40
+        }
+      },
+      "treated_quote_change_by_persona": {
+        "kind=个人房东": {
+          "P_minus_S_pct": 1.148,
+          "n_P": 121,
+          "n_S": 139
+        },
+        "kind=托管机构": {
+          "P_minus_S_pct": 1.198,
+          "n_P": 42,
+          "n_S": 43
+        },
+        "risk=怕空置": {
+          "P_minus_S_pct": 1.511,
+          "n_P": 76,
+          "n_S": 82
+        },
+        "risk=愿意等": {
+          "P_minus_S_pct": 0.86,
+          "n_P": 87,
+          "n_S": 100
+        }
+      }
+    }
+  }
+}

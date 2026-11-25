@@ -237,6 +237,29 @@ class OpenAICompatBackend(LLMBackend):
         return content, tokens
 
 
+class CacheOnlyBackend(LLMBackend):
+    """Offline backend that strictly serves from DiskCache (auto-detects model from SQLite if omitted).
+
+    Raises RuntimeError on any cache miss so replaying completed runs with --dump-room-states guarantees 0 API calls.
+    """
+
+    def __init__(self, cache_path: str, model: Optional[str] = None, temperature: float = 0.0):
+        if model is None:
+            conn = sqlite3.connect(str(cache_path), timeout=10.0)
+            try:
+                rows = conn.execute("SELECT model, COUNT(*) FROM llm_cache GROUP BY model ORDER BY COUNT(*) DESC").fetchall()
+            finally:
+                conn.close()
+            if not rows:
+                raise RuntimeError(f"CacheOnlyBackend: no cached entries found in {cache_path}")
+            model = rows[0][0]
+        self.model = model
+        self.temperature = temperature
+
+    def complete(self, system_prompt: str, user_prompt: str) -> Tuple[str, int]:
+        raise RuntimeError(f"CacheOnlyBackend cache miss for model={self.model!r} (refusing live API call)")
+
+
 class MockLLMBackend(LLMBackend):
     """Deterministic offline mock backend that exhibits realistic announcement-anticipation behavior.
 
