@@ -25,11 +25,12 @@ export function LayerChips({ layers, lang, onToggle }: LayerChipsProps) {
     <div
       style={{
         display: 'flex',
-        flexWrap: 'wrap',
+        flexWrap: 'nowrap',
         justifyContent: 'center',
-        gap: 6,
+        gap: 16,
         pointerEvents: 'none',
         flexShrink: 0,
+        overflow: 'hidden',
       }}
     >
       {CHIP_ORDER.map(({ key, amber }) => (

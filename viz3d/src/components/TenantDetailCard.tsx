@@ -83,9 +83,9 @@ export function TenantDetailCard({
           style={{
             padding: '3px 9px',
             borderRadius: 4,
-            background: `color-mix(in srgb, ${GROUP_COLORS[group]} 13%, transparent)`,
+            background: `${GROUP_COLORS[group]}22`,
             color: GROUP_COLORS[group],
-            border: `1px solid color-mix(in srgb, ${GROUP_COLORS[group]} 40%, transparent)`,
+            border: `1px solid ${GROUP_COLORS[group]}66`,
             fontWeight: 600,
           }}
         >
@@ -111,7 +111,7 @@ export function TenantDetailCard({
               key={idx}
               style={{
                 padding: '10px 11px',
-                background: 'var(--panel-inset)',
+                background: 'var(--inset)',
                 border: '1px solid var(--line)',
                 borderRadius: 4,
                 fontSize: 12,
@@ -141,7 +141,7 @@ export function TenantDetailCard({
                           onClick={() => c.room_id !== undefined && onSelectRoom(c.room_id)}
                           style={{
                             border: `1px solid ${applied ? 'var(--announce)' : 'var(--line)'}`,
-                            background: applied ? 'color-mix(in srgb, var(--announce) 16%, transparent)' : 'var(--panel-inset-2)',
+                            background: applied ? 'color-mix(in srgb, var(--announce) 16%, transparent)' : 'var(--inset)',
                             color: applied ? 'var(--announce)' : 'var(--sub)',
                             borderRadius: 3,
                             padding: '2px 6px',

@@ -87,15 +87,15 @@ interface VerdictOverlayProps {
 }
 
 function badgeColor(v?: string): { bg: string; border: string; text: string } {
-  if (!v) return { bg: 'color-mix(in srgb, var(--sub) 16%, transparent)', border: 'var(--tick)', text: 'var(--sub-2)' };
+  if (!v) return { bg: 'var(--line-soft)', border: 'var(--tick)', text: 'var(--sub)' };
   const u = v.toUpperCase();
   if (u.startsWith('SUPPORTED') || u === 'PASS' || u === 'OK' || u.startsWith('NOT OVER')) {
-    return { bg: 'color-mix(in srgb, var(--down) 16%, transparent)', border: 'var(--down)', text: 'var(--down)' };
+    return { bg: 'color-mix(in srgb, var(--cool) 16%, transparent)', border: 'var(--down)', text: 'var(--down)' };
   }
   if (u.startsWith('DIRECTIONAL') || u.startsWith('CAVEAT')) {
-    return { bg: 'color-mix(in srgb, var(--announce) 16%, transparent)', border: 'var(--announce)', text: 'var(--announce)' };
+    return { bg: 'color-mix(in srgb, var(--announce) 16%, transparent)', border: 'var(--up)', text: 'var(--up)' };
   }
-  return { bg: 'color-mix(in srgb, var(--p) 16%, transparent)', border: 'var(--p)', text: 'var(--up)' };
+  return { bg: 'color-mix(in srgb, var(--announce) 16%, transparent)', border: 'var(--up)', text: 'var(--up)' };
 }
 
 /**
@@ -137,7 +137,7 @@ export function VerdictOverlay({ verdicts, lang }: VerdictOverlayProps) {
 
       <div style={{ display: 'flex', flexDirection: 'column', gap: 9 }}>
         {/* H1 */}
-        <div style={{ padding: '10px 12px', background: 'var(--panel-inset)', border: '1px solid var(--line)', borderRadius: 4 }}>
+        <div style={{ padding: '10px 12px', background: 'var(--inset)', border: '1px solid var(--line)', borderRadius: 4 }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 8 }}>
             <span style={{ fontWeight: 600, fontSize: 13 }}>{t.verdicts.h1Title}</span>
             <span
@@ -164,7 +164,7 @@ export function VerdictOverlay({ verdicts, lang }: VerdictOverlayProps) {
         </div>
 
         {/* H2 */}
-        <div style={{ padding: '10px 12px', background: 'var(--panel-inset)', border: '1px solid var(--line)', borderRadius: 4 }}>
+        <div style={{ padding: '10px 12px', background: 'var(--inset)', border: '1px solid var(--line)', borderRadius: 4 }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 8 }}>
             <span style={{ fontWeight: 600, fontSize: 13 }}>{t.verdicts.h2Title}</span>
             <span
@@ -193,7 +193,7 @@ export function VerdictOverlay({ verdicts, lang }: VerdictOverlayProps) {
         </div>
 
         {/* H3 */}
-        <div style={{ padding: '10px 12px', background: 'var(--panel-inset)', border: '1px solid var(--line)', borderRadius: 4 }}>
+        <div style={{ padding: '10px 12px', background: 'var(--inset)', border: '1px solid var(--line)', borderRadius: 4 }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 8 }}>
             <span style={{ fontWeight: 600, fontSize: 13 }}>{t.verdicts.h3Title}</span>
             <span
@@ -223,13 +223,13 @@ export function VerdictOverlay({ verdicts, lang }: VerdictOverlayProps) {
 
         {/* Bias B & Quality Gate Row */}
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8 }}>
-          <div style={{ padding: '8px 10px', background: 'var(--panel-inset-2)', border: '1px solid var(--line)', borderRadius: 4 }}>
+          <div style={{ padding: '8px 10px', background: 'var(--inset)', border: '1px solid var(--line)', borderRadius: 4 }}>
             <div style={{ fontSize: 10.5, color: 'var(--sub)' }}>{t.verdicts.biasTitle}</div>
             <div className="mono" style={{ fontSize: 11, marginTop: 4, color: bStyle.text }}>
               {r.B?.verdict ?? 'N/A'}
             </div>
           </div>
-          <div style={{ padding: '8px 10px', background: 'var(--panel-inset-2)', border: '1px solid var(--line)', borderRadius: 4 }}>
+          <div style={{ padding: '8px 10px', background: 'var(--inset)', border: '1px solid var(--line)', borderRadius: 4 }}>
             <div style={{ fontSize: 10.5, color: 'var(--sub)' }}>{t.verdicts.qualityTitle}</div>
             <div className="mono" style={{ fontSize: 11, marginTop: 4, color: qStyle.text }}>
               {r.quality ? `${r.quality.verdict} (max ${(r.quality.max_fallback_rate * 100).toFixed(2)}%)` : 'N/A'}

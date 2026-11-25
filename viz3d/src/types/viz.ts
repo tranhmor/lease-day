@@ -3,6 +3,7 @@ export type Lang = 'zh' | 'en';
 export type AppMode = 'presentation' | 'explore' | 'export';
 export type ViewMode = 'single' | 'split' | 'diff';
 export type VisualStyle = 'constellation' | 'terrain';
+export type RoomShape = 'disc' | 'bar';
 export type QualityTier = 0 | 1 | 2; // 0 = Full 3D+Bloom, 1 = 3D Light (no bloom/fog, half particles), 2 = 2D Fallback
 export type IncomeGroup = 'low' | 'mid' | 'high';
 export type RoomKind = '低价房' | '便宜单间' | '合租单间' | '整租';

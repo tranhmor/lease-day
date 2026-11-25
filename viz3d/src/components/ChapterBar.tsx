@@ -24,71 +24,69 @@ export function ChapterBar({ mode, chapterIndex, lang, onSelectChapter, onExitPr
           inset: 0,
           display: 'flex',
           flexDirection: 'column',
-          alignItems: 'center',
+          alignItems: 'flex-start',
           justifyContent: 'center',
+          paddingLeft: '8vw',
           pointerEvents: 'none',
           zIndex: 35,
-          background: 'radial-gradient(ellipse at center, var(--veil-soft) 0%, var(--veil) 100%)',
+          background: 'linear-gradient(90deg, var(--veil) 0%, var(--veil-mid) 48%, var(--veil-0) 100%)',
         }}
       >
-        <div
-          style={{
-            fontSize: 13,
-            letterSpacing: '0.35em',
-            color: 'var(--announce)',
-            fontWeight: 600,
-            marginBottom: 14,
-          }}
-        >
-          BEIJING · LEASE DAY v0.7
-        </div>
-        <h1
-          style={{
-            fontSize: 'clamp(36px, 5vw, 66px)',
-            fontWeight: 200,
-            letterSpacing: '0.06em',
-            textAlign: 'center',
-            textShadow: 'var(--hero-shadow)',
-          }}
-        >
-          {lang === 'zh' ? '到期日 · 租赁市场三维回放' : 'Lease Day · 3D Rental Market Replay'}
-        </h1>
-        <p style={{ fontSize: 18, color: 'var(--text-soft)', marginTop: 14, fontWeight: 300, textAlign: 'center' }}>
-          {t.introSubtitle}
-        </p>
-        <p style={{ fontSize: 13, color: 'var(--sub)', marginTop: 28, maxWidth: 640, textAlign: 'center', lineHeight: 1.6 }}>
-          {ch.narration}
-        </p>
-        <div style={{ display: 'flex', gap: 12, marginTop: 32, pointerEvents: 'auto' }}>
-          <button
-            type="button"
-            className="btn-hud amber-active"
-            style={{ padding: '9px 22px', fontSize: 13 }}
-            onClick={() => onSelectChapter(1)}
+        <div style={{ maxWidth: 760, padding: '0 32px', textAlign: 'left' }}>
+          <div className="kicker" style={{ fontSize: 13, color: 'var(--sub)' }}>
+            {lang === 'zh' ? '北京 · LLM 多智能体租赁市场实验' : 'Beijing · an LLM multi-agent rental market experiment'}
+          </div>
+          <h1
+            className="serif"
+            style={{
+              fontSize: 'clamp(40px, 4.6vw, 68px)',
+              fontWeight: 600,
+              lineHeight: 1.15,
+              marginTop: 14,
+            }}
           >
-            {lang === 'zh' ? '开始演示（→）' : 'Start Presentation (→)'}
-          </button>
-          <button
-            type="button"
-            className="btn-hud"
-            style={{ padding: '9px 18px', fontSize: 13 }}
-            onClick={onExitPresentation}
+            {lang === 'zh' ? '一条还没开通的地铁，' : 'A metro line that has not opened yet'}
+            <br />
+            {lang === 'zh' ? '会不会先抬高房租？' : 'Does it raise rents first?'}
+          </h1>
+          <p className="serif" style={{ fontSize: 18, color: 'var(--text-soft)', marginTop: 22, lineHeight: 1.7, maxWidth: 620 }}>
+            {ch.narration}
+          </p>
+          <div
+            style={{
+              display: 'flex',
+              gap: 18,
+              marginTop: 32,
+              paddingTop: 18,
+              borderTop: '1px solid var(--line)',
+              pointerEvents: 'auto',
+              alignItems: 'center',
+            }}
           >
-            {lang === 'zh' ? '自由探索（Esc）' : 'Explore Freely (Esc)'}
-          </button>
+            <button
+              type="button"
+              className="btn-hud"
+              style={{ padding: '9px 20px', fontSize: 14, color: 'var(--on-text)', background: 'var(--text)', borderColor: 'var(--text)' }}
+              onClick={() => onSelectChapter(1)}
+            >
+              {lang === 'zh' ? '开始演示 →' : 'Start →'}
+            </button>
+            <button type="button" className="btn-hud" style={{ padding: '9px 4px', fontSize: 14, border: 'none' }} onClick={onExitPresentation}>
+              {lang === 'zh' ? '自由探索（Esc）' : 'Explore freely (Esc)'}
+            </button>
+          </div>
         </div>
       </div>
     );
   }
-
   if (mode !== 'presentation') return null;
 
   return (
     <div
-      className="hud-panel amber"
+      className="hud-panel"
       style={{
         width: '100%',
-        padding: '8px 12px',
+        padding: '10px 16px',
         display: 'flex',
         flexDirection: 'column',
         gap: 5,
@@ -101,7 +99,7 @@ export function ChapterBar({ mode, chapterIndex, lang, onSelectChapter, onExitPr
           className="btn-hud"
           disabled={chapterIndex <= 0}
           onClick={() => onSelectChapter(Math.max(0, chapterIndex - 1))}
-          style={{ padding: '2px 6px', opacity: chapterIndex <= 0 ? 0.4 : 1 }}
+          style={{ padding: '2px 6px', border: 'none', opacity: chapterIndex <= 0 ? 0.3 : 1 }}
         >
           <ChevronLeft size={13} />
         </button>
@@ -115,14 +113,15 @@ export function ChapterBar({ mode, chapterIndex, lang, onSelectChapter, onExitPr
                 type="button"
                 onClick={() => onSelectChapter(c.id)}
                 style={{
-                  border: `1px solid ${on ? 'var(--announce)' : 'var(--line)'}`,
-                  background: on ? 'color-mix(in srgb, var(--announce) 20%, transparent)' : 'var(--panel-inset-2)',
-                  color: on ? 'var(--announce)' : 'var(--sub)',
-                  borderRadius: 3,
-                  padding: '2px 7px',
-                  fontSize: 10.5,
+                  border: 'none',
+                  borderBottom: `1.5px solid ${on ? 'var(--text)' : 'transparent'}`,
+                  background: 'transparent',
+                  color: on ? 'var(--text)' : 'var(--faint)',
+                  padding: '1px 6px 3px',
+                  fontSize: 12,
                   cursor: 'pointer',
-                  fontFamily: 'var(--font-mono)',
+                  fontFamily: 'var(--font-sans)',
+                  fontVariantNumeric: 'tabular-nums',
                 }}
               >
                 {c.id}
@@ -136,15 +135,15 @@ export function ChapterBar({ mode, chapterIndex, lang, onSelectChapter, onExitPr
           className="btn-hud"
           disabled={chapterIndex >= CHAPTERS.length - 1}
           onClick={() => onSelectChapter(Math.min(CHAPTERS.length - 1, chapterIndex + 1))}
-          style={{ padding: '2px 6px', opacity: chapterIndex >= CHAPTERS.length - 1 ? 0.4 : 1 }}
+          style={{ padding: '2px 6px', border: 'none', opacity: chapterIndex >= CHAPTERS.length - 1 ? 0.3 : 1 }}
         >
           <ChevronRight size={13} />
         </button>
       </div>
 
       <div style={{ display: 'flex', alignItems: 'baseline', gap: 10 }}>
-        <span style={{ fontSize: 12, fontWeight: 600, color: 'var(--announce)', whiteSpace: 'nowrap' }}>{ch.title}</span>
-        <span style={{ fontSize: 12, color: 'var(--text-soft)', lineHeight: 1.45 }}>{ch.narration}</span>
+        <span className="serif" style={{ fontSize: 15, fontWeight: 600, color: 'var(--text)', whiteSpace: 'nowrap' }}>{ch.title}</span>
+        <span className="serif" style={{ fontSize: 14, color: 'var(--text-soft)', lineHeight: 1.55 }}>{ch.narration}</span>
       </div>
     </div>
   );

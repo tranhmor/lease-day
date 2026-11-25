@@ -8,6 +8,7 @@ import type {
   Scenario,
   ViewMode,
   VisualStyle,
+  RoomShape,
   VizDataset,
 } from '@/types/viz';
 import { computeZoneStats, loadVizDataset, readMonthRoomStates } from '@/data/loader';
@@ -46,12 +47,13 @@ function parseInitialParams() {
   const lang: Lang = sp.get('lang') === 'en' ? 'en' : 'zh';
   const styleRaw = (sp.get('style') || 'constellation').toLowerCase();
   const visualStyle: VisualStyle = styleRaw === 'terrain' ? 'terrain' : 'constellation';
+  const roomShape: RoomShape = sp.get('shape') === 'bar' ? 'bar' : 'disc';
   const split = sp.get('split') === '1';
   const diff = sp.get('diff') === '1';
   const hideHud = sp.get('hud') === '0';
   const exportW = Number(sp.get('w')) || 3840;
   const exportH = Number(sp.get('h')) || 2160;
-  return { isExport, hasExplicitMonth, month, scen, chapter, lang, visualStyle, split, diff, hideHud, exportW, exportH };
+  return { isExport, hasExplicitMonth, month, scen, chapter, lang, visualStyle, roomShape, split, diff, hideHud, exportW, exportH };
 }
 
 export function App() {
@@ -68,6 +70,7 @@ export function App() {
   const [speed, setSpeed] = useState<number>(1);
   const [viewMode, setViewMode] = useState<ViewMode>(init.split ? 'split' : init.diff ? 'diff' : 'single');
   const [visualStyle, setVisualStyle] = useState<VisualStyle>(init.visualStyle);
+  const [roomShape, setRoomShape] = useState<RoomShape>(init.roomShape);
   const [splitRatio, setSplitRatio] = useState<number>(0.5);
   const [layers, setLayers] = useState<LayerToggles>(DEFAULT_LAYERS);
   const [qualityTier, setQualityTier] = useState<QualityTier>(0);
@@ -202,6 +205,8 @@ export function App() {
         setViewMode((vm) => (vm === 'split' ? 'single' : 'split'));
       } else if (e.key === 'v' || e.key === 'V') {
         setVisualStyle((s) => (s === 'constellation' ? 'terrain' : 'constellation'));
+      } else if (e.key === 'b' || e.key === 'B') {
+        setRoomShape((s) => (s === 'disc' ? 'bar' : 'disc'));
       } else if (e.key === 't' || e.key === 'T') {
         toggleTheme();
       } else if (e.key === 'h' || e.key === 'H') {
@@ -299,7 +304,7 @@ export function App() {
   if (!dataset || !runActive || !runP || !runS) {
     return (
       <div style={{ display: 'flex', height: '100%', alignItems: 'center', justifyContent: 'center', flexDirection: 'column', gap: 12 }}>
-        <div style={{ fontSize: 13, letterSpacing: '0.28em', color: 'var(--cool)' }}>BEIJING · LEASE DAY v0.7</div>
+        <div className="serif" style={{ fontSize: 20 }}>到期日 · Lease Day</div>
         <div style={{ fontSize: 12, color: 'var(--sub)' }}>Loading 3D urban stage & simulation telemetry…</div>
       </div>
     );
@@ -335,6 +340,7 @@ export function App() {
           month={month}
           viewMode={viewMode}
           visualStyle={visualStyle}
+          roomShape={roomShape}
           splitRatio={splitRatio}
           layers={layers}
           lang={lang}
@@ -382,9 +388,9 @@ export function App() {
         <div
           style={{
             position: 'absolute',
-            inset: '14px 18px 28px 18px',
+            inset: '16px 20px 38px 20px',
             display: 'flex',
-            gap: 14,
+            gap: 16,
             pointerEvents: 'none',
             zIndex: 22,
           }}
@@ -392,7 +398,7 @@ export function App() {
           {/* LEFT COLUMN: Clock -> Vitals -> P - S Gap */}
           <div
             style={{
-              width: 'clamp(260px, 21.5vw, 326px)',
+              width: 'clamp(260px, 20vw, 330px)',
               flexShrink: 0,
               display: 'flex',
               flexDirection: 'column',
@@ -528,7 +534,7 @@ export function App() {
           {/* RIGHT COLUMN: Scenario Tabs -> Top 6 Rank -> Landlord Reason Feed */}
           <div
             style={{
-              width: expandFeed ? 'clamp(380px, 43vw, 680px)' : 'clamp(285px, 24vw, 364px)',
+              width: expandFeed ? 'clamp(380px, 43vw, 720px)' : 'clamp(290px, 23vw, 380px)',
               flexShrink: 0,
               display: 'flex',
               flexDirection: 'column',
@@ -557,6 +563,8 @@ export function App() {
               }}
               onViewModeChange={(vm) => setViewMode(vm)}
               onVisualStyleChange={(st) => setVisualStyle(st)}
+              roomShape={roomShape}
+              onRoomShapeChange={setRoomShape}
               onToggleLang={() => setLang((l) => (l === 'zh' ? 'en' : 'zh'))}
               onCycleQuality={() => {
                 setAutoDegradedNotice(false);

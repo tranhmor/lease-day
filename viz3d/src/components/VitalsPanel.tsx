@@ -75,7 +75,7 @@ export function VitalsPanel({ current, prev, llmCalls, isIllustrative, lang, onH
       className="hud-panel"
       style={{
         width: '100%',
-        padding: '11px 14px',
+        padding: '14px 16px 12px',
         flexShrink: 0,
       }}
     >
@@ -97,7 +97,7 @@ export function VitalsPanel({ current, prev, llmCalls, isIllustrative, lang, onH
             justifyContent: 'space-between',
             alignItems: 'baseline',
             padding: '6px 4px',
-            borderBottom: '1px dashed color-mix(in srgb, var(--sub) 16%, transparent)',
+            borderBottom: '1px dashed var(--line-soft)',
             fontSize: 12,
             color: 'var(--sub)',
             cursor: 'default',
@@ -107,29 +107,32 @@ export function VitalsPanel({ current, prev, llmCalls, isIllustrative, lang, onH
         >
           <span>{r.label}</span>
           <span>
-            <b className="mono" style={{ fontSize: 21, fontWeight: 300, color: 'var(--text)' }}>
+            <b className="num" style={{ fontSize: 19, fontWeight: 500, color: 'var(--text)' }}>
               {r.value}
               {r.unit && (
-                <small style={{ fontSize: 10, color: 'var(--sub)', marginLeft: 3, fontWeight: 400 }}>{r.unit}</small>
+                <small style={{ fontSize: 11, color: 'var(--sub)', marginLeft: 3, fontWeight: 400 }}>{r.unit}</small>
               )}
             </b>
             {r.delta !== undefined && Math.abs(r.delta) >= 0.01 && (
               <span
-                className="mono"
+                className="num"
                 style={{
-                  fontSize: 10,
-                  marginLeft: 6,
+                  fontSize: 11,
+                  marginLeft: 8,
+                  display: 'inline-block',
+                  minWidth: 44,
+                  textAlign: 'right',
                   color: r.delta > 0 ? 'var(--up)' : 'var(--down)',
                 }}
               >
-                {r.delta > 0 ? '▲' : '▼'}
+                {r.delta > 0 ? '+' : '−'}
                 {Math.abs(r.delta).toFixed(2)}
               </span>
             )}
           </span>
         </div>
       ))}
-      <div style={{ fontSize: 10, color: 'var(--sub)', marginTop: 6, opacity: 0.78 }}>{t.vitals.hoverTip}</div>
+      <div style={{ fontSize: 11, color: 'var(--faint)', marginTop: 8 }}>{t.vitals.hoverTip}</div>
     </div>
   );
 }

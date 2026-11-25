@@ -98,8 +98,8 @@ export function SpatialMindCallouts({
         <group key={c.roomId}>
           {/* Ultra-thin vertical gossamer stem from room up to floating thought tag */}
           <mesh position={[c.x, c.y / 2, c.z]}>
-            <cylinderGeometry args={[0.012, 0.012, c.y, 4]} />
-            <meshBasicMaterial color={pal.announce} transparent opacity={0.65} toneMapped={false} />
+            <cylinderGeometry args={[0.008, 0.008, c.y, 4]} />
+            <meshBasicMaterial color={pal.announce} transparent opacity={0.55} />
           </mesh>
           <Html position={[c.x, c.y + 0.15, c.z]} center zIndexRange={[7, 0]}>
             <div
@@ -111,23 +111,24 @@ export function SpatialMindCallouts({
                 pointerEvents: 'auto',
                 cursor: 'pointer',
                 whiteSpace: 'nowrap',
-                background: 'var(--callout-bg)',
-                border: '1px solid var(--callout-border)',
-                borderRadius: 4,
-                padding: '3px 8px',
-                boxShadow: 'var(--callout-shadow)',
+                background: 'var(--panel-strong)',
+                borderLeft: '2px solid var(--accent)',
+                padding: '4px 9px',
+                maxWidth: 260,
+                overflow: 'hidden',
+                textOverflow: 'ellipsis',
                 transform: 'translateY(-100%)',
                 display: 'flex',
                 alignItems: 'center',
                 gap: 6,
-                fontSize: 10.5,
+                fontSize: 12,
               }}
             >
-              <span style={{ color: 'var(--announce)', fontWeight: 600 }}>{c.zoneName}</span>
-              <span className="mono" style={{ color: 'var(--zl-up)', fontSize: 10 }}>
+              <span style={{ color: 'var(--text)', fontWeight: 600 }}>{c.zoneName}</span>
+              <span className="num" style={{ color: 'var(--sub)', fontSize: 11 }}>
                 {c.deltaPct}
               </span>
-              <span style={{ color: 'var(--text)' }}>“{c.snippet}”</span>
+              <span className="serif" style={{ color: 'var(--text-soft)', overflow: 'hidden', textOverflow: 'ellipsis' }}>“{c.snippet}”</span>
             </div>
           </Html>
         </group>

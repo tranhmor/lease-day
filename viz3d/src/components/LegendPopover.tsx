@@ -40,7 +40,7 @@ export function LegendPopover({ lang, onClose }: LegendPopoverProps) {
           style={{
             height: 8,
             borderRadius: 4,
-            background: 'linear-gradient(90deg, var(--cool) 0%, var(--sub-2) 50%, var(--announce) 75%, var(--rent-max) 100%)',
+            background: 'linear-gradient(90deg, var(--rent-neg) 0%, var(--rent-zero) 50%, var(--announce) 75%, var(--rent-max) 100%)',
           }}
         />
         <div className="mono" style={{ display: 'flex', justifyContent: 'space-between', fontSize: 10, color: 'var(--sub)', marginTop: 2 }}>

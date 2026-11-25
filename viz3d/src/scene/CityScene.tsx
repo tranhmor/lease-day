@@ -13,6 +13,7 @@ import type {
   Scenario,
   ViewMode,
   VisualStyle,
+  RoomShape,
   VizDataset,
 } from '@/types/viz';
 import { computeZoneStats, readMonthRoomStates } from '@/data/loader';
@@ -20,7 +21,8 @@ import { GroundLayer } from './GroundLayer';
 import { BasemapLayer } from './BasemapLayer';
 import { MetroLayer } from './MetroLayer';
 import { EastExpressLayer } from './EastExpressLayer';
-import { RoomPillarsLayer } from './RoomPillarsLayer';
+import { RoomDiscsLayer } from './RoomDiscsLayer';
+import { RoomBarsLayer } from './RoomBarsLayer';
 import { ZoneRipplesLayer } from './ZoneRipplesLayer';
 import { CommuteParticles } from './CommuteParticles';
 import { MoveArcsLayer } from './MoveArcsLayer';
@@ -45,6 +47,7 @@ interface CitySceneProps {
   month: number;
   viewMode: ViewMode;
   visualStyle: VisualStyle;
+  roomShape: RoomShape;
   splitRatio: number; // 0.1..0.9 curtain divider for split S | P
   layers: LayerToggles;
   lang: Lang;
@@ -103,6 +106,7 @@ function InnerCityScene(props: InnerSceneProps) {
     month,
     viewMode,
     visualStyle,
+    roomShape,
     splitRatio,
     layers,
     lang,
@@ -333,6 +337,7 @@ function InnerCityScene(props: InnerSceneProps) {
   const activeOpened = scenario !== 'N' && month >= dataset.meta.event_months.open;
   const isConstellation = visualStyle === 'constellation';
   const pal = useScenePalette();
+  const RoomsLayer = roomShape === 'bar' ? RoomBarsLayer : RoomDiscsLayer;
   const isTerrain = visualStyle === 'terrain';
 
   return (
@@ -341,6 +346,7 @@ function InnerCityScene(props: InnerSceneProps) {
       {qualityTier === 0 && <fogExp2 attach="fog" args={[pal.bg, pal.isLight ? 0.009 : 0.0135]} />}
 
       <ambientLight intensity={0.85} color={pal.isLight ? '#FFFFFF' : '#B8D4F5'} />
+      {roomShape === 'bar' && <directionalLight position={[-14, 26, 18]} intensity={pal.isLight ? 0.9 : 1.1} color="#FFFFFF" />}
 
       <OrbitControls
         ref={controlsRef}
@@ -404,7 +410,7 @@ function InnerCityScene(props: InnerSceneProps) {
               visible={isConstellation}
               isolateTreated={isolateTreated}
             />
-            <RoomPillarsLayer
+            <RoomsLayer
               rooms={dataset.rooms}
               states={statesS}
               visible={layers.rooms}
@@ -460,7 +466,7 @@ function InnerCityScene(props: InnerSceneProps) {
               visible={isConstellation}
               isolateTreated={isolateTreated}
             />
-            <RoomPillarsLayer
+            <RoomsLayer
               rooms={dataset.rooms}
               states={statesP}
               visible={layers.rooms}
@@ -518,7 +524,7 @@ function InnerCityScene(props: InnerSceneProps) {
             visible={isConstellation}
             isolateTreated={isolateTreated}
           />
-          <RoomPillarsLayer
+          <RoomsLayer
             rooms={dataset.rooms}
             states={viewMode === 'diff' ? statesP : statesActive}
             diffStatesS={viewMode === 'diff' ? statesS : null}

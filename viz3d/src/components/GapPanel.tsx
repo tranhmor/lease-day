@@ -56,18 +56,18 @@ export function GapPanel({ monthlyCI, month, announceMonth, openMonth, lang, onC
 
   return (
     <div
-      className="hud-panel amber"
+      className="hud-panel"
       onClick={onClickSplit}
       title={t.gap.clickToSplit}
       style={{
         width: '100%',
-        padding: '11px 14px',
+        padding: '14px 16px 12px',
         cursor: 'pointer',
         flexShrink: 0,
         transition: 'border-color 0.2s',
       }}
     >
-      <div className="panel-header">
+      <div className="panel-header" style={{ flexDirection: 'column', alignItems: 'flex-start', gap: 3 }}>
         <span>{t.gap.title}</span>
         <small>{t.gap.subtitle}</small>
       </div>
@@ -75,65 +75,65 @@ export function GapPanel({ monthlyCI, month, announceMonth, openMonth, lang, onC
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 10 }}>
         <div>
           <div
-            className="mono"
+            className="serif num"
             style={{
-              fontSize: 36,
-              fontWeight: 200,
+              fontSize: 38,
+              fontWeight: 400,
               lineHeight: 1.05,
-              color: meanVal > 0.05 ? 'var(--p)' : meanVal < -0.05 ? 'var(--down)' : 'var(--text)',
+              color: meanVal > 0.05 ? 'var(--accent)' : 'var(--text)',
             }}
           >
             {meanVal >= 0 ? '+' : ''}
             {meanVal.toFixed(2)}
-            <small style={{ fontSize: 12, color: 'var(--sub)', marginLeft: 4 }}>{t.gap.unitPt}</small>
+            <small className="num" style={{ fontSize: 12, color: 'var(--sub)', marginLeft: 4 }}>{t.gap.unitPt}</small>
           </div>
           {halfCi > 0 && (
-            <div className="mono" style={{ fontSize: 10, color: 'var(--sub)', marginTop: 2 }}>
+            <div className="num" style={{ fontSize: 11, color: 'var(--sub)', marginTop: 4 }}>
               95% CI: ±{halfCi.toFixed(2)} ({monthlyCI.seeds.length} {lang === 'zh' ? '种子' : 'seeds'})
             </div>
           )}
-          <div style={{ fontSize: 11, color: 'var(--sub)', marginTop: 5, lineHeight: 1.4 }}>{note}</div>
+          <div style={{ fontSize: 12, color: 'var(--text-soft)', marginTop: 6, lineHeight: 1.45 }}>{note}</div>
         </div>
 
         <svg width={154} height={70} style={{ flexShrink: 0 }}>
           {/* Zero baseline */}
-          <line x1={4} x2={150} y1={yZero} y2={yZero} stroke="var(--hairline)" strokeDasharray="2 2" />
+          <line x1={4} x2={150} y1={yZero} y2={yZero} stroke="var(--tick)" strokeWidth={0.8} />
           {/* M13 & M25 guide lines */}
           <line
             x1={4 + (146 * (announceMonth - 1)) / 35}
             x2={4 + (146 * (announceMonth - 1)) / 35}
             y1={4}
             y2={66}
-            stroke="var(--announce)"
-            strokeOpacity={0.35}
-            strokeDasharray="2 2"
+            stroke="var(--sub)"
+            strokeOpacity={0.5}
+            strokeDasharray="1 2"
           />
           <line
             x1={4 + (146 * (openMonth - 1)) / 35}
             x2={4 + (146 * (openMonth - 1)) / 35}
             y1={4}
             y2={66}
-            stroke="var(--cool)"
-            strokeOpacity={0.35}
-            strokeDasharray="2 2"
+            stroke="var(--sub)"
+            strokeOpacity={0.5}
+            strokeDasharray="1 2"
           />
           {/* 95% CI Band */}
-          {ciPath && <path d={ciPath} fill="var(--p)" fillOpacity={0.2} />}
+          {ciPath && <path d={ciPath} fill="var(--p)" fillOpacity={0.14} />}
           {/* Mean Curve */}
-          {linePath && <path d={linePath} fill="none" stroke="var(--p)" strokeWidth={1.7} />}
+          {linePath && <path d={linePath} fill="none" stroke="var(--p)" strokeWidth={1.5} />}
           {/* Active Month Dot */}
-          <circle cx={cx} cy={cy} r={3.6} fill="var(--panel-solid)" stroke="var(--p)" strokeWidth={1.6} />
-          <text x={150} y={10} textAnchor="end" fontSize={8} fill="var(--sub)" fontFamily="monospace">
+          <circle cx={cx} cy={cy} r={3} fill="var(--p)" stroke="var(--panel-solid)" strokeWidth={1.2} />
+          <text x={150} y={10} textAnchor="end" fontSize={9} fill="var(--sub)" fontFamily="-apple-system, sans-serif">
             {maxV.toFixed(1)}
           </text>
-          <text x={150} y={66} textAnchor="end" fontSize={8} fill="var(--sub)" fontFamily="monospace">
+          <text x={150} y={66} textAnchor="end" fontSize={9} fill="var(--sub)" fontFamily="-apple-system, sans-serif">
             {minV.toFixed(1)}
           </text>
         </svg>
       </div>
 
-      <div style={{ fontSize: 10, color: 'var(--announce)', marginTop: 6, opacity: 0.85 }}>
-        ▸ {t.gap.clickToSplit}
+      <div style={{ fontSize: 11, color: 'var(--sub)', marginTop: 10, textDecoration: 'underline', textUnderlineOffset: 3, textDecorationColor: 'var(--line)' }}>
+        {t.gap.clickToSplit} →
       </div>
     </div>
   );

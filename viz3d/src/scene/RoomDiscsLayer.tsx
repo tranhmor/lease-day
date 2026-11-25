@@ -5,7 +5,7 @@ import { useFrame, ThreeEvent } from '@react-three/fiber';
 import type { RoomMonthState, RoomStatic } from '@/types/viz';
 import { rentDeltaToColor } from '@/data/geo';
 
-interface RoomPillarsLayerProps {
+interface RoomDiscsLayerProps {
   rooms: RoomStatic[];
   states: RoomMonthState[];
   diffStatesS?: RoomMonthState[] | null;
@@ -60,7 +60,7 @@ const HALO_FRAG = /* glsl */ `
  * - Color = diverging rent delta vs M1 (#5FB4FF -> #E8F3FF -> #FFB02E -> #FF5A3C)
  * - Hollow hairline ring = vacant room; outer rim = whole apartment
  */
-export function RoomPillarsLayer({
+export function RoomDiscsLayer({
   rooms,
   states,
   diffStatesS = null,
@@ -72,7 +72,7 @@ export function RoomPillarsLayer({
   highlightVacant = false,
   onSelectRoom,
   onHoverRoom,
-}: RoomPillarsLayerProps) {
+}: RoomDiscsLayerProps) {
   const [hoveredRoom, setHoveredRoom] = useState<number | null>(null);
 
   const coreRef = useRef<THREE.InstancedMesh>(null);
